@@ -315,7 +315,7 @@ Napomena: Korisnik je priložio ${formData.images.length} fotografija koje su sp
 				  <step.icon className="w-8 h-8" style={{color: '#bd890f'}} />
 				</div>
 				<div className="text-sm font-semibold mb-2" style={{color: '#bd890f'}}>
-				  {t.otkup.process.steps.submit.title.includes('Korak') ? `KORAK ${index + 1}` : `STEP ${index + 1}`}
+				  {t.otkup.step} {index + 1}
 				</div>
 				<h3 className="text-lg font-medium text-gray-900 mb-2">{step.title}</h3>
 				<p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
