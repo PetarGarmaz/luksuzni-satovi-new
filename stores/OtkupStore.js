@@ -1,91 +1,93 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { supabase } from "@/lib/supabaseClient";
 
 class OtkupStore {
-  submissions = [];
-  loading = false;
-  error = null;
+	submissions = [];
+	loading = false;
+	error = null;
 
-  constructor() {
-    makeAutoObservable(this);
-    this.loadSubmissions();
-  }
+	constructor() {
+		makeAutoObservable(this);
+		this.loadSubmissions();
+	}
 
-  loadSubmissions() {
-    // Load from localStorage if available
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const saved = localStorage.getItem('otkup-submissions');
-      if (saved) {
-        try {
-          this.submissions = JSON.parse(saved);
-        } catch (error) {
-          console.error('Error loading submissions:', error);
-          this.submissions = [];
-        }
-      }
-    }
-  }
+	async loadSubmissions() {
+		this.loading = true;
+		const { data, error } = await supabase.from("pawn").select("*");
 
-  saveToStorage() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      try {
-        localStorage.setItem('otkup-submissions', JSON.stringify(this.submissions));
-      } catch (error) {
-        console.error('Error saving submissions:', error);
-      }
-    }
-  }
+		runInAction(() => {
+			if (error) {
+				console.error(error);
+			} else {
+				this.submissions = data || [];
+			}
 
-  addSubmission(submissionData) {
-    const newSubmission = {
-      id: Date.now(),
-      ...submissionData,
-      status: 'Nova',
-      submittedAt: new Date().toISOString(),
-      estimatedValue: null,
-      notes: ''
-    };
-    
-    this.submissions.unshift(newSubmission); // Add to beginning
-    this.saveToStorage();
-    return newSubmission;
-  }
+			this.loading = false;
+		});	
+	}
 
-  updateSubmission(id, updates) {
-    const index = this.submissions.findIndex(submission => submission.id === id);
-    if (index !== -1) {
-      this.submissions[index] = { ...this.submissions[index], ...updates };
-      this.saveToStorage();
-    }
-  }
+	saveToStorage() {
+		if (typeof window !== 'undefined' && window.localStorage) {
+			try {
+				localStorage.setItem('otkup-submissions', JSON.stringify(this.submissions));
+			} catch (error) {
+				console.error('Error saving submissions:', error);
+			}
+		}
+	}
 
-  deleteSubmission(id) {
-    this.submissions = this.submissions.filter(submission => submission.id !== id);
-    this.saveToStorage();
-  }
+	async addSubmission(submissionData) {
+		const newSubmission = {...submissionData, submittedAt: new Date()};
+		const { data, error } = await supabase.from("pawn").insert(newSubmission);
 
-  updateStatus(id, status) {
-    this.updateSubmission(id, { status });
-  }
+		if (error) {
+			console.error(error);
+		} else if (data) {
+			runInAction(() => {
+				console.log(data);
+				this.submissions.unshift(data[0]);
+			});
+		}
 
-  addEstimate(id, estimatedValue, notes = '') {
-    this.updateSubmission(id, { 
-      estimatedValue, 
-      notes, 
-      status: 'Procijenjena' 
-    });
-  }
+		return data;
+	}
 
-  get newSubmissions() {
-    return this.submissions.filter(submission => submission.status === 'Nova');
-  }
+	updateSubmission(id, updates) {
+		const index = this.submissions.findIndex(submission => submission.id === id);
+		if (index !== -1) {
+		this.submissions[index] = { ...this.submissions[index], ...updates };
+		this.saveToStorage();
+		}
+	}
 
-  get processedSubmissions() {
-    return this.submissions.filter(submission => submission.status !== 'Nova');
-  }
+	deleteSubmission(id) {
+		this.submissions = this.submissions.filter(submission => submission.id !== id);
+		this.saveToStorage();
+	}
 
-  getSubmissionsByStatus(status) {
-    return this.submissions.filter(submission => submission.status === status);
-  }
+	updateStatus(id, status) {
+		this.updateSubmission(id, { status });
+	}
+
+	addEstimate(id, estimatedValue, notes = '') {
+		this.updateSubmission(id, { 
+		estimatedValue, 
+		notes, 
+		status: 'Procijenjena' 
+		});
+	}
+
+	get newSubmissions() {
+		return this.submissions.filter(submission => submission.status === 'Nova');
+	}
+
+	get processedSubmissions() {
+		return this.submissions.filter(submission => submission.status !== 'Nova');
+	}
+
+	getSubmissionsByStatus(status) {
+		return this.submissions.filter(submission => submission.status === status);
+	}
 }
 
 export const otkupStore = new OtkupStore();

@@ -19,7 +19,7 @@ return (
 				{/* Brand Section */}
 				<div className="space-y-3 sm:space-y-4 text-center md:text-left">
 					<div className="flex items-center gap-2">
-					 <img src={getLogo().url} alt={getLogo().alt} className="h-8 sm:h-10 w-auto filter invert brightness-0 contrast-100 mx-auto md:mx-0"/>
+					 <img src={getLogo().url} alt={getLogo().alt} className="h-8 sm:h-10 w-auto mx-auto md:mx-0"/>
 					</div>
 					<p className="text-background/60 text-xs sm:text-sm">
 					{t.footer.description.split('\n\n').map((line, index) => (
@@ -46,13 +46,17 @@ return (
 				<div className="text-center md:text-left">
 					<h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">{t.footer.contact}</h3>
 					<div className='flex flex-col space-y-2 sm:space-y-3 text-background/60'>
-						<Link href="mailto:milicevic.domagoj1@gmail.com" className='nav-link flex gap-2 text-background/60 hover:text-background transition justify-center md:justify-start'>
+						<Link href="mailto:info@luksuzni-satovi.com" className='nav-link flex gap-2 text-background/60 hover:text-background transition justify-center md:justify-start'>
 							<Mail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5" />
-							<span className="text-xs sm:text-sm break-all">milicevic.domagoj1@gmail.com</span>
+							<span className="text-xs sm:text-sm break-all">info@luksuzni-satovi.com</span>
+						</Link>
+						<Link href="tel:+385998889999" className='flex gap-2 nav-link text-background/60 hover:text-background transition justify-center md:justify-start'>
+							<Phone className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5" />
+							<span className="text-xs sm:text-sm">Zagreb: +385 99 888 9999</span>
 						</Link>
 						<Link href="tel:+385989060212" className='flex gap-2 nav-link text-background/60 hover:text-background transition justify-center md:justify-start'>
 							<Phone className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5" />
-							<span className="text-xs sm:text-sm">+385 98 906 0212</span>
+							<span className="text-xs sm:text-sm">Osijek: +385 98 906 0212</span>
 						</Link>
 					</div>
 				</div>
@@ -68,8 +72,8 @@ return (
 					{t.footer.copyright.replace('{year}', currentYear)}
 					</p>
 					<div className="flex gap-4 sm:gap-6 text-xs sm:text-sm">
-					<Link href="#" className="text-gray-400 hover:text-white transition">{t.footer.privacy}</Link>
-					<Link href="#" className="text-gray-400 hover:text-white transition">{t.footer.terms}</Link>
+					<Link href="/politika-privatnosti" className="text-gray-400 hover:text-white transition">{t.footer.privacy}</Link>
+					<Link href="/uvjeti-koristenja" className="text-gray-400 hover:text-white transition">{t.footer.terms}</Link>
 					</div>
 				</div>
 			</div>

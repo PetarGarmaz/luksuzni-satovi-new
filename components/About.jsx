@@ -10,7 +10,7 @@ const About = () => {
     <section id="about" className="py-12 sm:py-20 px-4 sm:px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 sm:mb-16">
-          <h2 className="text-2xl sm:text-4xl font-light text-gray-900 mb-4">
+          <h2 className="text-2xl sm:text-4xl font-light text-gray-900 mb-4 uppercase">
             {t.about.title}
           </h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -28,7 +28,7 @@ const About = () => {
           </div>
           
           <div>
-            <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-4 sm:mb-6">
+            <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-4 sm:mb-6 uppercase">
               {t.about.serviceTitle}
             </h3>
             <p className="text-sm sm:text-base text-gray-700 mb-4 sm:mb-6 leading-relaxed">
@@ -47,7 +47,7 @@ const About = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Jamstvo Autentičnosti</h4>
+            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">{t.about.features.authenticity.title}</h4>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
               {t.about.features.authenticity.description}
             </p>
@@ -59,7 +59,7 @@ const About = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
               </svg>
             </div>
-            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Fer Procjena Vrijednosti</h4>
+            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">{t.about.features.valuation.title}</h4>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
               {t.about.features.valuation.description}
             </p>
@@ -71,7 +71,7 @@ const About = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Sigurna Transakcija</h4>
+            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">{t.about.features.security.title}</h4>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
               {t.about.features.security.description}
             </p>
@@ -79,7 +79,7 @@ const About = () => {
         </div>
 
         <div className="bg-gray-50 rounded-lg p-4 sm:p-8 text-center">
-          <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-4">
+          <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-4 uppercase">
             {t.about.whyChooseTitle}
           </h3>
           <p className="text-sm sm:text-base text-gray-700 mb-6 max-w-3xl mx-auto leading-relaxed">

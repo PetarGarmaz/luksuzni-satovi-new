@@ -2,66 +2,151 @@ export const translations = {
   hr: {
     // Header
     header: {
-      home: 'POČETNA',
-      about: 'O NAMA',
-      watchSales: 'PRODAJA SATOVA',
-      watchBuying: 'OTKUP SATOVA',
-      contact: 'KONTAKT'
+      home: 'Početna',
+      about: 'O nama',
+      watchSales: 'Prodaja satova',
+      watchBuying: 'Otkup satova',
+      contact: 'Kontakt'
+    },
+
+	//Privacy
+	privacyPolicy: {
+      title: "Pravila privatnosti",
+      intro: "Ova Pravila privatnosti objašnjavaju kako Time („mi“, „naše“ ili „nas“) prikuplja, koristi i štiti vaše osobne podatke na našoj web stranici www.luksuzni-satovi.com.",
+      sections: {
+        section1: {
+          title: "1. Informacije koje prikupljamo",
+          content: "Prikupljamo sljedeće osobne podatke kada koristite naše kontakt forme ili šaljete upite/narudžbe:",
+          items: ["Ime", "Email adresa", "Broj telefona"]
+        },
+        section2: {
+          title: "2. Kako koristimo vaše podatke",
+          content: "Prikupljene podatke koristimo isključivo za odgovaranje na vaše upite ili narudžbe te pružanje korisničke podrške."
+        },
+        section3: {
+          title: "3. Pohrana i sigurnost podataka",
+          content: "Vaši osobni podaci pohranjuju se sigurno putem Supabase-a. Implementiramo Supabase Row-Level Security (RLS) kako bismo ograničili pristup vašim podacima i zaštitili vašu privatnost."
+        },
+        section4: {
+          title: "4. Dijeljenje podataka",
+          content: "Ne prodajemo niti dijelimo vaše osobne podatke s trećim stranama, osim usluga potrebnih za funkcioniranje naše web stranice (npr. Supabase za bazu podataka i pohranu)."
+        },
+        section5: {
+          title: "5. Čuvanje podataka",
+          content: "Vaše osobne podatke čuvamo neograničeno za operativne potrebe. Podatke možete zatražiti za brisanje ili izmjenu u bilo kojem trenutku putem e-maila."
+        },
+        section6: {
+          title: "6. Vaša prava",
+          content: "Imate pravo pristupiti, mijenjati ili brisati svoje osobne podatke. Za ostvarivanje ovih prava kontaktirajte nas na info@luksuzni-satovi.com."
+        },
+        section7: {
+          title: "7. Promjene pravila",
+          content: "Ova Pravila privatnosti možemo povremeno ažurirati. Sve promjene bit će objavljene na ovoj stranici s ažuriranim datumom."
+        }
+      },
+      lastUpdated: "Zadnje ažuriranje: rujan 2025"
+    },
+
+	//Terms
+	termsOfUse: {
+      title: "Uvjeti korištenja",
+      intro: "Ovi Uvjeti korištenja reguliraju vaš pristup i korištenje web stranice www.luksuzni-satovi.com koju upravlja Time („mi“, „naše“ ili „nas“). Korištenjem stranice prihvaćate ove uvjete.",
+      sections: {
+        section1: {
+          title: "1. Prihvaćanje uvjeta",
+          content: "Pristupanjem ili korištenjem naše web stranice pristajete na poštivanje i obvezivanje ovim Uvjetima korištenja."
+        },
+        section2: {
+          title: "2. Korištenje web stranice",
+          content: "Web stranicu možete koristiti isključivo u zakonite svrhe. Slažete se da nećete zloupotrebljavati stranicu niti sudjelovati u aktivnostima koje bi mogle naštetiti stranici ili drugim korisnicima."
+        },
+        section3: {
+          title: "3. Intelektualno vlasništvo",
+          content: "Sav sadržaj ove web stranice, uključujući tekst, slike, logotipe i grafike, vlasništvo je Time-a ili njegovih davatelja licenci i zaštićen je zakonima o autorskim pravima. Ne smijete reproducirati, distribuirati ili stvarati izvedene radove bez naše dozvole."
+        },
+        section4: {
+          title: "4. Ograničenje odgovornosti",
+          content: "Time nije odgovoran za bilo kakvu izravnu, neizravnu, slučajnu ili posljedičnu štetu koja proizlazi iz vašeg korištenja web stranice."
+        },
+        section5: {
+          title: "5. Usluge trećih strana",
+          content: "Možemo koristiti usluge trećih strana (kao što je Supabase) za bazu podataka i pohranu. Vaše korištenje ovih usluga podliježe njihovim uvjetima i pravilima privatnosti."
+        },
+        section6: {
+          title: "6. Promjene uvjeta",
+          content: "Ove Uvjete korištenja možemo povremeno ažurirati. Ažurirani uvjeti bit će objavljeni na ovoj stranici s datumom posljednje revizije."
+        },
+        section7: {
+          title: "7. Mjerodavno pravo",
+          content: "Ovi uvjeti podliježu zakonima Republike Hrvatske, a svi sporovi bit će u nadležnosti hrvatskih sudova."
+        }
+      },
+      lastUpdated: "Zadnje ažuriranje: rujan 2025"
     },
     
     // Hero Section
     hero: {
       rolex: {
         subtitle: 'ROLEX',
-        title: 'Simbol Vašeg Uspjeha',
+        title: 'Simbol vašeg uspjeha',
         description: 'Tamo gdje se preciznost susreće s prestižom. Otkrijte legendarno umijeće koje već više od stoljeća definira savršenstvo.'
       },
       breitling: {
         subtitle: 'BREITLING',
-        title: 'Preciznost za Profesionalce',
+        title: 'Preciznost za profesionalce',
         description: 'Nastao iz zrakoplovne tradicije, stvoren za one koji zahtijevaju nepogršivu preciznost u najzahtjevnijim situacijama.'
       },
       cartier: {
         subtitle: 'CARTIER',
-        title: 'Elegancija u Svakom Trenutku',
+        title: 'Elegancija u svakom trenutku',
         description: 'Spoj nakita i urarstva. Doživite vrhunac francuske elegancije i nenadmašnog stila.'
       },
-      viewOffer: 'PREGLEDAJ PONUDU',
+      patek: {
+        subtitle: 'PATEK PHILIPPE',
+        title: 'Vječna vrijednost vremena',
+        description: 'Izrađen za generacije, ne samo za trenutke. Otkrijte remek-djela koja spajaju tradiciju i inovaciju u savršenom skladu.'
+      },
+      piguet: {
+        subtitle: 'AUDEMARS PIGUET',
+        title: 'Smjelost švicarske umjetnosti',
+        description: 'Od Royal Oak do ikoničnih kreacija – otkrijte satove koji pomiču granice dizajna i urarske izvrsnosti.'
+      },
+      viewOffer: 'Pregledaj ponudu',
       brands: {
         rolex: {
-          title: 'Vječna\nElegancija &\nPreciznost'
+          title: 'Vječna\nelegancija i\npreciznost'
         },
         breitling: {
-          title: 'Stil &\nPreciznost\nu Jednom'
+          title: 'Stil i\npreciznost\nu jednom'
         },
         cartier: {
-          title: 'Dodir\nSavršenstva'
+          title: 'Dodir\nsavršenstva'
         }
       }
     },
 
     // About Section
     about: {
-      title: 'Vaši Stručnjaci za Luksuzne Satove',
+      title: 'Vaši stručnjaci za luksuzne satove',
       subtitle: 'Specijalizirani za otkup, prodaju i procjenu luksuznih i rabljenih satova prestižnih svjetskih brendova',
-      serviceTitle: 'Profesionalna Usluga Otkupa Satova',
+      serviceTitle: 'Profesionalna usluga otkupa satova',
       description1: 'Nudimo stručnu uslugu otkupa satova i prodaju luksuznih rabljenih satova. Naša ekspertiza obuhvaća procjenu i autentifikaciju prestižnih brendova poput Rolex, Omega, Breitling, TAG Heuer, Cartier i drugih vodećih proizvođača luksuznih satova.',
       description2: 'Svaki rabljeni sat prolazi temeljitu provjeru autentičnosti i stanja. Garantiramo fer cijene za otkup rabljenih satova i potpunu transparentnost u svim transakcijama s luksuznim satovima.',
       features: {
         authenticity: {
-          title: 'Jamstvo Autentičnosti',
+          title: 'Jamstvo autentičnosti',
           description: 'Svaki luksuzni sat prolazi stručnu provjeru autentičnosti prije otkupa ili prodaje'
         },
         valuation: {
-          title: 'Fer Procjena Vrijednosti',
+          title: 'Pravedna procjena vrijednosti',
           description: 'Besplatna stručna procjena vrijednosti za otkup satova na temelju trenutnih tržišnih uvjeta'
         },
         security: {
-          title: 'Sigurna Transakcija',
+          title: 'Sigurna transakcija',
           description: 'Diskretna i sigurna kupnja i prodaja rabljenih satova s potpunom zaštitom privatnosti'
         }
       },
-      whyChooseTitle: 'Zašto Odabrati Nas za Luksuzne Satove?',
+      whyChooseTitle: 'Zašto odabrati nas za luksuzne satove?',
       whyChooseDescription: 'S dugogodišnjim iskustvom u procjeni luksuznih satova, pružamo stručnu uslugu otkupa rabljenih satova i prodaju provjerenih luksuznih rabljenih satova. Naša ekspertiza pokriva sve prestižne brendove, od klasičnih do modernih satova.',
       benefits: [
         '100% originalni luksuzni satovi i rabljeni satovi s jamstvom autentičnosti',
@@ -73,38 +158,38 @@ export const translations = {
 
     // Collection Section
     collection: {
-      title: 'Istaknuta Kolekcija',
+      title: 'Istaknuta kolekcija',
       subtitle: 'Otkrijte naš pažljivo odabrani izbor luksuznih satova',
-      viewAll: 'Pogledaj Sve Satove',
+      viewAll: 'Pogledaj sve satove',
       noWatches: 'Još nema istaknutih satova. Dodajte satove u admin panelu i označite ih kao istaknute.'
     },
 
     // Latest Posts Section
     latestPosts: {
-      title: 'Najnoviji Članci',
+      title: 'Najnoviji članci',
       subtitle: 'Saznajte više o luksuznim satovima, trendovima i savjetima za kupnju',
       readMore: 'Čitaj više',
       featured: 'Istaknuto',
-      viewWatches: 'Pogledaj Satove',
+      viewWatches: 'Pogledaj satove',
       noPosts: 'Još nema objavljenih članaka.'
     },
 
     // Recommendations Section
     recommendations: {
-      title: 'Što Kažu Naši Kupci',
+      title: 'Što kažu naši kupci',
       subtitle: 'Pročitajte iskustva naših zadovoljnih kupaca i partnera',
       noRecommendations: 'Još nema preporuka. Dodajte preporuke u admin panelu.'
     },
 
     // Contact Section
     contact: {
-      title: 'Kontaktirajte Nas',
+      title: 'Kontaktirajte nas',
       subtitle: 'Zanima vas određeni sat ili tražite nešto specifično? Naši stručnjaci su tu da vam pomognu pronaći savršen sat.',
-      howToContact: 'Kako Nas Možete Kontaktirati',
+      howToContact: 'Kako nas možete kontaktirati',
       email: 'Email',
       emailResponse: 'Odgovaramo u roku od 24 sata',
       phone: 'Telefon',
-      whyChoose: 'Zašto Odabrati Nas?',
+      whyChoose: 'Zašto odabrati nas?',
       benefits: [
         'Certificirani stručnjaci za luksuzne satove',
         'Jamstvo autentičnosti za sve satove',
@@ -112,20 +197,20 @@ export const translations = {
         'Sigurna i diskretna transakcija'
       ],
       form: {
-        title: 'Pošaljite Upit',
+        title: 'Pošaljite upit',
         firstName: 'Ime',
         lastName: 'Prezime',
         email: 'Email',
         phone: 'Telefon',
         message: 'Poruka',
         messagePlaceholder: 'Opišite kako vam možemo pomoći...',
-        submit: 'Pošaljite Upit',
+        submit: 'Pošaljite upit',
         submitting: 'Šalje se...',
         required: '* Obavezna polja. Kontaktirat ćemo vas u najkraćem mogućem roku.',
         success: {
-          title: 'Upit Uspješno Poslan!',
+          title: 'Upit uspješno poslan!',
           message: 'Hvala vam što ste nas kontaktirali. Odgovorit ćemo vam u najkraćem mogućem roku.',
-          newInquiry: 'Pošaljite Novi Upit'
+          newInquiry: 'Pošaljite novi upit'
         }
       }
     },
@@ -147,90 +232,89 @@ export const translations = {
         year: 'Godina'
       },
       resultsCount: 'Prikazano {count} od {total} satova',
-      viewDetails: 'Pogledaj Detalje',
+      viewDetails: 'Pogledaj detalje',
       featured: 'Istaknuto',
       noResults: 'Nema satova koji odgovaraju vašim kriterijima.',
-      resetFilters: 'Resetiraj Filtere'
+      resetFilters: 'Resetiraj filtere'
     },
 
     // Watch Detail Page
     watchDetail: {
       notFound: 'Sat nije pronađen',
       notFoundMessage: 'Sat koji tražite ne postoji ili je uklonjen.',
-      backToCatalog: 'Povratak na Katalog',
+      backToCatalog: 'Povratak na katalog',
       description: 'Opis',
-      technicalSpecs: 'Tehnički Podaci',
+      technicalSpecs: 'Tehnički podaci',
       referenceNumber: 'Referentni broj',
       mechanism: 'Mehanizam',
       caseDiameter: 'Promjer kućišta',
       caseMaterial: 'Materijal kućišta',
       glassType: 'Tip stakla',
-      included: 'Što je Uključeno',
+      included: 'Što je uključeno',
       originalBox: 'Originalna kutija',
       documentation: 'Dokumentacija',
       warranty: 'Jamstvo',
       trustIndicators: {
-        authenticity: 'Jamstvo Autentičnosti',
-        fastDelivery: 'Brza Dostava',
-        expertCheck: 'Stručna Provjera'
+        authenticity: 'Jamstvo autentičnosti',
+        fastDelivery: 'Brza dostava',
+        expertCheck: 'Stručna provjera'
       },
-      contactToBuy: 'Kontaktiraj za Kupnju',
-      contactInfo: 'Kontakt Informacije',
+      contactToBuy: 'Kontaktiraj za kupnju',
+      contactInfo: 'Kontakt informacije',
       mentionModel: 'Spomenite model: {brand} {name} ({model})',
-      year: "Godina",
-      model: "Referentni broj",
-  
+      year: 'Godina',
+      model: 'Referentni broj',
     },
 
     // Otkup Page
     otkup: {
-      title: 'Otkup Satova',
+      title: 'Otkup satova',
       subtitle: 'Imate sat koji želite prodati? Mi smo tu da vam olakšamo proces!',
       back: 'Povratak',
       intro: {
-        title: 'Prodajte Svoj Sat Jednostavno i Sigurno',
+        title: 'Prodajte svoj sat jednostavno i sigurno',
         description: 'Popunite naš online formular za procjenu i saznajte koliko vaš sat vrijedi. Naš tim stručnjaka pažljivo analizira svaki sat, uzimajući u obzir brend, model, stanje i aktualnu tržišnu vrijednost, kako biste dobili fer i konkurentnu ponudu.',
         features: {
           bestPrices: {
-            title: 'Najbolje Cijene na Tržištu',
+            title: 'Najbolje cijene na tržištu',
             description: 'Nudimo konkurentne cijene temeljene na aktualnim tržišnim vrijednostima'
           },
           fastProcess: {
-            title: 'Brz i Siguran Proces',
+            title: 'Brz i siguran proces',
             description: 'Jednostavan postupak prodaje s potpunom sigurnošću i diskrecijom'
           },
           expertise: {
-            title: 'Iskustvo i Stručnost',
+            title: 'Iskustvo i stručnost',
             description: 'Dugogodišnje iskustvo u procjeni luksuznih satova svih brendova'
           }
         }
       },
       process: {
-        title: 'Kako Funkcionira Otkup?',
+        title: 'Kako funkcionira otkup?',
         subtitle: 'Naš proces otkupa je jednostavan, transparentan i siguran. Evo kako to funkcionira:',
         steps: {
           submit: {
-            title: 'Pošaljite Upit',
+            title: 'Pošaljite upit',
             description: 'Ispunite formu s osnovnim podacima o vašem satu i priložite fotografije'
           },
           evaluation: {
-            title: 'Brza Procjena',
+            title: 'Brza procjena',
             description: 'Naši stručnjaci će u roku od 24 sata dati preliminarnu procjenu vrijednosti'
           },
           inspection: {
-            title: 'Fizička Provjera',
+            title: 'Fizička provjera',
             description: 'Dogovorite termin za detaljnu provjeru autentičnosti i stanja sata'
           },
           offer: {
-            title: 'Finalna Ponuda',
+            title: 'Finalna ponuda',
             description: 'Dobijete finalnu ponudu i možete odlučiti o prodaji'
           }
         }
       },
       benefits: {
-        title: 'Zašto Odabrati Naš Otkup?',
+        title: 'Zašto odabrati naš otkup?',
         fairPrices: {
-          title: 'Fer Cijene',
+          title: 'Pravedne cijene',
           description: 'Nudimo konkurentne cijene na temelju trenutnih tržišnih uvjeta'
         },
         security: {
@@ -238,15 +322,15 @@ export const translations = {
           description: 'Potpuna diskrecija i sigurnost u svim transakcijama'
         },
         fastEvaluation: {
-          title: 'Brza Procjena',
+          title: 'Brza procjena',
           description: 'Odgovaramo u roku od 24 sata s preliminarnom procjenom'
         }
       },
       form: {
-        title: 'Pošaljite Upit za Otkup',
+        title: 'Pošaljite upit za otkup',
         subtitle: 'Ispunite formu ispod s podacima o vašem satu. Što više informacija pošaljete, to precizniju procjenu možemo dati.',
-        personalInfo: 'Osobni Podaci',
-        watchInfo: 'Podaci o Satu',
+        personalInfo: 'Osobni podaci',
+        watchInfo: 'Podaci o satu',
         firstName: 'Ime',
         lastName: 'Prezime',
         phone: 'Telefon',
@@ -255,7 +339,7 @@ export const translations = {
         brandPlaceholder: 'npr. Rolex, Omega, Breitling',
         model: 'Model',
         modelPlaceholder: 'npr. Submariner, Speedmaster',
-        referenceNumber: 'Referentni Broj',
+        referenceNumber: 'Referentni broj',
         referenceNumberPlaceholder: 'npr. 116610LN (ako je poznat)',
         hasBox: 'Ima li kutiju?',
         hasDocumentation: 'Ima li dokumentaciju?',
@@ -271,41 +355,41 @@ export const translations = {
           unsure: 'Nisam siguran'
         },
         images: {
-          title: 'Fotografije Sata',
+          title: 'Fotografije sata',
           description: 'Molimo priložite najmanje 5 kvalitetnih fotografija: prednja strana, stražnja strana, bočne strane i detalji. Maksimalno 5 fotografija.',
           dragDrop: 'Povucite fotografije ovdje ili kliknite za odabir',
           fileTypes: 'PNG, JPG do 10MB po fotografiji',
-          selectFiles: 'Odaberite Fotografije',
+          selectFiles: 'Odaberite fotografije',
           attached: 'Priložene fotografije ({count}/5):'
         },
-        submit: 'Pošaljite Upit za Otkup',
+        submit: 'Pošaljite upit za otkup',
         submitting: 'Šalje se...',
         required: '* Obavezna polja. Kontaktirat ćemo vas u roku od 24 sata.',
         success: {
-          title: 'Upit Uspješno Poslan!',
+          title: 'Upit uspješno poslan!',
           message: 'Hvala vam što ste se obratili za otkup vašeg sata. Naš tim stručnjaka će pregledati vaš upit i kontaktirati vas u roku od 24 sata s preliminarnom procjenom.',
           details: [
             '• Provjerit ćemo autentičnost i stanje vašeg sata',
             '• Dat ćemo vam fer procjenu na temelju trenutnih tržišnih uvjeta',
             '• Kontaktirat ćemo vas za dogovaranje daljnjih koraka'
           ],
-          backHome: 'Povratak na Početnu',
-          viewOffer: 'Pogledaj Našu Ponudu'
+          backHome: 'Povratak na početnu',
+          viewOffer: 'Pogledaj našu ponudu'
         }
       }
     },
 
     // Footer
     footer: {
-      description: 'Vaš pouzdani partner za kupnju, prodaju i procjenu luksuznih satova u Osijeku.\n\nStručnost, sigurnost i profesionalnost na prvom mjestu.',
+      description: 'Vaš pouzdani partner za kupnju, prodaju i procjenu luksuznih satova u Zagrebu i Osijeku.\n\nStručnost, sigurnost i profesionalnost na prvom mjestu.',
       navigation: 'Navigacija',
       home: 'Početna',
-      watchSales: 'Prodaja Satova',
-      watchBuying: 'Otkup Satova',
+      watchSales: 'Prodaja satova',
+      watchBuying: 'Otkup satova',
       contact: 'Kontakt',
       copyright: '© {year} Luksuzni-Satovi. Sva prava pridržana.',
-      privacy: 'Pravila Privatnosti',
-      terms: 'Uvjeti Korištenja'
+      privacy: 'Pravila privatnosti',
+      terms: 'Uvjeti korištenja'
     },
 
     // Common
@@ -334,138 +418,223 @@ export const translations = {
   en: {
     // Header
     header: {
-      home: 'HOME',
-      about: 'ABOUT US',
-      watchSales: 'WATCH SALES',
-      watchBuying: 'WATCH PAWNING',
-      contact: 'CONTACT'
+      home: 'Home',
+      about: 'About us',
+      watchSales: 'Watch sales',
+      watchBuying: 'Watch buying',
+      contact: 'Contact'
     },
-    
+
+	//Privacy
+	privacyPolicy: {
+      title: "Privacy Policy",
+      intro: "This Privacy Policy explains how Time (“we”, “our”, or “us”) collects, uses, and protects your personal information on our website www.luksuzni-satovi.com.",
+      sections: {
+        section1: {
+          title: "1. Information We Collect",
+          content: "We collect the following personal information when you use our contact forms or place inquiries/orders:",
+          items: ["Name", "Email address", "Phone number"]
+        },
+        section2: {
+          title: "2. How We Use Your Information",
+          content: "We use the collected information solely to respond to your inquiries or orders and provide customer support."
+        },
+        section3: {
+          title: "3. Data Storage and Security",
+          content: "Your personal data is stored securely using Supabase. We implement Supabase Row-Level Security (RLS) to restrict access to your data and protect your privacy."
+        },
+        section4: {
+          title: "4. Data Sharing",
+          content: "We do not sell or share your personal information with third parties, except for the services required to provide our website functionality (e.g., Supabase for database and storage purposes)."
+        },
+        section5: {
+          title: "5. Data Retention",
+          content: "We retain your personal data indefinitely for operational purposes. You may request deletion or modification of your data at any time by contacting us via email."
+        },
+        section6: {
+          title: "6. Your Rights",
+          content: "You have the right to access, modify, or delete your personal data. To exercise these rights, please contact us at info@luksuzni-satovi.com."
+        },
+        section7: {
+          title: "7. Changes to This Policy",
+          content: "We may update this Privacy Policy from time to time. Any changes will be posted on this page with the updated date."
+        }
+      },
+      lastUpdated: "Last updated: September 2025"
+    },
+
+	//Terms
+	termsOfUse: {
+      title: "Terms of Use",
+      intro: "These Terms of Use govern your access and use of the website www.luksuzni-satovi.com operated by Time (“we”, “our”, or “us”). By using the site, you agree to these terms.",
+      sections: {
+        section1: {
+          title: "1. Acceptance of Terms",
+          content: "By accessing or using our website, you agree to comply with and be bound by these Terms of Use."
+        },
+        section2: {
+          title: "2. Use of Website",
+          content: "You may use the website only for lawful purposes. You agree not to misuse the site or engage in any activities that could harm the website or other users."
+        },
+        section3: {
+          title: "3. Intellectual Property",
+          content: "All content on this website, including text, images, logos, and graphics, is the property of Time or its licensors and is protected by copyright laws. You may not reproduce, distribute, or create derivative works without our permission."
+        },
+        section4: {
+          title: "4. Limitation of Liability",
+          content: "Time is not liable for any direct, indirect, incidental, or consequential damages arising from your use of the website."
+        },
+        section5: {
+          title: "5. Third-Party Services",
+          content: "We may use third-party services (such as Supabase) for database and storage purposes. Your use of these services is subject to their respective terms and privacy policies."
+        },
+        section6: {
+          title: "6. Changes to Terms",
+          content: "We may update these Terms of Use from time to time. Updated terms will be posted on this page with the date of the latest revision."
+        },
+        section7: {
+          title: "7. Governing Law",
+          content: "These terms are governed by the laws of Croatia, and any disputes will be subject to the jurisdiction of Croatian courts."
+        }
+      },
+      lastUpdated: "Last updated: September 2025"
+    },
+
     // Hero Section
     hero: {
       rolex: {
         subtitle: 'ROLEX',
-        title: 'Symbol of Your Success',
-        description: 'Where precision meets prestige. Discover the legendary craftsmanship that has defined perfection for over a century.'
+        title: 'A symbol of your success',
+        description: 'Where precision meets prestige. Discover legendary craftsmanship that has defined perfection for over a century.'
       },
       breitling: {
         subtitle: 'BREITLING',
-        title: 'Precision for Professionals',
-        description: 'Born from aviation tradition, created for those who demand unwavering precision in the most demanding situations.'
+        title: 'Precision for professionals',
+        description: 'Born from aviation tradition, created for those who demand unfailing accuracy in the most challenging situations.'
       },
       cartier: {
         subtitle: 'CARTIER',
-        title: 'Elegance in Every Moment',
-        description: 'The fusion of jewelry and watchmaking. Experience the pinnacle of French elegance and unmatched style.'
+        title: 'Elegance in every moment',
+        description: 'A fusion of jewelry and watchmaking. Experience the pinnacle of French elegance and unmatched style.'
       },
-      viewOffer: 'VIEW COLLECTION',
+      patek: {
+        subtitle: 'PATEK PHILIPPE',
+        title: 'The eternal value of time',
+        description: 'Crafted for generations, not just moments. Discover masterpieces that blend tradition and innovation in perfect harmony.'
+      },
+      piguet: {
+        subtitle: 'AUDEMARS PIGUET',
+        title: 'The boldness of Swiss artistry',
+        description: 'From the Royal Oak to iconic creations – discover timepieces that push the boundaries of design and watchmaking excellence.'
+      },
+      viewOffer: 'View offer',
       brands: {
         rolex: {
-          title: 'Eternal\nElegance &\nPrecision'
+          title: 'Timeless\nelegance &\nprecision'
         },
         breitling: {
-          title: 'Style &\nPrecision\nin One'
+          title: 'Style &\nprecision\ncombined'
         },
         cartier: {
-          title: 'Touch of\nPerfection'
+          title: 'A touch\nof perfection'
         }
       }
     },
 
     // About Section
     about: {
-      title: 'Your Luxury Watch Experts',
-      subtitle: 'Specialized in buying, selling and appraising luxury and pre-owned watches from prestigious world brands',
-      serviceTitle: 'Professional Watch Buying Service',
-      description1: 'We offer expert watch buying services and sales of luxury pre-owned watches. Our expertise covers appraisal and authentication of prestigious brands such as Rolex, Omega, Breitling, TAG Heuer, Cartier and other leading luxury watch manufacturers.',
-      description2: 'Every pre-owned watch undergoes thorough authenticity and condition verification. We guarantee fair prices for pre-owned watch purchases and complete transparency in all luxury watch transactions.',
+      title: 'Your experts in luxury watches',
+      subtitle: 'Specialized in buying, selling, and evaluating luxury and pre-owned watches from prestigious world brands',
+      serviceTitle: 'Professional watch buying service',
+      description1: 'We offer expert services in watch buying and the sale of luxury pre-owned watches. Our expertise covers evaluation and authentication of prestigious brands such as Rolex, Omega, Breitling, TAG Heuer, Cartier, and other leading luxury watchmakers.',
+      description2: 'Each pre-owned watch undergoes thorough authenticity and condition checks. We guarantee fair prices for watch buying and full transparency in all luxury watch transactions.',
       features: {
         authenticity: {
-          title: 'Authenticity Guarantee',
-          description: 'Every luxury watch undergoes professional authenticity verification before purchase or sale'
+          title: 'Authenticity guarantee',
+          description: 'Every luxury watch undergoes expert authentication before purchase or sale'
         },
         valuation: {
-          title: 'Fair Value Assessment',
-          description: 'Free professional value assessment for watch purchases based on current market conditions'
+          title: 'Fair value assessment',
+          description: 'Free professional evaluation for watch buying based on current market conditions'
         },
         security: {
-          title: 'Secure Transaction',
-          description: 'Discreet and secure buying and selling of pre-owned watches with complete privacy protection'
+          title: 'Secure transaction',
+          description: 'Discreet and secure purchase and sale of pre-owned watches with complete privacy protection'
         }
       },
-      whyChooseTitle: 'Why Choose Us for Luxury Watches?',
-      whyChooseDescription: 'With years of experience in luxury watch appraisal, we provide expert pre-owned watch buying services and sales of verified luxury pre-owned watches. Our expertise covers all prestigious brands, from classic to modern watches.',
+      whyChooseTitle: 'Why choose us for luxury watches?',
+      whyChooseDescription: 'With years of experience in luxury watch evaluation, we provide expert watch buying services and the sale of certified pre-owned luxury watches. Our expertise covers all prestigious brands, from classic to modern timepieces.',
       benefits: [
-        '100% original luxury watches and pre-owned watches with authenticity guarantee',
-        'Professional watch buying and pre-owned watch purchases at fair prices',
-        'Wide selection of luxury pre-owned watches from prestigious brands',
-        'Expert appraisal and transparent watch buying-selling with complete security'
+        '100% genuine luxury watches and pre-owned watches with authenticity guarantee',
+        'Professional watch buying and pre-owned watch purchase at fair prices',
+        'Wide selection of pre-owned luxury watches from prestigious brands',
+        'Expert evaluation and transparent transactions with complete security'
       ]
     },
 
     // Collection Section
     collection: {
-      title: 'Featured Collection',
+      title: 'Featured collection',
       subtitle: 'Discover our carefully curated selection of luxury watches',
-      viewAll: 'View All Watches',
+      viewAll: 'View all watches',
       noWatches: 'No featured watches yet. Add watches in the admin panel and mark them as featured.'
     },
 
     // Latest Posts Section
     latestPosts: {
-      title: 'Latest Articles',
-      subtitle: 'Learn more about luxury watches, trends and buying tips',
+      title: 'Latest articles',
+      subtitle: 'Learn more about luxury watches, trends, and buying tips',
       readMore: 'Read more',
       featured: 'Featured',
-      viewWatches: 'View Watches',
-      noPosts: 'No published articles yet.'
+      viewWatches: 'View watches',
+      noPosts: 'No articles published yet.'
     },
 
     // Recommendations Section
     recommendations: {
-      title: 'What Our Customers Say',
-      subtitle: 'Read experiences from our satisfied customers and partners',
+      title: 'What our clients say',
+      subtitle: 'Read the experiences of our satisfied customers and partners',
       noRecommendations: 'No recommendations yet. Add recommendations in the admin panel.'
     },
 
     // Contact Section
     contact: {
-      title: 'Contact Us',
-      subtitle: 'Interested in a specific watch or looking for something particular? Our experts are here to help you find the perfect watch.',
-      howToContact: 'How You Can Contact Us',
+      title: 'Contact us',
+      subtitle: 'Interested in a specific watch or looking for something special? Our experts are here to help you find the perfect timepiece.',
+      howToContact: 'How you can contact us',
       email: 'Email',
-      emailResponse: 'We respond within 24 hours',
+      emailResponse: 'We reply within 24 hours',
       phone: 'Phone',
-      whyChoose: 'Why Choose Us?',
+      whyChoose: 'Why choose us?',
       benefits: [
-        'Certified luxury watch experts',
+        'Certified experts in luxury watches',
         'Authenticity guarantee for all watches',
         'Free value assessment',
-        'Secure and discreet transaction'
+        'Secure and discreet transactions'
       ],
       form: {
-        title: 'Send Inquiry',
-        firstName: 'First Name',
-        lastName: 'Last Name',
+        title: 'Send an inquiry',
+        firstName: 'First name',
+        lastName: 'Last name',
         email: 'Email',
         phone: 'Phone',
         message: 'Message',
         messagePlaceholder: 'Describe how we can help you...',
-        submit: 'Send Inquiry',
+        submit: 'Send inquiry',
         submitting: 'Sending...',
         required: '* Required fields. We will contact you as soon as possible.',
         success: {
-          title: 'Inquiry Successfully Sent!',
-          message: 'Thank you for contacting us. We will respond to you as soon as possible.',
-          newInquiry: 'Send New Inquiry'
+          title: 'Inquiry sent successfully!',
+          message: 'Thank you for contacting us. We will respond as soon as possible.',
+          newInquiry: 'Send another inquiry'
         }
       }
     },
 
     // Catalog Page
     catalog: {
-      title: 'Watch Sales',
-      subtitle: 'Browse our complete collection of luxury watches from prestigious world brands',
+      title: 'Watch sales',
+      subtitle: 'Browse our full collection of luxury watches from prestigious world brands',
       back: 'Back',
       search: 'Search watches...',
       category: 'Category',
@@ -479,89 +648,89 @@ export const translations = {
         year: 'Year'
       },
       resultsCount: 'Showing {count} of {total} watches',
-      viewDetails: 'View Details',
+      viewDetails: 'View details',
       featured: 'Featured',
       noResults: 'No watches match your criteria.',
-      resetFilters: 'Reset Filters'
+      resetFilters: 'Reset filters'
     },
 
     // Watch Detail Page
     watchDetail: {
       notFound: 'Watch not found',
       notFoundMessage: 'The watch you are looking for does not exist or has been removed.',
-      backToCatalog: 'Back to Catalog',
+      backToCatalog: 'Back to catalog',
       description: 'Description',
-      technicalSpecs: 'Technical Specifications',
+      technicalSpecs: 'Technical specifications',
       referenceNumber: 'Reference number',
       mechanism: 'Mechanism',
       caseDiameter: 'Case diameter',
       caseMaterial: 'Case material',
       glassType: 'Glass type',
-      included: 'What\'s Included',
+      included: 'What is included',
       originalBox: 'Original box',
       documentation: 'Documentation',
       warranty: 'Warranty',
       trustIndicators: {
-        authenticity: 'Authenticity Guarantee',
-        fastDelivery: 'Fast Delivery',
-        expertCheck: 'Expert Verification'
+        authenticity: 'Authenticity guarantee',
+        fastDelivery: 'Fast delivery',
+        expertCheck: 'Expert check'
       },
-      contactToBuy: 'Contact to Buy',
-      contactInfo: 'Contact Information',
+      contactToBuy: 'Contact to buy',
+      contactInfo: 'Contact information',
       mentionModel: 'Mention model: {brand} {name} ({model})',
-      year: "Year",
-      model: "Reference number",
+      year: 'Year',
+      model: 'Reference number',
     },
 
-    // Otkup Page
+    // Watch Buying Page
     otkup: {
-      title: 'Watch Buying',
-      subtitle: 'Have a watch you want to sell? We are here to make the process easy for you!',
+      title: 'Watch buying',
+      subtitle: 'Do you have a watch you want to sell? We make the process easy!',
       back: 'Back',
       intro: {
-        title: 'Sell Your Watch Simply and Safely',
-        description: 'Fill out our online assessment form and find out how much your watch is worth. Our team of experts carefully analyzes each watch, taking into account brand, model, condition and current market value, so you get a fair and competitive offer.',
+        title: 'Sell your watch simply and securely',
+        description: 'Fill out our online evaluation form and find out how much your watch is worth. Our team of experts carefully analyzes each watch, considering brand, model, condition, and current market value, to give you a fair and competitive offer.',
         features: {
           bestPrices: {
-            title: 'Best Prices on the Market',
+            title: 'Best market prices',
             description: 'We offer competitive prices based on current market values'
           },
           fastProcess: {
-            title: 'Fast and Secure Process',
-            description: 'Simple sales process with complete security and discretion'
+            title: 'Fast and secure process',
+            description: 'A simple selling process with full security and discretion'
           },
           expertise: {
-            title: 'Experience and Expertise',
-            description: 'Years of experience in appraising luxury watches of all brands'
+            title: 'Experience and expertise',
+            description: 'Years of experience in luxury watch evaluation across all brands'
           }
         }
       },
       process: {
-        title: 'How Does the Buying Process Work?',
-        subtitle: 'Our buying process is simple, transparent and secure. Here\'s how it works:',
+        title: 'How does the buying process work?',
+        subtitle: 'Our buying process is simple, transparent, and secure. Here’s how it works:',
         steps: {
           submit: {
-            title: 'Send Inquiry',
-            description: 'Fill out the form with basic information about your watch and attach photos'
+            title: 'Send inquiry',
+            description: 'Fill out the form with basic details about your watch and attach photos'
           },
           evaluation: {
-            title: 'Quick Assessment',
-            description: 'Our experts will provide a preliminary value assessment within 24 hours'
+            title: 'Quick evaluation',
+            description: 'Our experts will provide a preliminary evaluation within 24 hours'
           },
           inspection: {
-            title: 'Physical Inspection',
-            description: 'Schedule an appointment for detailed authenticity and condition verification'
+            title: 'Physical inspection',
+            description: 'Arrange an appointment for a detailed authenticity and condition check'
           },
           offer: {
-            title: 'Final Offer',
-            description: 'Receive the final offer and decide on the sale'
+            title: 'Final offer',
+            description: 'Receive the final offer and decide whether to sell'
           }
         }
       },
       benefits: {
-        title: 'Why Choose Our Buying Service?',
+        title: 'Why choose our buying service?',
         fairPrices: {
-          title: 'Fair Prices',
+          title: 'Fair prices',
           description: 'We offer competitive prices based on current market conditions'
         },
         security: {
@@ -569,74 +738,74 @@ export const translations = {
           description: 'Complete discretion and security in all transactions'
         },
         fastEvaluation: {
-          title: 'Quick Assessment',
-          description: 'We respond within 24 hours with a preliminary assessment'
+          title: 'Quick evaluation',
+          description: 'We reply within 24 hours with a preliminary estimate'
         }
       },
       form: {
-        title: 'Send Buying Inquiry',
-        subtitle: 'Fill out the form below with information about your watch. The more information you provide, the more accurate assessment we can give.',
-        personalInfo: 'Personal Information',
-        watchInfo: 'Watch Information',
-        firstName: 'First Name',
-        lastName: 'Last Name',
+        title: 'Send a buying inquiry',
+        subtitle: 'Fill out the form below with details about your watch. The more information you provide, the more accurate our evaluation will be.',
+        personalInfo: 'Personal information',
+        watchInfo: 'Watch details',
+        firstName: 'First name',
+        lastName: 'Last name',
         phone: 'Phone',
         email: 'Email',
         brand: 'Brand',
         brandPlaceholder: 'e.g. Rolex, Omega, Breitling',
         model: 'Model',
         modelPlaceholder: 'e.g. Submariner, Speedmaster',
-        referenceNumber: 'Reference Number',
+        referenceNumber: 'Reference number',
         referenceNumberPlaceholder: 'e.g. 116610LN (if known)',
-        hasBox: 'Does it have a box?',
-        hasDocumentation: 'Does it have documentation?',
+        hasBox: 'Has box?',
+        hasDocumentation: 'Has documentation?',
         boxOptions: {
           yes: 'Yes, I have the original box',
-          no: 'No, I don\'t have the box',
-          unsure: 'I\'m not sure'
+          no: 'No, I don’t have the box',
+          unsure: 'Not sure'
         },
         documentationOptions: {
-          yes: 'Yes, I have all documentation',
-          partial: 'I have some documentation',
-          no: 'No, I don\'t have documentation',
-          unsure: 'I\'m not sure'
+          yes: 'Yes, I have full documentation',
+          partial: 'I have partial documentation',
+          no: 'No, I don’t have documentation',
+          unsure: 'Not sure'
         },
         images: {
-          title: 'Watch Photos',
-          description: 'Please attach at least 5 quality photos: front, back, sides and details. Maximum 5 photos.',
+          title: 'Watch photos',
+          description: 'Please attach at least 5 high-quality photos: front, back, sides, and details. Maximum 5 photos.',
           dragDrop: 'Drag photos here or click to select',
-          fileTypes: 'PNG, JPG up to 10MB per photo',
-          selectFiles: 'Select Photos',
+          fileTypes: 'PNG, JPG up to 10MB each',
+          selectFiles: 'Select photos',
           attached: 'Attached photos ({count}/5):'
         },
-        submit: 'Send Buying Inquiry',
+        submit: 'Send buying inquiry',
         submitting: 'Sending...',
         required: '* Required fields. We will contact you within 24 hours.',
         success: {
-          title: 'Inquiry Successfully Sent!',
-          message: 'Thank you for contacting us about selling your watch. Our team of experts will review your inquiry and contact you within 24 hours with a preliminary assessment.',
+          title: 'Inquiry sent successfully!',
+          message: 'Thank you for reaching out to sell your watch. Our team of experts will review your inquiry and contact you within 24 hours with a preliminary estimate.',
           details: [
-            '• We will verify the authenticity and condition of your watch',
-            '• We will give you a fair assessment based on current market conditions',
-            '• We will contact you to arrange further steps'
+            '• We will check the authenticity and condition of your watch',
+            '• You will receive a fair evaluation based on current market conditions',
+            '• We will contact you to arrange next steps'
           ],
-          backHome: 'Back to Home',
-          viewOffer: 'View Our Collection'
+          backHome: 'Back to home',
+          viewOffer: 'View our offer'
         }
       }
     },
 
     // Footer
     footer: {
-      description: 'Your trusted partner for buying, selling and appraising luxury watches in Osijek.\n\nExpertise, security and professionalism first.',
+      description: 'Your trusted partner for buying, selling, and evaluating luxury watches in Zagreb and Osijek.\n\nExpertise, security, and professionalism come first.',
       navigation: 'Navigation',
       home: 'Home',
-      watchSales: 'Watch Sales',
-      watchBuying: 'Watch Buying',
+      watchSales: 'Watch sales',
+      watchBuying: 'Watch buying',
       contact: 'Contact',
-      copyright: '© {year} Luksuzni-Satovi. All rights reserved.',
-      privacy: 'Privacy Policy',
-      terms: 'Terms of Use'
+      copyright: '© {year} Luxury-Watches. All rights reserved.',
+      privacy: 'Privacy policy',
+      terms: 'Terms of use'
     },
 
     // Common
@@ -661,4 +830,4 @@ export const translations = {
       reset: 'Reset'
     }
   }
-};
+}

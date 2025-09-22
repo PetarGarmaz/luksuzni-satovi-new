@@ -16,6 +16,7 @@ import { watchStore } from '@/stores/WatchStore';
 import { blogStore } from '@/stores/BlogStore';
 import { referralStore } from '@/stores/ReferralStore';
 import { otkupStore } from '@/stores/OtkupStore';
+import { supabase } from "@/lib/supabaseClient";
 
 const AdminPage = observer(() => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,7 +39,7 @@ const AdminPage = observer(() => {
     price: '',
     condition: 'Odličo',
     category: 'Muški',
-    image: '',
+    images: '',
     description: '',
     featured: false,
     referenceNumber: '',
@@ -125,13 +126,36 @@ const AdminPage = observer(() => {
     }).format(price);
   };
 
-  const handleAddWatch = () => {
+  const handleAddWatch = async () => {
     if (newWatch.model && newWatch.brand && newWatch.price) {
+      var processedImages = [];
+
+      //Send images to the database
+      for (let i = 0; i < newWatch.images.length; i++) {
+		const file = newWatch.images[i];
+		const filePath = file.name;
+
+		const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
+
+		if (error) {
+			console.error("Upload failed:", error.message);
+		} else {
+			console.log(`Uploaded: ${filePath}`);
+
+			// Get public URL
+			const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
+			processedImages.push(data.publicUrl);
+			
+      		console.log("File available at:", data.publicUrl);
+      	}
+      }
+
       watchStore.addWatch({
         ...newWatch,
         name: newWatch.model, // Use model as name
         price: parseFloat(newWatch.price),
-        year: parseInt(newWatch.year)
+        year: parseInt(newWatch.year),
+		images: processedImages
       });
       setNewWatch({
         brand: '',
@@ -231,6 +255,14 @@ const AdminPage = observer(() => {
     blogStore.toggleFeatured(id);
   };
 
+  const handleImageUpload = (files) => {
+	const newImages = Array.from(files).slice(0, 5 - newWatch.images.length);
+	setNewWatch(prev => ({
+	  ...prev,
+	  images: [...prev.images, ...newImages]
+	}));
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -321,7 +353,7 @@ const AdminPage = observer(() => {
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            Otkup Upiti
+            Upiti
           </button>
         </div>
 
@@ -340,23 +372,6 @@ const AdminPage = observer(() => {
                 <p className="text-sm text-gray-600">Istaknuti</p>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">{watchStore.categories.length - 1}</div>
-                <p className="text-sm text-gray-600">Kategorije</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">
-                  {watchStore.watches.length > 0 
-                    ? formatPrice(watchStore.watches.reduce((sum, watch) => sum + watch.price, 0) / watchStore.watches.length)
-                    : '$0'
-                  }
-                </div>
-                <p className="text-sm text-gray-600">Prosj. Cijena</p>
-              </CardContent>
-            </Card>
           </div>
         )}
 
@@ -368,18 +383,7 @@ const AdminPage = observer(() => {
                 <p className="text-sm text-gray-600">Ukupno Članaka</p>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">{blogStore.featuredPosts.length}</div>
-                <p className="text-sm text-gray-600">Istaknuti</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">{blogStore.latestPosts.length}</div>
-                <p className="text-sm text-gray-600">Najnoviji</p>
-              </CardContent>
-            </Card>
+           
             <Card>
               <CardContent className="p-6">
                 <div className="text-2xl font-light text-gray-900">
@@ -434,24 +438,7 @@ const AdminPage = observer(() => {
                 <p className="text-sm text-gray-600">Ukupno Upita</p>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">{otkupStore.newSubmissions.length}</div>
-                <p className="text-sm text-gray-600">Novi Upiti</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">{otkupStore.getSubmissionsByStatus('Procijenjena').length}</div>
-                <p className="text-sm text-gray-600">Procijenjeni</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-2xl font-light text-gray-900">{otkupStore.getSubmissionsByStatus('Završeno').length}</div>
-                <p className="text-sm text-gray-600">Završeni</p>
-              </CardContent>
-            </Card>
+           
           </div>
         )}
 
@@ -603,12 +590,13 @@ const AdminPage = observer(() => {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="image">URL Slike</Label>
-                    <Input
+					<Label htmlFor="image">Slike</Label>
+					<input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e.target.files)}
                       id="image"
-                      value={newWatch.image}
-                      onChange={(e) => setNewWatch({...newWatch, image: e.target.value})}
-                      placeholder="https://example.com/image.jpg"
                     />
                   </div>
                   <div className="col-span-2 space-y-2">
@@ -760,16 +748,6 @@ const AdminPage = observer(() => {
                       placeholder="SEO opis članka"
                     />
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="postFeatured"
-                      checked={newPost.featured}
-                      onChange={(e) => setNewPost({...newPost, featured: e.target.checked})}
-                      className="rounded border-gray-300"
-                    />
-                    <Label htmlFor="postFeatured">Istaknuti članak</Label>
-                  </div>
                 </div>
                 <div className="flex justify-end space-x-2">
                   <Button variant="outline" onClick={() => setIsAddPostDialogOpen(false)}>
@@ -892,7 +870,7 @@ const AdminPage = observer(() => {
                     <CardContent className="p-0">
                       <div className="aspect-square bg-gray-50 rounded-t-lg overflow-hidden relative">
                         <img
-                          src={watch.image || 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800'}
+                          src={watch.images[0] || 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800'}
                           alt={watch.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
@@ -922,12 +900,12 @@ const AdminPage = observer(() => {
                         </div>
                         <p className="text-sm font-medium text-gray-900 mb-3">{formatPrice(watch.price)}</p>
                         <div className="flex gap-1">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
+                          {/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
                             <Eye className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit">
                             <Edit className="w-4 h-4" />
-                          </Button>
+                          </Button>*/}
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -985,7 +963,7 @@ const AdminPage = observer(() => {
                       </div>
                       <div className="p-4">
                         <h3 className="font-medium text-gray-900 mb-2 text-sm line-clamp-2">{post.title}</h3>
-                        <p className="text-xs text-gray-600 mb-2">{post.author} • {new Date(post.publishedAt).toLocaleDateString('hr-HR')}</p>
+                        <p className="text-xs text-gray-600 mb-2">{post.author} • {post.publishedAt}</p>
                         <p className="text-xs text-gray-600 mb-3 line-clamp-2">{post.excerpt}</p>
                         <div className="flex items-center gap-1 mb-3 flex-wrap">
                           {post.tags.slice(0, 2).map((tag) => (
@@ -995,12 +973,12 @@ const AdminPage = observer(() => {
                           ))}
                         </div>
                         <div className="flex gap-1">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
+                          {/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
                             <Eye className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit">
                             <Edit className="w-4 h-4" />
-                          </Button>
+                          </Button>*/}
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -1062,15 +1040,15 @@ const AdminPage = observer(() => {
                       </p>
                       <div className="flex items-center justify-between">
                         <p className="text-xs text-gray-500">
-                          {new Date(recommendation.createdAt).toLocaleDateString('hr-HR')}
+                          {recommendation.createdAt}
                         </p>
                         <div className="flex gap-1">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
+                          {/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
                             <Eye className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit">
                             <Edit className="w-4 h-4" />
-                          </Button>
+                          </Button>*/}
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -1119,7 +1097,7 @@ const AdminPage = observer(() => {
                               {submission.status}
                             </Badge>
                             <span className="text-xs text-gray-500">
-                              {new Date(submission.submittedAt).toLocaleDateString('hr-HR')}
+                              {submission.submittedAt}
                             </span>
                           </div>
                           <div className="flex items-center gap-4 text-xs text-gray-500">
@@ -1128,23 +1106,7 @@ const AdminPage = observer(() => {
                             <span>📷 {submission.images.length} slika</span>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Select 
-                            value={submission.status} 
-                            onValueChange={(value) => handleUpdateSubmissionStatus(submission.id, value)}
-                          >
-                            <SelectTrigger className="w-32">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Nova">Nova</SelectItem>
-                              <SelectItem value="U obradi">U obradi</SelectItem>
-                              <SelectItem value="Procijenjena">Procijenjena</SelectItem>
-                              <SelectItem value="Završeno">Završeno</SelectItem>
-                              <SelectItem value="Otkazano">Otkazano</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
+                        
                       </div>
                       <div className="flex gap-2">
                         <Button 
@@ -1204,7 +1166,7 @@ const AdminPage = observer(() => {
                     </div>
                     <div>
                       <span className="font-medium">Datum upita:</span>
-                      <p>{new Date(selectedSubmission.submittedAt).toLocaleDateString('hr-HR')}</p>
+                      <p>{selectedSubmission.submittedAt}</p>
                     </div>
                   </div>
                 </div>
@@ -1247,10 +1209,10 @@ const AdminPage = observer(() => {
                     {selectedSubmission.images.map((image, index) => (
                       <div key={index} className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                         <img
-                          src={image.data}
+                          src={image}
                           alt={`Watch ${index + 1}`}
                           className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform"
-                          onClick={() => window.open(image.data, '_blank')}
+                          onClick={() => window.open(image, '_blank')}
                         />
                       </div>
                     ))}

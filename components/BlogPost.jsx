@@ -12,11 +12,7 @@ const BlogPost = ({ post, showBackButton = true, showFullContent = true }) => {
   const t = translations[language];
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('hr-HR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    return dateString;
   };
 
   const estimateReadingTime = (content) => {
@@ -115,7 +111,7 @@ const BlogPost = ({ post, showBackButton = true, showFullContent = true }) => {
       {showFullContent && post.content && (
         <div className="prose prose-lg max-w-none">
           <div 
-            className="text-gray-800 leading-relaxed"
+            className="text-gray-800 leading-relaxed whitespace-pre-line"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>

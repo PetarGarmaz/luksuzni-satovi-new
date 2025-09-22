@@ -1,92 +1,102 @@
 {
-  "hero": {
-    "slides": [
-      {
-        "id": "rolex",
-        "url": "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "alt": "Rolex luxury watch"
-      },
-      {
-        "id": "breitling", 
-        "url": "https://images.unsplash.com/photo-1548171838-1fd4cb4ab854?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "alt": "Breitling aviation watch"
-      },
-      {
-        "id": "cartier",
-        "url": "https://images.unsplash.com/photo-1687040481503-3595ef7b5672?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FydGllciUyMHdhdGNofGVufDB8fDB8fHww",
-        "alt": "Cartier elegant watch"
-      }
-    ],
-    "brands": [
-      {
-        "id": "rolex",
-        "url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "alt": "Rolex watch collection"
-      },
-      {
-        "id": "breitling",
-        "url": "https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "alt": "Breitling watch collection"
-      },
-      {
-        "id": "cartier",
-        "url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "alt": "Cartier watch collection"
-      }
-    ]
-  },
-  "about": {
-    "main": {
-      "url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Luksuzni satovi - otkup i prodaja rabljenih satova"
-    }
-  },
-  "watches": {
-    "default": {
-      "url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Luxury watch"
-    },
-    "rolex": {
-      "url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Rolex watch"
-    },
-    "omega": {
-      "url": "https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Omega watch"
-    },
-    "breitling": {
-      "url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Breitling watch"
-    },
-    "cartier": {
-      "url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Cartier watch"
-    },
-    "tagHeuer": {
-      "url": "https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "TAG Heuer watch"
-    },
-    "hublot": {
-      "url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Hublot watch"
-    },
-    "audemars": {
-      "url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Audemars Piguet watch"
-    },
-    "patek": {
-      "url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Patek Philippe watch"
-    },
-    "lange": {
-      "url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "A. Lange & Söhne watch"
-    }
-  },
-  "logo": {
-    "main": {
-      "url": "https://i.imgur.com/ra7gosZ.png",
-      "alt": "Luksuzni Satovi - Otkup i Prodaja"
-    }
-  }
+	"hero": {
+		"slides": [
+			{
+				"id": "rolex",
+				"url": "hero/rolex.jpg",
+				"alt": "Rolex luxury watch"
+			},
+			{
+				"id": "breitling", 
+				"url": "hero/breitling.jpg",
+				"alt": "Breitling aviation watch"
+			},
+			{
+				"id": "cartier",
+				"url": "hero/cartier.jpg",
+				"alt": "Cartier elegant watch"
+			},
+			{
+				"id": "patek",
+				"url": "hero/patek.jpg",
+				"alt": "Cartier elegant watch"
+			},
+			{
+				"id": "piguet",
+				"url": "hero/piguet.jpg",
+				"alt": "Cartier elegant watch"
+			}
+		],
+		"brands": [
+		{
+			"id": "rolex",
+			"url": "hero/rolex.jpg",
+			"alt": "Rolex watch collection"
+		},
+		{
+			"id": "breitling",
+			"url": "hero/breitling.jpg",
+			"alt": "Breitling watch collection"
+		},
+		{
+			"id": "cartier",
+			"url": "hero/cartier.jpg",
+			"alt": "Cartier watch collection"
+		}
+		]
+	},
+	"about": {
+		"main": {
+		"url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Luksuzni satovi - otkup i prodaja rabljenih satova"
+		}
+	},
+	"watches": {
+		"default": {
+		"url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Luxury watch"
+		},
+		"rolex": {
+		"url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Rolex watch"
+		},
+		"omega": {
+		"url": "https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Omega watch"
+		},
+		"breitling": {
+		"url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Breitling watch"
+		},
+		"cartier": {
+		"url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Cartier watch"
+		},
+		"tagHeuer": {
+		"url": "https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "TAG Heuer watch"
+		},
+		"hublot": {
+		"url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Hublot watch"
+		},
+		"audemars": {
+		"url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Audemars Piguet watch"
+		},
+		"patek": {
+		"url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "Patek Philippe watch"
+		},
+		"lange": {
+		"url": "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"alt": "A. Lange & Söhne watch"
+		}
+	},
+	"logo": {
+		"main": {
+		"url": "/logo.png",
+		"alt": "Luksuzni Satovi - Otkup i Prodaja"
+		}
+	}
 }

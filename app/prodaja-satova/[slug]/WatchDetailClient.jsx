@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Check, X, Shield, Clock, Award, Phone, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ const WatchDetailClient = ({ watch }) => {
   const { language } = useLanguage();
   const t = translations[language];
   const [showContactForm, setShowContactForm] = useState(false);
+  const [mainImage, setMainImage] = useState("");
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -24,14 +25,19 @@ const WatchDetailClient = ({ watch }) => {
     }).format(price);
   };
 
+	useEffect(() => {
+		if (watch) {
+			setMainImage(watch.images[0] || getWatchImage(watch.brand).url);
+		}
+	}, [watch]);
+
   if (!watch) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="pt-32 pb-16 px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl font-light text-gray-900 mb-4">{t.watchDetail.notFound}</h1>
-            <p className="text-gray-600 mb-8">{t.watchDetail.notFoundMessage}</p>
+            
             <Link href="/prodaja-satova">
               <Button 
                 className="text-white hover:opacity-90 transition-opacity"
@@ -72,14 +78,34 @@ const WatchDetailClient = ({ watch }) => {
       <section className="py-8 sm:py-16 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16">
-            {/* Image */}
-            <div className="aspect-square bg-white rounded-lg overflow-hidden shadow-sm">
-              <img
-                src={watch.image || getWatchImage(watch.brand).url}
-                alt={`${watch.brand} ${watch.name}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
+           {/* Image */}
+			<div className="flex flex-col gap-4">
+			{/* Main Image */}
+			<div className="aspect-square bg-white rounded-lg overflow-hidden shadow-sm">
+				<img
+				src={mainImage}
+				alt={`${watch.brand} ${watch.name}`}
+				className="w-full h-full object-cover"
+				/>
+			</div>
+
+			{/* Image Gallery */}
+			<div className="grid grid-cols-4 gap-2">
+				{watch.images.map((imgUrl, index) => (
+				<button
+					key={index}
+					onClick={() => setMainImage(imgUrl)}
+					className="aspect-square w-full border border-gray-200 rounded overflow-hidden focus:outline-none"
+				>
+					<img
+					src={imgUrl}
+					alt={`${watch.brand} ${watch.name} ${index + 1}`}
+					className="w-full h-full object-cover hover:opacity-80 transition-opacity"
+					/>
+				</button>
+				))}
+			</div>
+			</div>
 
             {/* Details */}
             <div className="space-y-6">
@@ -245,8 +271,8 @@ const WatchDetailClient = ({ watch }) => {
                         <Mail className="w-5 h-5 text-gray-600" />
                         <div>
                           <p className="font-medium text-gray-900">{t.contact.email}</p>
-                          <a href="mailto:milicevic.domagoj1@gmail.com" className="text-blue-600 hover:text-blue-800">
-                            milicevic.domagoj1@gmail.com
+                          <a href="mailto:info@luksuzni-satovi.com" className="text-blue-600 hover:text-blue-800">
+                            info@luksuzni-satovi.com
                           </a>
                         </div>
                       </div>

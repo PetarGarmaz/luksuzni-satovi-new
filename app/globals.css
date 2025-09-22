@@ -98,6 +98,16 @@
   display: none;
 }
 
+/* Hide scrollbar for featured section */
+.scrollbar-show {
+  -ms-overflow-style: scrollbar;
+  scrollbar-width: thin;
+}
+
+.scrollbar-show::-webkit-scrollbar {
+  display: block;
+}
+
 /* Navigation link hover animation */
 .nav-link {
   position: relative;

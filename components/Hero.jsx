@@ -31,6 +31,18 @@ const Hero = observer(() => {
       title: t.hero.cartier.title,
       subtitle: t.hero.cartier.subtitle,
       description: t.hero.cartier.description
+    },
+    {
+      image: getHeroSlide(3).url,
+      title: t.hero.patek.title,
+      subtitle: t.hero.patek.subtitle,
+      description: t.hero.patek.description
+    },
+    {
+      image: getHeroSlide(4).url,
+      title: t.hero.piguet.title,
+      subtitle: t.hero.piguet.subtitle,
+      description: t.hero.piguet.description
     }
   ];
 
@@ -84,7 +96,7 @@ const Hero = observer(() => {
               }`} style={{color: '#bd890f'}}>
                 {currentSlide.subtitle}
               </p>
-              <h1 className={`text-2xl sm:text-4xl md:text-5xl font-light mb-4 leading-tight transition-all duration-700 ease-out delay-200 transform ${
+              <h1 className={`text-2xl sm:text-4xl md:text-5xl font-light mb-4 leading-tight transition-all duration-700 ease-out delay-200 transform uppercase ${
                 isTransitioning ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
               }`}>
                 {currentSlide.title}
@@ -139,7 +151,7 @@ const Hero = observer(() => {
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 text-white">
                   <p className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2">ROLEX</p>
-                  <h3 className="text-sm sm:text-xl font-semibold mb-2" dangerouslySetInnerHTML={{__html: t.hero.brands.rolex.title.replace(/\n/g, '<br />')}}></h3>
+                  <h3 className="text-sm sm:text-xl font-semibold mb-2 uppercase" dangerouslySetInnerHTML={{__html: t.hero.brands.rolex.title.replace(/\n/g, '<br />')}}></h3>
                   <Link href="/prodaja-satova">
                     <Button size="sm" variant="outline" className="border-white text-black bg-white hover:bg-[#bd890f] hover:text-white hover:border-[#bd890f] text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2">
                       {t.hero.viewOffer}
@@ -160,7 +172,7 @@ const Hero = observer(() => {
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 text-white">
                   <p className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2">BREITLING</p>
-                  <h3 className="text-sm sm:text-xl font-semibold mb-2" dangerouslySetInnerHTML={{__html: t.hero.brands.breitling.title.replace(/\n/g, '<br />')}}></h3>
+                  <h3 className="text-sm sm:text-xl font-semibold mb-2 uppercase" dangerouslySetInnerHTML={{__html: t.hero.brands.breitling.title.replace(/\n/g, '<br />')}}></h3>
                   <Link href="/prodaja-satova">
                     <Button size="sm" variant="outline" className="border-white text-black bg-white hover:bg-[#bd890f] hover:text-white hover:border-[#bd890f] text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2">
                       {t.hero.viewOffer}
@@ -181,7 +193,7 @@ const Hero = observer(() => {
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 text-white">
                   <p className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2">CARTIER</p>
-                  <h3 className="text-sm sm:text-xl font-semibold mb-2" dangerouslySetInnerHTML={{__html: t.hero.brands.cartier.title.replace(/\n/g, '<br />')}}></h3>
+                  <h3 className="text-sm sm:text-xl font-semibold mb-2 uppercase" dangerouslySetInnerHTML={{__html: t.hero.brands.cartier.title.replace(/\n/g, '<br />')}}></h3>
                   <Link href="/prodaja-satova">
                     <Button size="sm" variant="outline" className="border-white text-black bg-white hover:bg-[#bd890f] hover:text-white hover:border-[#bd890f] text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2">
                       {t.hero.viewOffer}

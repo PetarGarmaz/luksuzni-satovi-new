@@ -21,27 +21,27 @@ const Header = () => {
             <img 
               src={getLogo().url}
               alt={getLogo().alt}
-              className="h-6 sm:h-8 w-auto filter invert brightness-0 contrast-100"
+              className="h-6 sm:h-8 w-auto"
             />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <a href="/" className="nav-link text-sm text-white hover:text-gray-300 transition-colors font-medium">
+            <Link href="/" className="nav-link text-sm text-white hover:text-gray-300 transition-colors font-medium uppercase">
               {t.header.home}
-            </a>
-            <a href="/#about" className="nav-link text-sm text-gray-300 hover:text-white transition-colors">
+            </Link>
+            <Link href="/#about" className="nav-link text-sm text-gray-300 hover:text-white transition-colors uppercase">
               {t.header.about}
-            </a>
-            <Link href="/prodaja-satova" className="nav-link text-sm text-gray-300 hover:text-white transition-colors">
+            </Link>
+            <Link href="/prodaja-satova" className="nav-link text-sm text-gray-300 hover:text-white transition-colors uppercase">
               {t.header.watchSales}
             </Link>
-            <Link href="/otkup-satova" className="nav-link text-sm text-gray-300 hover:text-white transition-colors">
+            <Link href="/otkup-satova" className="nav-link text-sm text-gray-300 hover:text-white transition-colors uppercase">
               {t.header.watchBuying}
             </Link>
-            <a href="/#contact" className="nav-link text-sm text-gray-300 hover:text-white transition-colors">
+            <Link href="/#contact" className="nav-link text-sm text-gray-300 hover:text-white transition-colors uppercase">
               {t.header.contact}
-            </a>
+            </Link>
           </nav>
 
           {/* Language Switcher & Mobile menu button */}
@@ -89,41 +89,41 @@ const Header = () => {
         {isMobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-gray-800">
             <div className="flex flex-col space-y-3">
-              <a 
+              <Link 
                 href="/" 
-                className="text-sm text-white hover:text-gray-300 transition-colors font-medium py-2 border-b border-gray-700"
+                className="text-sm text-white hover:text-gray-300 transition-colors font-medium py-2 border-b border-gray-700 uppercase"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t.header.home}
-              </a>
-              <a 
+              </Link>
+              <Link 
                 href="/#about" 
-                className="text-sm text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-700"
+                className="text-sm text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-700 uppercase"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t.header.about}
-              </a>
+              </Link>
               <Link 
                 href="/prodaja-satova" 
-                className="text-sm text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-700"
+                className="text-sm text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-700 uppercase"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t.header.watchSales}
               </Link>
               <Link 
                 href="/otkup-satova" 
-                className="text-sm text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-700"
+                className="text-sm text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-700 uppercase"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t.header.watchBuying}
               </Link>
-              <a 
+              <Link 
                 href="/#contact" 
-                className="text-sm text-gray-300 hover:text-white transition-colors py-2"
+                className="text-sm text-gray-300 hover:text-white transition-colors py-2 uppercase"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t.header.contact}
-              </a>
+              </Link>
             </div>
           </nav>
         )}

@@ -149,10 +149,10 @@ const CatalogClient = observer(() => {
           {filteredWatches.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
               {filteredWatches.map((watch) => (
-                <Link key={watch.id} href={`/prodaja-satova/${watch.id}`} className="block group cursor-pointer bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                <Link key={watch.id} href={`/prodaja-satova/${watch.slug}`} className="block group cursor-pointer bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
                   <div className="aspect-square bg-gray-50 overflow-hidden relative">
                     <img
-                      src={watch.image || getWatchImage(watch.brand).url}
+                      src={watch.images[0] || getWatchImage(watch.brand).url}
                       alt={`${watch.brand} ${watch.name}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

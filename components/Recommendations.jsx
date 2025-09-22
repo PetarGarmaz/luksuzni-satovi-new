@@ -38,7 +38,7 @@ const Recommendations = observer(() => {
     <section className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-light text-gray-900 mb-4">{t.recommendations.title}</h2>
+          <h2 className="text-4xl font-light text-gray-900 mb-4 uppercase">{t.recommendations.title}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             {t.recommendations.subtitle}
           </p>
@@ -51,7 +51,7 @@ const Recommendations = observer(() => {
               {/* Left Arrow */}
               <button
                 onClick={scrollLeft}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                className="absolute max-lg:hidden left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
                 style={{ marginTop: '-2rem' }}
               >
                 <ChevronLeft className="w-6 h-6 text-gray-700" />
@@ -60,7 +60,7 @@ const Recommendations = observer(() => {
               {/* Right Arrow */}
               <button
                 onClick={scrollRight}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                className="absolute max-lg:hidden right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
                 style={{ marginTop: '-2rem' }}
               >
                 <ChevronRight className="w-6 h-6 text-gray-700" />
