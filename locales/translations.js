@@ -281,6 +281,7 @@ export const translations = {
       title: 'Otkup satova',
       subtitle: 'Imate sat koji želite prodati? Mi smo tu da vam olakšamo proces!',
       back: 'Povratak',
+      step: 'Korak',
       intro: {
         title: 'Prodajte svoj sat jednostavno i sigurno',
         description: 'Popunite naš online formular za procjenu i saznajte koliko vaš sat vrijedi. Naš tim stručnjaka pažljivo analizira svaki sat, uzimajući u obzir brend, model, stanje i aktualnu tržišnu vrijednost, kako biste dobili fer i konkurentnu ponudu.',
@@ -706,6 +707,7 @@ export const translations = {
     otkup: {
       title: 'Watch buying',
       subtitle: 'Do you have a watch you want to sell? We make the process easy!',
+      step: 'Step',
       back: 'Back',
       intro: {
         title: 'Sell your watch simply and securely',
