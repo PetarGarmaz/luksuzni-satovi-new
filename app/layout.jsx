@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="hr">
 		<head>
 			<meta property="og:image" content="/og_logo.png" />
 			<meta property="og:image:alt" content="Luksuzni-Satovi" />

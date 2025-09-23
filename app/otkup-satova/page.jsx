@@ -14,6 +14,7 @@ import { otkupStore } from '@/stores/OtkupStore';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { translations } from '@/locales/translations';
 import { supabase } from "@/lib/supabaseClient";
+import Head from 'next/head';
 
 const OtkupSatovaPage = observer(() => {
   const { language } = useLanguage();
@@ -246,335 +247,344 @@ Napomena: Korisnik je priložio ${formData.images.length} fotografija koje su sp
   }
 
   return (
-	<div className="min-h-screen bg-white">
-	  <Header />
-	  
-	  {/* Hero Section */}
-	  <section className="pt-32 pb-16 px-6 bg-black text-white">
-		<div className="max-w-7xl mx-auto">
-		  <div className="flex items-center mb-6">
-			<Link href="/" className="flex items-center text-gray-300 hover:text-white transition-colors mr-4">
-			  <ArrowLeft className="w-4 h-4 mr-2" />
-			  {t.otkup.back}
-			</Link>
-		  </div>
-		  <h1 className="text-4xl md:text-5xl font-light mb-4">{t.otkup.title}</h1>
-		  <p className="text-xl text-gray-300 max-w-2xl">
-			{t.otkup.subtitle}
-		  </p>
-		</div>
-	  </section>
+	<>
+		<Head>
+			<title>Luksuzni-Satovi | Otkup luksuznih satova</title>
+			<meta name="description" content="Luksuzni satovi – otkup luksuznih satova. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
+			<meta property="og:title" content="Luksuzni-Satovi | Otkup luksuznih satova" />
+			<meta property="og:description" content="Luksuzni satovi – otkup luksuznih satova. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
+		</Head>
 
-	  {/* Introduction Section */}
-	  <section className="py-16 px-6 bg-white">
-		<div className="max-w-4xl mx-auto text-center">
-		  <h2 className="text-3xl font-light text-gray-900 mb-6">{t.otkup.intro.title}</h2>
-		  <p className="text-gray-700 text-lg leading-relaxed mb-8">
-			{t.otkup.intro.description}
-		  </p>
-		  
-		  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-			<div className="text-center p-4">
-			  <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				<Euro className="w-8 h-8" style={{color: '#bd890f'}} />
-			  </div>
-			  <h3 className="font-medium text-gray-900 mb-2">{t.otkup.intro.features.bestPrices.title}</h3>
-			  <p className="text-gray-600 text-sm">{t.otkup.intro.features.bestPrices.description}</p>
+		<div className="min-h-screen bg-white">
+		<Header />
+		
+		{/* Hero Section */}
+		<section className="pt-32 pb-16 px-6 bg-black text-white">
+			<div className="max-w-7xl mx-auto">
+			<div className="flex items-center mb-6">
+				<Link href="/" className="flex items-center text-gray-300 hover:text-white transition-colors mr-4">
+				<ArrowLeft className="w-4 h-4 mr-2" />
+				{t.otkup.back}
+				</Link>
 			</div>
-			<div className="text-center p-4">
-			  <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				<Clock className="w-8 h-8" style={{color: '#bd890f'}} />
-			  </div>
-			  <h3 className="font-medium text-gray-900 mb-2">{t.otkup.intro.features.fastProcess.title}</h3>
-			  <p className="text-gray-600 text-sm">{t.otkup.intro.features.fastProcess.description}</p>
-			</div>
-			<div className="text-center p-4">
-			  <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				<Shield className="w-8 h-8" style={{color: '#bd890f'}} />
-			  </div>
-			  <h3 className="font-medium text-gray-900 mb-2">{t.otkup.intro.features.expertise.title}</h3>
-			  <p className="text-gray-600 text-sm">{t.otkup.intro.features.expertise.description}</p>
-			</div>
-		  </div>
-		</div>
-	  </section>
-	  {/* Process Explanation */}
-	  <section className="py-20 px-6 bg-white">
-		<div className="max-w-7xl mx-auto">
-		  <div className="text-center mb-16">
-			<h2 className="text-4xl font-light text-gray-900 mb-4">{t.otkup.process.title}</h2>
-			<p className="text-gray-600 max-w-2xl mx-auto">
-			  {t.otkup.process.subtitle}
+			<h1 className="text-4xl md:text-5xl font-light mb-4">{t.otkup.title}</h1>
+			<p className="text-xl text-gray-300 max-w-2xl">
+				{t.otkup.subtitle}
 			</p>
-		  </div>
+			</div>
+		</section>
 
-		  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-			{processSteps.map((step, index) => (
-			  <div key={index} className="text-center">
+		{/* Introduction Section */}
+		<section className="py-16 px-6 bg-white">
+			<div className="max-w-4xl mx-auto text-center">
+			<h2 className="text-3xl font-light text-gray-900 mb-6">{t.otkup.intro.title}</h2>
+			<p className="text-gray-700 text-lg leading-relaxed mb-8">
+				{t.otkup.intro.description}
+			</p>
+			
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+				<div className="text-center p-4">
 				<div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				  <step.icon className="w-8 h-8" style={{color: '#bd890f'}} />
+					<Euro className="w-8 h-8" style={{color: '#bd890f'}} />
 				</div>
-				<div className="text-sm font-semibold mb-2" style={{color: '#bd890f'}}>
-				  {t.otkup.process.steps.submit.title.includes('Korak') ? `KORAK ${index + 1}` : `STEP ${index + 1}`}
+				<h3 className="font-medium text-gray-900 mb-2">{t.otkup.intro.features.bestPrices.title}</h3>
+				<p className="text-gray-600 text-sm">{t.otkup.intro.features.bestPrices.description}</p>
 				</div>
-				<h3 className="text-lg font-medium text-gray-900 mb-2">{step.title}</h3>
-				<p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
-			  </div>
-			))}
-		  </div>
-
-		  {/* Benefits */}
-		  <div className="bg-gray-50 rounded-lg p-8">
-			<h3 className="text-2xl font-light text-gray-900 mb-6 text-center">{t.otkup.benefits.title}</h3>
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-			  <div className="text-center">
-				<div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				  <Check className="w-6 h-6" style={{color: '#bd890f'}} />
+				<div className="text-center p-4">
+				<div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
+					<Clock className="w-8 h-8" style={{color: '#bd890f'}} />
 				</div>
-				<h4 className="font-medium text-gray-900 mb-2">{t.otkup.benefits.fairPrices.title}</h4>
-				<p className="text-gray-600 text-sm">{t.otkup.benefits.fairPrices.description}</p>
-			  </div>
-			  <div className="text-center">
-				<div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				  <Shield className="w-6 h-6" style={{color: '#bd890f'}} />
+				<h3 className="font-medium text-gray-900 mb-2">{t.otkup.intro.features.fastProcess.title}</h3>
+				<p className="text-gray-600 text-sm">{t.otkup.intro.features.fastProcess.description}</p>
 				</div>
-				<h4 className="font-medium text-gray-900 mb-2">{t.otkup.benefits.security.title}</h4>
-				<p className="text-gray-600 text-sm">{t.otkup.benefits.security.description}</p>
-			  </div>
-			  <div className="text-center">
-				<div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
-				  <Clock className="w-6 h-6" style={{color: '#bd890f'}} />
+				<div className="text-center p-4">
+				<div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
+					<Shield className="w-8 h-8" style={{color: '#bd890f'}} />
 				</div>
-				<h4 className="font-medium text-gray-900 mb-2">{t.otkup.benefits.fastEvaluation.title}</h4>
-				<p className="text-gray-600 text-sm">{t.otkup.benefits.fastEvaluation.description}</p>
-			  </div>
+				<h3 className="font-medium text-gray-900 mb-2">{t.otkup.intro.features.expertise.title}</h3>
+				<p className="text-gray-600 text-sm">{t.otkup.intro.features.expertise.description}</p>
+				</div>
 			</div>
-		  </div>
-		</div>
-	  </section>
-
-	  {/* Form Section */}
-	  <section className="py-20 px-6 bg-white">
-		<div className="max-w-4xl mx-auto">
-		  <div className="text-center mb-12">
-			<h2 className="text-4xl font-light text-gray-900 mb-4">{t.otkup.form.title}</h2>
-			<p className="text-gray-600 max-w-2xl mx-auto">
-			  {t.otkup.form.subtitle}
-			</p>
-		  </div>
-
-		  <form onSubmit={handleSubmit} className="bg-gray-50 p-8 rounded-lg">
-			{/* Personal Information */}
-			<div className="mb-8">
-			  <h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.personalInfo}</h3>
-			  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<div>
-				  <Label htmlFor="firstName">{t.otkup.form.firstName} *</Label>
-				  <Input
-					id="firstName"
-					value={formData.firstName}
-					onChange={(e) => handleInputChange('firstName', e.target.value)}
-					placeholder={t.otkup.form.firstName}
-					required
-					className="mt-1"
-				  />
-				</div>
-				<div>
-				  <Label htmlFor="lastName">{t.otkup.form.lastName} *</Label>
-				  <Input
-					id="lastName"
-					value={formData.lastName}
-					onChange={(e) => handleInputChange('lastName', e.target.value)}
-					placeholder={t.otkup.form.lastName}
-					required
-					className="mt-1"
-				  />
-				</div>
-				<div>
-				  <Label htmlFor="phone">{t.otkup.form.phone} *</Label>
-				  <Input
-					id="phone"
-					type="tel"
-					value={formData.phone}
-					onChange={(e) => handleInputChange('phone', e.target.value)}
-					placeholder="+385 xx xxx xxxx"
-					required
-					className="mt-1"
-				  />
-				</div>
-				<div>
-				  <Label htmlFor="email">{t.otkup.form.email} *</Label>
-				  <Input
-					id="email"
-					type="email"
-					value={formData.email}
-					onChange={(e) => handleInputChange('email', e.target.value)}
-					placeholder="vaš@email.com"
-					required
-					className="mt-1"
-				  />
-				</div>
-			  </div>
 			</div>
-
-			{/* Watch Information */}
-			<div className="mb-8">
-			  <h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.watchInfo}</h3>
-			  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<div>
-				  <Label htmlFor="brand">{t.otkup.form.brand} *</Label>
-				  <Input
-					id="brand"
-					value={formData.brand}
-					onChange={(e) => handleInputChange('brand', e.target.value)}
-					placeholder={t.otkup.form.brandPlaceholder}
-					required
-					className="mt-1"
-				  />
-				</div>
-				<div>
-				  <Label htmlFor="model">{t.otkup.form.model} *</Label>
-				  <Input
-					id="model"
-					value={formData.model}
-					onChange={(e) => handleInputChange('model', e.target.value)}
-					placeholder={t.otkup.form.modelPlaceholder}
-					required
-					className="mt-1"
-				  />
-				</div>
-				<div className="md:col-span-2">
-				  <Label htmlFor="referenceNumber">{t.otkup.form.referenceNumber}</Label>
-				  <Input
-					id="referenceNumber"
-					value={formData.referenceNumber}
-					onChange={(e) => handleInputChange('referenceNumber', e.target.value)}
-					placeholder={t.otkup.form.referenceNumberPlaceholder}
-					className="mt-1"
-				  />
-				</div>
-				<div>
-				  <Label htmlFor="hasBox">{t.otkup.form.hasBox} *</Label>
-				  <Select value={formData.hasBox} onValueChange={(value) => handleInputChange('hasBox', value)}>
-					<SelectTrigger className="mt-1">
-					  <SelectValue placeholder={t.common.select} />
-					</SelectTrigger>
-					<SelectContent>
-					  <SelectItem value="da">{t.otkup.form.boxOptions.yes}</SelectItem>
-					  <SelectItem value="ne">{t.otkup.form.boxOptions.no}</SelectItem>
-					  <SelectItem value="nisam-siguran">{t.otkup.form.boxOptions.unsure}</SelectItem>
-					</SelectContent>
-				  </Select>
-				</div>
-				<div>
-				  <Label htmlFor="hasDocumentation">{t.otkup.form.hasDocumentation} *</Label>
-				  <Select value={formData.hasDocumentation} onValueChange={(value) => handleInputChange('hasDocumentation', value)}>
-					<SelectTrigger className="mt-1">
-					  <SelectValue placeholder={t.common.select} />
-					</SelectTrigger>
-					<SelectContent>
-					  <SelectItem value="da">{t.otkup.form.documentationOptions.yes}</SelectItem>
-					  <SelectItem value="djelomicno">{t.otkup.form.documentationOptions.partial}</SelectItem>
-					  <SelectItem value="ne">{t.otkup.form.documentationOptions.no}</SelectItem>
-					  <SelectItem value="nisam-siguran">{t.otkup.form.documentationOptions.unsure}</SelectItem>
-					</SelectContent>
-				  </Select>
-				</div>
-			  </div>
-			</div>
-
-			{/* Image Upload */}
-			<div className="mb-8">
-			  <h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.images.title} *</h3>
-			  <p className="text-gray-600 mb-4 text-sm">
-				{t.otkup.form.images.description}
-			  </p>
-			  
-			  {/* Upload Area */}
-			  <div
-				className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-				  dragActive 
-					? 'border-[#bd890f] bg-[#bd890f]/5' 
-					: 'border-gray-300 hover:border-gray-400'
-				}`}
-				onDragEnter={handleDrag}
-				onDragLeave={handleDrag}
-				onDragOver={handleDrag}
-				onDrop={handleDrop}
-			  >
-				<Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-				<p className="text-gray-600 mb-2">
-				  {t.otkup.form.images.dragDrop}
+		</section>
+		{/* Process Explanation */}
+		<section className="py-20 px-6 bg-white">
+			<div className="max-w-7xl mx-auto">
+			<div className="text-center mb-16">
+				<h2 className="text-4xl font-light text-gray-900 mb-4">{t.otkup.process.title}</h2>
+				<p className="text-gray-600 max-w-2xl mx-auto">
+				{t.otkup.process.subtitle}
 				</p>
-				<p className="text-gray-500 text-sm mb-4">
-				  {t.otkup.form.images.fileTypes}
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+				{processSteps.map((step, index) => (
+				<div key={index} className="text-center">
+					<div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
+					<step.icon className="w-8 h-8" style={{color: '#bd890f'}} />
+					</div>
+					<div className="text-sm font-semibold mb-2" style={{color: '#bd890f'}}>
+					{t.otkup.process.steps.submit.title.includes('Korak') ? `KORAK ${index + 1}` : `STEP ${index + 1}`}
+					</div>
+					<h3 className="text-lg font-medium text-gray-900 mb-2">{step.title}</h3>
+					<p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
+				</div>
+				))}
+			</div>
+
+			{/* Benefits */}
+			<div className="bg-gray-50 rounded-lg p-8">
+				<h3 className="text-2xl font-light text-gray-900 mb-6 text-center">{t.otkup.benefits.title}</h3>
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div className="text-center">
+					<div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
+					<Check className="w-6 h-6" style={{color: '#bd890f'}} />
+					</div>
+					<h4 className="font-medium text-gray-900 mb-2">{t.otkup.benefits.fairPrices.title}</h4>
+					<p className="text-gray-600 text-sm">{t.otkup.benefits.fairPrices.description}</p>
+				</div>
+				<div className="text-center">
+					<div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
+					<Shield className="w-6 h-6" style={{color: '#bd890f'}} />
+					</div>
+					<h4 className="font-medium text-gray-900 mb-2">{t.otkup.benefits.security.title}</h4>
+					<p className="text-gray-600 text-sm">{t.otkup.benefits.security.description}</p>
+				</div>
+				<div className="text-center">
+					<div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center" style={{backgroundColor: '#bd890f20'}}>
+					<Clock className="w-6 h-6" style={{color: '#bd890f'}} />
+					</div>
+					<h4 className="font-medium text-gray-900 mb-2">{t.otkup.benefits.fastEvaluation.title}</h4>
+					<p className="text-gray-600 text-sm">{t.otkup.benefits.fastEvaluation.description}</p>
+				</div>
+				</div>
+			</div>
+			</div>
+		</section>
+
+		{/* Form Section */}
+		<section className="py-20 px-6 bg-white">
+			<div className="max-w-4xl mx-auto">
+			<div className="text-center mb-12">
+				<h2 className="text-4xl font-light text-gray-900 mb-4">{t.otkup.form.title}</h2>
+				<p className="text-gray-600 max-w-2xl mx-auto">
+				{t.otkup.form.subtitle}
 				</p>
-				<input
-				  type="file"
-				  multiple
-				  accept="image/*"
-				  onChange={(e) => handleImageUpload(e.target.files)}
-				  className="hidden"
-				  id="image-upload"
-				/>
-				<Button
-				  type="button"
-				  variant="outline"
-				  onClick={() => document.getElementById('image-upload').click()}
-				  disabled={formData.images.length >= 5}
+			</div>
+
+			<form onSubmit={handleSubmit} className="bg-gray-50 p-8 rounded-lg">
+				{/* Personal Information */}
+				<div className="mb-8">
+				<h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.personalInfo}</h3>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+					<Label htmlFor="firstName">{t.otkup.form.firstName} *</Label>
+					<Input
+						id="firstName"
+						value={formData.firstName}
+						onChange={(e) => handleInputChange('firstName', e.target.value)}
+						placeholder={t.otkup.form.firstName}
+						required
+						className="mt-1"
+					/>
+					</div>
+					<div>
+					<Label htmlFor="lastName">{t.otkup.form.lastName} *</Label>
+					<Input
+						id="lastName"
+						value={formData.lastName}
+						onChange={(e) => handleInputChange('lastName', e.target.value)}
+						placeholder={t.otkup.form.lastName}
+						required
+						className="mt-1"
+					/>
+					</div>
+					<div>
+					<Label htmlFor="phone">{t.otkup.form.phone} *</Label>
+					<Input
+						id="phone"
+						type="tel"
+						value={formData.phone}
+						onChange={(e) => handleInputChange('phone', e.target.value)}
+						placeholder="+385 xx xxx xxxx"
+						required
+						className="mt-1"
+					/>
+					</div>
+					<div>
+					<Label htmlFor="email">{t.otkup.form.email} *</Label>
+					<Input
+						id="email"
+						type="email"
+						value={formData.email}
+						onChange={(e) => handleInputChange('email', e.target.value)}
+						placeholder="vaš@email.com"
+						required
+						className="mt-1"
+					/>
+					</div>
+				</div>
+				</div>
+
+				{/* Watch Information */}
+				<div className="mb-8">
+				<h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.watchInfo}</h3>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div>
+					<Label htmlFor="brand">{t.otkup.form.brand} *</Label>
+					<Input
+						id="brand"
+						value={formData.brand}
+						onChange={(e) => handleInputChange('brand', e.target.value)}
+						placeholder={t.otkup.form.brandPlaceholder}
+						required
+						className="mt-1"
+					/>
+					</div>
+					<div>
+					<Label htmlFor="model">{t.otkup.form.model} *</Label>
+					<Input
+						id="model"
+						value={formData.model}
+						onChange={(e) => handleInputChange('model', e.target.value)}
+						placeholder={t.otkup.form.modelPlaceholder}
+						required
+						className="mt-1"
+					/>
+					</div>
+					<div className="md:col-span-2">
+					<Label htmlFor="referenceNumber">{t.otkup.form.referenceNumber}</Label>
+					<Input
+						id="referenceNumber"
+						value={formData.referenceNumber}
+						onChange={(e) => handleInputChange('referenceNumber', e.target.value)}
+						placeholder={t.otkup.form.referenceNumberPlaceholder}
+						className="mt-1"
+					/>
+					</div>
+					<div>
+					<Label htmlFor="hasBox">{t.otkup.form.hasBox} *</Label>
+					<Select value={formData.hasBox} onValueChange={(value) => handleInputChange('hasBox', value)}>
+						<SelectTrigger className="mt-1">
+						<SelectValue placeholder={t.common.select} />
+						</SelectTrigger>
+						<SelectContent>
+						<SelectItem value="da">{t.otkup.form.boxOptions.yes}</SelectItem>
+						<SelectItem value="ne">{t.otkup.form.boxOptions.no}</SelectItem>
+						<SelectItem value="nisam-siguran">{t.otkup.form.boxOptions.unsure}</SelectItem>
+						</SelectContent>
+					</Select>
+					</div>
+					<div>
+					<Label htmlFor="hasDocumentation">{t.otkup.form.hasDocumentation} *</Label>
+					<Select value={formData.hasDocumentation} onValueChange={(value) => handleInputChange('hasDocumentation', value)}>
+						<SelectTrigger className="mt-1">
+						<SelectValue placeholder={t.common.select} />
+						</SelectTrigger>
+						<SelectContent>
+						<SelectItem value="da">{t.otkup.form.documentationOptions.yes}</SelectItem>
+						<SelectItem value="djelomicno">{t.otkup.form.documentationOptions.partial}</SelectItem>
+						<SelectItem value="ne">{t.otkup.form.documentationOptions.no}</SelectItem>
+						<SelectItem value="nisam-siguran">{t.otkup.form.documentationOptions.unsure}</SelectItem>
+						</SelectContent>
+					</Select>
+					</div>
+				</div>
+				</div>
+
+				{/* Image Upload */}
+				<div className="mb-8">
+				<h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.images.title} *</h3>
+				<p className="text-gray-600 mb-4 text-sm">
+					{t.otkup.form.images.description}
+				</p>
+				
+				{/* Upload Area */}
+				<div
+					className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+					dragActive 
+						? 'border-[#bd890f] bg-[#bd890f]/5' 
+						: 'border-gray-300 hover:border-gray-400'
+					}`}
+					onDragEnter={handleDrag}
+					onDragLeave={handleDrag}
+					onDragOver={handleDrag}
+					onDrop={handleDrop}
 				>
-				  {t.otkup.form.images.selectFiles}
-				</Button>
-			  </div>
-
-			  {/* Image Preview */}
-			  {formData.images.length > 0 && (
-				<div className="mt-4">
-				  <p className="text-sm text-gray-600 mb-2">
-					{t.otkup.form.images.attached.replace('{count}', formData.images.length)}
-				  </p>
-				  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-					{formData.images.map((image, index) => (
-					  <div key={index} className="relative">
-						<img
-						  src={URL.createObjectURL(image)}
-						  alt={`Watch ${index + 1}`}
-						  className="w-full h-24 object-cover rounded-lg"
-						/>
-						<button
-						  type="button"
-						  onClick={() => removeImage(index)}
-						  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
-						>
-						  ×
-						</button>
-					  </div>
-					))}
-				  </div>
+					<Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+					<p className="text-gray-600 mb-2">
+					{t.otkup.form.images.dragDrop}
+					</p>
+					<p className="text-gray-500 text-sm mb-4">
+					{t.otkup.form.images.fileTypes}
+					</p>
+					<input
+					type="file"
+					multiple
+					accept="image/*"
+					onChange={(e) => handleImageUpload(e.target.files)}
+					className="hidden"
+					id="image-upload"
+					/>
+					<Button
+					type="button"
+					variant="outline"
+					onClick={() => document.getElementById('image-upload').click()}
+					disabled={formData.images.length >= 5}
+					>
+					{t.otkup.form.images.selectFiles}
+					</Button>
 				</div>
-			  )}
-			</div>
 
-			{/* Submit Button */}
-			<div className="text-center">
-			  <Button
-				type="submit"
-				disabled={isSubmitting || formData.images.length === 0}
-				className="text-white px-8 py-3 text-lg hover:opacity-90 transition-opacity"
-				style={{backgroundColor: '#bd890f'}}
-			  >
-				{isSubmitting ? t.otkup.form.submitting : t.otkup.form.submit}
-			  </Button>
-			  <p className="text-gray-500 text-sm mt-4">
-				{t.otkup.form.required}
-			  </p>
+				{/* Image Preview */}
+				{formData.images.length > 0 && (
+					<div className="mt-4">
+					<p className="text-sm text-gray-600 mb-2">
+						{t.otkup.form.images.attached.replace('{count}', formData.images.length)}
+					</p>
+					<div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+						{formData.images.map((image, index) => (
+						<div key={index} className="relative">
+							<img
+							src={URL.createObjectURL(image)}
+							alt={`Watch ${index + 1}`}
+							className="w-full h-24 object-cover rounded-lg"
+							/>
+							<button
+							type="button"
+							onClick={() => removeImage(index)}
+							className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
+							>
+							×
+							</button>
+						</div>
+						))}
+					</div>
+					</div>
+				)}
+				</div>
+
+				{/* Submit Button */}
+				<div className="text-center">
+				<Button
+					type="submit"
+					disabled={isSubmitting || formData.images.length === 0}
+					className="text-white px-8 py-3 text-lg hover:opacity-90 transition-opacity"
+					style={{backgroundColor: '#bd890f'}}
+				>
+					{isSubmitting ? t.otkup.form.submitting : t.otkup.form.submit}
+				</Button>
+				<p className="text-gray-500 text-sm mt-4">
+					{t.otkup.form.required}
+				</p>
+				</div>
+			</form>
 			</div>
-		  </form>
+		</section>
+
+		<Footer />
 		</div>
-	  </section>
-
-	  <Footer />
-	</div>
+	</>
   );
 });
 

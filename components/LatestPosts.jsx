@@ -6,11 +6,17 @@ import { Badge } from '@/components/ui/badge';
 import { blogStore } from '@/stores/BlogStore';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { translations } from '@/locales/translations';
+import { useState, useEffect } from 'react';
 
 const LatestPosts = observer(() => {
   const latestPosts = blogStore.latestPosts;
   const { language } = useLanguage();
   const t = translations[language];
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+	  setMounted(true); // enable after first client render
+  }, []);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('hr-HR', {
@@ -32,6 +38,10 @@ const LatestPosts = observer(() => {
     if (container) {
       container.scrollBy({ left: 320, behavior: 'smooth' });
     }
+  };
+
+  if (!mounted) {
+	return null; // or a skeleton loader
   };
 
   return (

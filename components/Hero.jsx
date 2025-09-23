@@ -8,10 +8,15 @@ import { translations } from '@/locales/translations';
 import { getHeroSlide, getHeroBrand } from '@/lib/images';
 
 const Hero = observer(() => {
+  const [mounted, setMounted] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const { language } = useLanguage();
   const t = translations[language];
+
+  useEffect(() => {
+    setMounted(true); // enable after first client render
+  }, []);
   
   const heroSlides = [
     {
@@ -43,22 +48,35 @@ const Hero = observer(() => {
       title: t.hero.piguet.title,
       subtitle: t.hero.piguet.subtitle,
       description: t.hero.piguet.description
+    },
+	{
+      image: getHeroSlide(5).url,
+      title: t.hero.omega.title,
+      subtitle: t.hero.omega.subtitle,
+      description: t.hero.omega.description
+    },
+	{
+      image: getHeroSlide(6).url,
+      title: t.hero.tudor.title,
+      subtitle: t.hero.tudor.subtitle,
+      description: t.hero.tudor.description
     }
   ];
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentImageIndex((prevIndex) => 
-          prevIndex === heroSlides.length - 1 ? 0 : prevIndex + 1
-        );
-        setIsTransitioning(false);
-      }, 500);
-    }, 5000);
+	if (!mounted) return; // wait until client
+	const interval = setInterval(() => {
+		setIsTransitioning(true);
+		setTimeout(() => {
+		setCurrentImageIndex((prevIndex) =>
+			prevIndex === heroSlides.length - 1 ? 0 : prevIndex + 1
+		);
+		setIsTransitioning(false);
+		}, 500);
+	}, 5000);
 
-    return () => clearInterval(interval);
-  }, [heroSlides.length]);
+	return () => clearInterval(interval);
+	}, [mounted, heroSlides.length]);
 
   const handleDotClick = (index) => {
     if (index !== currentImageIndex) {
@@ -70,7 +88,7 @@ const Hero = observer(() => {
     }
   };
 
-  const currentSlide = heroSlides[currentImageIndex];
+  const currentSlide = mounted ? heroSlides[currentImageIndex] : heroSlides[0];
 
   return (
     <>
@@ -86,6 +104,7 @@ const Hero = observer(() => {
           />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
+
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full pt-16 sm:pt-20">
             <div className={`text-white max-w-xl transition-all duration-700 ease-out transform ${
@@ -123,15 +142,10 @@ const Hero = observer(() => {
         </div>
         
         {/* Navigation dots */}
-        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {heroSlides.map((_, index) => (
-            <div 
-              key={index}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full cursor-pointer transition-all duration-500 ease-out hover:scale-110 ${
-                index === currentImageIndex ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/60'
-              }`}
-              onClick={() => handleDotClick(index)}
-            />
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+          {heroSlides.map((slide, index) => (
+            <div key={index} onClick={() => handleDotClick(index)} className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full cursor-pointer transition-all duration-500 ease-out hover:scale-110 ${index === currentImageIndex ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/60'}`}> 
+			</div>
           ))}
         </div>
       </section>

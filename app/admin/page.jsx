@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { observer } from 'mobx-react-lite';
-import { Plus, Search, Eye, Edit, Trash2, Star, ArrowLeft } from 'lucide-react';
+import { Plus, Search, Eye, Edit, Trash2, Star, ArrowLeft, Mail, Lock, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
@@ -16,10 +16,10 @@ import { watchStore } from '@/stores/WatchStore';
 import { blogStore } from '@/stores/BlogStore';
 import { referralStore } from '@/stores/ReferralStore';
 import { otkupStore } from '@/stores/OtkupStore';
+import { authStore } from '@/stores/AuthStore';
 import { supabase } from "@/lib/supabaseClient";
 
 const AdminPage = observer(() => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const searchParams = useSearchParams();
   const [showLogin, setShowLogin] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -69,45 +69,57 @@ const AdminPage = observer(() => {
     location: ''
   });
 
-  useEffect(() => {
-    if (searchParams) {
-      const token = searchParams.get('token');
-      const adminToken = process.env.NEXT_PUBLIC_ADMIN_TOKEN;
-      
-      if (token === adminToken) {
-        setIsAuthenticated(true);
-      }
-    }
-  }, [searchParams]);
-
-  // Simple password protection - in production, use proper authentication
-  const ADMIN_PASSWORD = 'admin123'; // Change this to your desired password
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Check if already authenticated in this session
-    const isAuth = sessionStorage.getItem('adminAuth') === 'true';
-    if (isAuth) {
+    if (authStore.user) {
       setIsAuthenticated(true);
       setShowLogin(false);
+	  console.log(authStore.user);
     }
   }, []);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setShowLogin(false);
-      sessionStorage.setItem('adminAuth', 'true');
-    } else {
-      alert('Neispravna lozinka!');
-      setPassword('');
+    setIsLoading(true);
+    setLoginError('');
+
+	try {
+     	const response = await authStore.signIn(loginData.email, loginData.password);
+
+		if(response) {
+	 		setIsAuthenticated(true);
+      		setLoginError('');
+		}
+    } catch (err) {
+      	setLoginError('Neispravni podaci za prijavu. Molimo pokušajte ponovo.');
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleInputChange = (field, value) => {
+    setLoginData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    // Clear error when user starts typing
+    if (loginError) {
+      setLoginError('');
     }
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    setShowLogin(true);
-    sessionStorage.removeItem('adminAuth');
+		authStore.signOut();
+		setIsAuthenticated(false);
+		setLoginData({ email: '', password: '' });
   };
 
   const categories = ['Muški', 'Ženski', 'Ostalo'];
@@ -263,21 +275,85 @@ const AdminPage = observer(() => {
 	}));
   };
 
-  if (!isAuthenticated) {
+ if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-medium text-gray-900 mb-2">Admin Pristup</h1>
-            <p className="text-gray-600">Unesite lozinku za pristup admin panelu</p>
-          </div>
-          <h1 className="text-2xl font-bold text-center mb-6">Admin Access</h1>
-          <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
-              ← Povratak na glavnu stranicu
-            </Link>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-light text-gray-900">
+              Admin Prijava
+            </CardTitle>
+            <CardDescription>
+              Prijavite se za pristup admin panelu
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              {/* Email Field */}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email adresa</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={loginData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    placeholder="primjer@email.com"
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div className="space-y-2">
+                <Label htmlFor="password">Lozinka</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={loginData.password}
+                    onChange={(e) => handleInputChange('password', e.target.value)}
+                    placeholder="Unesite lozinku"
+                    className="pl-10 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Error Message */}
+              {loginError && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <p className="text-red-700 text-sm">{loginError}</p>
+                </div>
+              )}
+
+              {/* Login Button */}
+              <Button
+                type="submit"
+                disabled={isLoading || !loginData.email || !loginData.password}
+                className="w-full text-white hover:opacity-90 transition-opacity"
+                style={{backgroundColor: '#bd890f'}}
+
+              >
+                {isLoading ? 'Prijavljivanje...' : 'Prijavite se'}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     );
   }

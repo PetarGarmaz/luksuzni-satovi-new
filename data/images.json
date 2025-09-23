@@ -19,12 +19,22 @@
 			{
 				"id": "patek",
 				"url": "hero/patek.jpg",
-				"alt": "Cartier elegant watch"
+				"alt": "Patek watch"
 			},
 			{
 				"id": "piguet",
 				"url": "hero/piguet.jpg",
-				"alt": "Cartier elegant watch"
+				"alt": "Piguet watch"
+			},
+			{
+				"id": "omega",
+				"url": "hero/omega.jpg",
+				"alt": "Omega watch"
+			},
+			{
+				"id": "tudor",
+				"url": "hero/tudor.jpg",
+				"alt": "Tudor watch"
 			}
 		],
 		"brands": [

@@ -4,8 +4,6 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Collection from '@/components/Collection';
-import PopularBrands from '@/components/PopularBrands';
-import Catalogue from '@/components/Catalogue';
 import LatestPosts from '@/components/LatestPosts';
 import Recommendations from '@/components/Recommendations';
 import Contact from '@/components/Contact';

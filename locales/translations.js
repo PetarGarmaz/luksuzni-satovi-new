@@ -111,6 +111,16 @@ export const translations = {
         title: 'Smjelost švicarske umjetnosti',
         description: 'Od Royal Oak do ikoničnih kreacija – otkrijte satove koji pomiču granice dizajna i urarske izvrsnosti.'
       },
+	  omega: {
+		subtitle: 'OMEGA',
+		title: 'Vrhunska Preciznost i Stil',
+		description: 'Spoj inovacije i elegancije. Otkrijte satove koji su kroz povijest pratili istraživanja, sport i svjetske rekorde.'
+	  },
+	  tudor: {
+		subtitle: 'TUDOR',
+		title: 'Pouzdanost za Svaki Dan',
+		description: 'Savršen balans kvalitete, performansi i stila. Tudor satovi nude pristupačnu luksuznu preciznost za moderne entuzijaste.'
+	  },
       viewOffer: 'Pregledaj ponudu',
       brands: {
         rolex: {
@@ -527,6 +537,16 @@ export const translations = {
         title: 'The boldness of Swiss artistry',
         description: 'From the Royal Oak to iconic creations – discover timepieces that push the boundaries of design and watchmaking excellence.'
       },
+	  omega: {
+		subtitle: 'OMEGA',
+		title: 'Precision and Style at the Highest Level',
+		description: 'A fusion of innovation and elegance. Discover watches that have historically accompanied exploration, sports, and world records.'
+	  },
+	  tudor: {
+		subtitle: 'TUDOR',
+		title: 'Reliability for Every Day',
+		description: 'The perfect balance of quality, performance, and style. Tudor watches provide accessible luxury precision for modern enthusiasts.'
+	  },
       viewOffer: 'View offer',
       brands: {
         rolex: {

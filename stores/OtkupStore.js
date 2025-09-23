@@ -60,8 +60,9 @@ class OtkupStore {
 		}
 	}
 
-	deleteSubmission(id) {
+	async deleteSubmission(id) {
 		this.submissions = this.submissions.filter(submission => submission.id !== id);
+		const response = await supabase.from('pawn').delete().eq('id', id);
 		this.saveToStorage();
 	}
 
