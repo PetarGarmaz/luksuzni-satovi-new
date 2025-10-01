@@ -17,19 +17,24 @@ export default function RootLayout({ children }) {
   return (
     <html lang="hr">
 		<head>
-			<meta property="og:image" content="/og_logo.png" />
-			<meta property="og:image:alt" content="Luksuzni-Satovi" />
-			<meta property="og:image:type" content="image/png" />
+			<meta property="og:type" content="website" />
+			<meta property="og:title" content="Luksuzni-Satovi | Rabljeni luksuzni satovi" />
+			<meta property="og:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
+			<meta property="og:site_name" content="Luksuzni-satovi" />
+			<meta name="keywords" content="luksuzni satovi, prodaja luksuznih satova, otkup luksuznih satova, otkup rolex, rolex, otkup satova, Rolex, Breitling, Omega, Iwc, Patek Philippe, Audemars Piguet" />
+			<meta property="og:locale" content="hr_HR" />
+
+			<meta property="og:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.png" />
 			<meta property="og:image:width" content="300" />
 			<meta property="og:image:height" content="200" />
-			<meta name="keywords" content="luksuzni satovi, prodaja luksuznih satova, otkup luksuznih satova, otkup rolex, rolex, otkup satova, Rolex, Breitling, Omega, Iwc, Patek Philippe, Audemars Piguet" />
-
+			<meta property="og:image:alt" content="Luksuzni-Satovi" />
 
 			<meta name="twitter:card" content="summary" />
 			<meta name="twitter:title" content="Luksuzni-Satovi | Rabljeni luksuzni satovi" />
 			<meta name="twitter:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
-			<meta name="twitter:image" content="/og_logo.png" />
-
+			<meta name="twitter:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.png" />
+			<meta name="twitter:image:alt" content="Luksuzni-Satovi" />
+			
 			<link rel="icon" href="/favicon.ico" sizes="64x64" />
 			<link rel="apple-touch-icon" href="/favicon.ico"></link>
 		</head>
