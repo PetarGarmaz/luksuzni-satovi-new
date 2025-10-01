@@ -116,6 +116,7 @@ const OtkupSatovaPage = observer(() => {
 	  const emailData = {
 		firstName: formData.firstName,
 		lastName: formData.lastName,
+		subject: "Otkup sata - " + formData.brand + " " +  formData.model,
 		phone: formData.phone,
 		email: formData.email,
 		brand: formData.brand,
@@ -124,34 +125,14 @@ const OtkupSatovaPage = observer(() => {
 		hasBox: formData.hasBox,
 		hasDocumentation: formData.hasDocumentation,
 		imageCount: formData.images.length,
-		message: `Upit za otkup sata:
-
-Osobni podaci:
-- Ime: ${formData.firstName} ${formData.lastName}
-- Telefon: ${formData.phone}
-- Email: ${formData.email}
-
-Podaci o satu:
-- Brend: ${formData.brand}
-- Model: ${formData.model}
-- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}
-- Ima kutiju: ${formData.hasBox}
-- Ima dokumentaciju: ${formData.hasDocumentation}
-- Broj fotografija: ${formData.images.length}
-
-Fotografije:
-- ${processedImages.join('\n- ')}
-
-Napomena: Korisnik je priložio ${formData.images.length} fotografija koje su spremljene lokalno.`
+		textMessage: `Upit za otkup sata:\n\nOsobni podaci:\n- Ime: ${formData.firstName} ${formData.lastName}\n- Telefon: ${formData.phone}\n- Email: ${formData.email}\n\nPodaci o satu:\n- Brend: ${formData.brand}\n- Model: ${formData.model}\n- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}\n- Ima kutiju: ${formData.hasBox}\n- Ima dokumentaciju: ${formData.hasDocumentation}\n- Broj fotografija: ${formData.images.length}\nFotografije:\n- ${processedImages.join('\n- ')}`,
+		htmlMessage: `Upit za otkup sata:<br/><br/>Osobni podaci:<br/>- Ime: ${formData.firstName} ${formData.lastName}<br/>- Telefon: ${formData.phone}<br/>- Email: ${formData.email}<br/><br/>Podaci o satu:<br/>- Brend: ${formData.brand}<br/>- Model: ${formData.model}<br/>- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}<br/>- Ima kutiju: ${formData.hasBox}<br/>- Ima dokumentaciju: ${formData.hasDocumentation}<br/>- Broj fotografija: ${formData.images.length}<br/>Fotografije:<br/>${processedImages.join('<br/>')}`
 	  };
 
-	  const response = await fetch('https://formspree.io/f/xblaqeov', {
-		method: 'POST',
+	  const response = await fetch("/api/contact", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(emailData),
-		headers: {
-		  'Accept': 'application/json',
-		  'Content-Type': 'application/json'
-		}
 	  });
 
 	  if (response.ok) {
