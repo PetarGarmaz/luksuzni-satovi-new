@@ -24,6 +24,12 @@ export default function RootLayout({ children }) {
 			<meta property="og:image:height" content="32" />
 			<meta name="keywords" content="luksuzni satovi, prodaja luksuznih satova, otkup luksuznih satova, otkup rolex, rolex, otkup satova, Rolex, Breitling, Omega, Iwc, Patek Philippe, Audemars Piguet" />
 
+
+			<meta name="twitter:card" content="summary" />
+			<meta name="twitter:title" content="Luksuzni-Satovi | Rabljeni luksuzni satovi" />
+			<meta name="twitter:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
+			<meta name="twitter:image" content="/og_logo.png" />
+
 			<link rel="icon" href="/favicon.ico" sizes="64x64" />
 			<link rel="apple-touch-icon" href="/favicon.ico"></link>
 		</head>
