@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
 			<meta name="twitter:card" content="summary" />
 			<meta name="twitter:title" content="Luksuzni-Satovi | Rabljeni luksuzni satovi" />
 			<meta name="twitter:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
-			<meta name="twitter:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.png" />
+			<meta name="twitter:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.jpg" />
 			<meta name="twitter:image:alt" content="Luksuzni-Satovi" />
 			
 			<link rel="icon" href="/favicon.ico" sizes="64x64" />

@@ -171,7 +171,7 @@ export const translations = {
       title: 'Istaknuta kolekcija',
       subtitle: 'Otkrijte naš pažljivo odabrani izbor luksuznih satova',
       viewAll: 'Pogledaj sve satove',
-      noWatches: 'Još nema istaknutih satova. Dodajte satove u admin panelu i označite ih kao istaknute.'
+      noWatches: 'Još nema istaknutih satova.'
     },
 
     // Latest Posts Section
@@ -188,7 +188,7 @@ export const translations = {
     recommendations: {
       title: 'Što kažu naši kupci',
       subtitle: 'Pročitajte iskustva naših zadovoljnih kupaca i partnera',
-      noRecommendations: 'Još nema preporuka. Dodajte preporuke u admin panelu.'
+      noRecommendations: 'Još nema preporuka.'
     },
 
     // Contact Section
@@ -598,7 +598,7 @@ export const translations = {
       title: 'Featured collection',
       subtitle: 'Discover our carefully curated selection of luxury watches',
       viewAll: 'View all watches',
-      noWatches: 'No featured watches yet. Add watches in the admin panel and mark them as featured.'
+      noWatches: 'No featured watches yet.'
     },
 
     // Latest Posts Section
@@ -615,7 +615,7 @@ export const translations = {
     recommendations: {
       title: 'What our clients say',
       subtitle: 'Read the experiences of our satisfied customers and partners',
-      noRecommendations: 'No recommendations yet. Add recommendations in the admin panel.'
+      noRecommendations: 'No recommendations yet.'
     },
 
     // Contact Section
