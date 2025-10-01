@@ -17,11 +17,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="hr">
 		<head>
-			<meta property="og:image" content="/favicon.ico" />
+			<meta property="og:image" content="/og_logo.png" />
 			<meta property="og:image:alt" content="Luksuzni-Satovi" />
-			<meta property="og:image:type" content="image/ico" />
-			<meta property="og:image:width" content="64" />
-			<meta property="og:image:height" content="64" />
+			<meta property="og:image:type" content="image/png" />
+			<meta property="og:image:width" content="32" />
+			<meta property="og:image:height" content="32" />
 			<meta name="keywords" content="luksuzni satovi, prodaja luksuznih satova, otkup luksuznih satova, otkup rolex, rolex, otkup satova, Rolex, Breitling, Omega, Iwc, Patek Philippe, Audemars Piguet" />
 
 			<link rel="icon" href="/favicon.ico" sizes="64x64" />
