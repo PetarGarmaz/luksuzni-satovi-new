@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
 			<meta name="twitter:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
 			<meta name="twitter:image" content="/og_logo.png" />
 
-			<link rel="icon" href="/favicon.ico" sizes="64x64" />
+			<link rel="icon" href="/og_logo.png" sizes="64x64" />
 			<link rel="apple-touch-icon" href="/favicon.ico"></link>
 		</head>
       <body className={inter.className}>
