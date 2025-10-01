@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
 			<meta name="keywords" content="luksuzni satovi, prodaja luksuznih satova, otkup luksuznih satova, otkup rolex, rolex, otkup satova, Rolex, Breitling, Omega, Iwc, Patek Philippe, Audemars Piguet" />
 			<meta property="og:locale" content="hr_HR" />
 
-			<meta property="og:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.png" />
+			<meta property="og:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.jpg" />
 			<meta property="og:image:width" content="300" />
 			<meta property="og:image:height" content="200" />
 			<meta property="og:image:alt" content="Luksuzni-Satovi" />
