@@ -17,7 +17,7 @@ export async function POST(req) {
 
 		// send mail
 		await transporter.sendMail({
-			from: `"${firstName} ${lastName}" <${email}>`,
+			from: `"${firstName} ${lastName}" <${process.env.SMTP_USER}>`,
 			to: process.env.SMTP_USER,
 			replyTo: email,
 			subject: subject,
@@ -30,7 +30,7 @@ export async function POST(req) {
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
-		console.error("Email error:", error);
+		console.error("Email error:", error.message);
 		
 		return new Response(JSON.stringify({ message: "Error sending email" }), {
 			status: 500,
