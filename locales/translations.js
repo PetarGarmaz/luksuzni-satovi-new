@@ -245,7 +245,8 @@ export const translations = {
       viewDetails: 'Pogledaj detalje',
       featured: 'Istaknuto',
       noResults: 'Nema satova koji odgovaraju vašim kriterijima.',
-      resetFilters: 'Resetiraj filtere'
+      resetFilters: 'Resetiraj filtere',
+	  all: 'Svi'
     },
 
     // Watch Detail Page
@@ -672,7 +673,8 @@ export const translations = {
       viewDetails: 'View details',
       featured: 'Featured',
       noResults: 'No watches match your criteria.',
-      resetFilters: 'Reset filters'
+      resetFilters: 'Reset filters',
+	  all: 'All'
     },
 
     // Watch Detail Page

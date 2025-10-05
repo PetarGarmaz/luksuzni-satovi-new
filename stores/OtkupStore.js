@@ -44,7 +44,6 @@ class OtkupStore {
 			console.error(error);
 		} else if (data) {
 			runInAction(() => {
-				console.log(data);
 				this.submissions.unshift(data[0]);
 			});
 		}

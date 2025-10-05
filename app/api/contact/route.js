@@ -2,7 +2,18 @@ import nodemailer from "nodemailer";
 
 export async function POST(req) {
 	try {
-		const { firstName, lastName, subject, email, textMessage, htmlMessage } = await req.json();
+		const { firstName, lastName, subject, email, textMessage, htmlMessage, images} = await req.json();
+		var attachedImages = [];
+
+		for (let i = 0; i < images.length; i++) {
+			const imageUrl = images[i];
+
+			attachedImages.push({
+				filename: imageUrl.substring(imageUrl.lastIndexOf('/') + 1),
+				path: imageUrl,
+				contentDisposition: "attachment"
+			})
+		};
 
 		// configure transporter
 		let transporter = nodemailer.createTransport({
@@ -23,6 +34,7 @@ export async function POST(req) {
 			subject: subject,
 			text: textMessage,
 			html: htmlMessage,
+			attachments: attachedImages
 		});
 
 		return new Response(JSON.stringify({ message: "Email sent successfully!" }), {

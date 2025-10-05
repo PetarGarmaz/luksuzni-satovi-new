@@ -3,14 +3,21 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { translations } from '@/locales/translations';
+import { otkupStore } from '@/stores/OtkupStore';
 
 const Contact = () => {
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
-		email: '',
 		phone: '',
-		message: ''
+		email: '',
+		brand: '',
+		model: '',
+		referenceNumber: '',
+		hasBox: '',
+		hasDocumentation: '',
+		message: '',
+		images: []
 	});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,6 +33,8 @@ const Contact = () => {
 	};
 
 	const handleSubmit = async (e) => {
+		otkupStore.addSubmission(formData);
+
 		e.preventDefault();
 		setIsSubmitting(true);
 
@@ -62,10 +71,10 @@ const Contact = () => {
 			throw new Error(errorData.error || 'Failed to send email');
 		}
 		} catch (error) {
-		console.error('Error submitting form:', error);
-		alert(`Dogodila se greška prilikom slanja upita: ${error.message}. Molimo pokušajte ponovo ili nas kontaktirajte direktno na +385 98 906 0212.`);
+			console.error('Error submitting form:', error.message);
+			alert(`Dogodila se greška prilikom slanja upita: ${error.message}. Molimo pokušajte ponovo ili nas kontaktirajte direktno na +385 98 906 0212.`);
 		} finally {
-		setIsSubmitting(false);
+			setIsSubmitting(false);
 		}
 	};
 

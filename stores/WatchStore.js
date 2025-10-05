@@ -15,8 +15,6 @@ class WatchStore {
 		this.loading = true;
 		const { data, error } = await supabase.from("watch").select("*");
 
-		console.log( data);
-
 		runInAction(() => {
 			if (error) {
 				console.error(error);
