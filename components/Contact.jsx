@@ -33,8 +33,6 @@ const Contact = () => {
 	};
 
 	const handleSubmit = async (e) => {
-		otkupStore.addSubmission(formData);
-
 		e.preventDefault();
 		setIsSubmitting(true);
 
@@ -57,6 +55,8 @@ const Contact = () => {
 		});
 
 		if (response.ok) {
+			otkupStore.addSubmission(formData);
+
 			setSubmitSuccess(true);
 			// Reset form
 			setFormData({
