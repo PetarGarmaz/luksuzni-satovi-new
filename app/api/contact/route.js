@@ -5,15 +5,17 @@ export async function POST(req) {
 		const { firstName, lastName, subject, email, textMessage, htmlMessage, images} = await req.json();
 		var attachedImages = [];
 
-		for (let i = 0; i < images.length; i++) {
-			const imageUrl = images[i];
+		if(images) {
+			for (let i = 0; i < images.length; i++) {
+				const imageUrl = images[i];
 
-			attachedImages.push({
-				filename: imageUrl.substring(imageUrl.lastIndexOf('/') + 1),
-				path: imageUrl,
-				contentDisposition: "attachment"
-			})
-		};
+				attachedImages.push({
+					filename: imageUrl.substring(imageUrl.lastIndexOf('/') + 1),
+					path: imageUrl,
+					contentDisposition: "attachment"
+				})
+			};
+		}
 
 		// configure transporter
 		let transporter = nodemailer.createTransport({
