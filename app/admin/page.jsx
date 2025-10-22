@@ -97,6 +97,7 @@ const handleLogin = async (e) => {
 		if(response) {
 			setIsAuthenticated(true);
 			setLoginError('');
+			otkupStore.loadSubmissions();
 		}
 	} catch (err) {
 		setLoginError('Neispravni podaci za prijavu. Molimo pokušajte ponovo.');
