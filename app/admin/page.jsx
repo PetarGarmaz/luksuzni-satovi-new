@@ -37,7 +37,7 @@ const [newWatch, setNewWatch] = useState({
 	model: '',
 	year: new Date().getFullYear(),
 	price: '',
-	condition: 'Odličo',
+	condition: 'Novo',
 	category: 'Muški',
 	images: '',
 	description: '',
@@ -124,7 +124,7 @@ const handleLogout = () => {
 };
 
 const categories = ['Muški', 'Ženski', 'Ostalo'];
-const conditions = ['Odličo', 'Vrlo dobro', 'Dobro'];
+const conditions = ['Novo', 'Odlično', 'Vrlo dobro', 'Dobro'];
 const mechanisms = ['Automatski', 'Kvarc', 'Mehanički'];
 const caseMaterials = ['Nehrđajući čelik', 'Zlato', 'Bijelo zlato', 'Ružičasto zlato', 'Platina', 'Titanij', 'Keramika'];
 const glassTypes = ['Safirno staklo', 'Mineralno staklo', 'Hesalitno staklo'];
@@ -175,7 +175,7 @@ const handleAddWatch = async () => {
 		model: '',
 		year: new Date().getFullYear(),
 		price: '',
-		condition: 'Odličo',
+		condition: 'Novo',
 		category: 'Muški',
 		image: '',
 		description: '',
