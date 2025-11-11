@@ -18,7 +18,7 @@ const WatchDetailClient = ({ watch }) => {
   const [mainImage, setMainImage] = useState("");
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency: 'EUR',
       minimumFractionDigits: 0

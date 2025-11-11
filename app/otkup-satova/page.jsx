@@ -15,6 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { translations } from '@/locales/translations';
 import { supabase } from "@/lib/supabaseClient";
 import Head from 'next/head';
+import { Textarea } from '@/components/ui/textarea';
 
 const OtkupSatovaPage = observer(() => {
 	const { language } = useLanguage();
@@ -31,6 +32,8 @@ const OtkupSatovaPage = observer(() => {
 		hasBox: '',
 		hasDocumentation: '',
 		message: '',
+		additional_info: "",
+		price: "",
 		images: []
 	});
 
@@ -127,8 +130,8 @@ const OtkupSatovaPage = observer(() => {
 			hasDocumentation: formData.hasDocumentation,
 			imageCount: formData.images.length,
 			images: processedImages,
-			textMessage: `Upit za otkup sata:\n\nOsobni podaci:\n- Ime: ${formData.firstName} ${formData.lastName}\n- Telefon: ${formData.phone}\n- Email: ${formData.email}\n\nPodaci o satu:\n- Brend: ${formData.brand}\n- Model: ${formData.model}\n- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}\n- Ima kutiju: ${formData.hasBox}\n- Ima dokumentaciju: ${formData.hasDocumentation}\n- Broj fotografija: ${formData.images.length}`,
-			htmlMessage: `Upit za otkup sata:<br/><br/>Osobni podaci:<br/>- Ime: ${formData.firstName} ${formData.lastName}<br/>- Telefon: ${formData.phone}<br/>- Email: ${formData.email}<br/><br/>Podaci o satu:<br/>- Brend: ${formData.brand}<br/>- Model: ${formData.model}<br/>- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}<br/>- Ima kutiju: ${formData.hasBox}<br/>- Ima dokumentaciju: ${formData.hasDocumentation}<br/>- Broj fotografija: ${formData.images.length}`
+			textMessage: `Upit za otkup sata:\n\nOsobni podaci:\n- Ime: ${formData.firstName} ${formData.lastName}\n- Telefon: ${formData.phone}\n- Email: ${formData.email}\n\nPodaci o satu:\n- Brend: ${formData.brand}\n- Model: ${formData.model}\n- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}\n- Ima kutiju: ${formData.hasBox}\n- Ima dokumentaciju: ${formData.hasDocumentation}\n- Broj fotografija: ${formData.images.length}\n- Očekivana cijena: ${formData.price}\n- Dodatne informacije: ${formData.additional_info}`,
+			htmlMessage: `Upit za otkup sata:<br/><br/>Osobni podaci:<br/>- Ime: ${formData.firstName} ${formData.lastName}<br/>- Telefon: ${formData.phone}<br/>- Email: ${formData.email}<br/><br/>Podaci o satu:<br/>- Brend: ${formData.brand}<br/>- Model: ${formData.model}<br/>- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}<br/>- Ima kutiju: ${formData.hasBox}<br/>- Ima dokumentaciju: ${formData.hasDocumentation}<br/>- Broj fotografija: ${formData.images.length}<br/>- Očekivana cijena: ${formData.price}<br/>- Dodatne informacije: ${formData.additional_info}`
 			//textMessage: `Upit za otkup sata:\n\nOsobni podaci:\n- Ime: ${formData.firstName} ${formData.lastName}\n- Telefon: ${formData.phone}\n- Email: ${formData.email}\n\nPodaci o satu:\n- Brend: ${formData.brand}\n- Model: ${formData.model}\n- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}\n- Ima kutiju: ${formData.hasBox}\n- Ima dokumentaciju: ${formData.hasDocumentation}\n- Broj fotografija: ${formData.images.length}\nFotografije:\n- ${processedImages.join('\n- ')}`,
 			//htmlMessage: `Upit za otkup sata:<br/><br/>Osobni podaci:<br/>- Ime: ${formData.firstName} ${formData.lastName}<br/>- Telefon: ${formData.phone}<br/>- Email: ${formData.email}<br/><br/>Podaci o satu:<br/>- Brend: ${formData.brand}<br/>- Model: ${formData.model}<br/>- Referentni broj: ${formData.referenceNumber || 'Nije naveden'}<br/>- Ima kutiju: ${formData.hasBox}<br/>- Ima dokumentaciju: ${formData.hasDocumentation}<br/>- Broj fotografija: ${formData.images.length}<br/>Fotografije:<br/>${processedImages.join('<br/>')}`
 		};
@@ -438,14 +441,14 @@ const OtkupSatovaPage = observer(() => {
 						/>
 						</div>
 						<div className="md:col-span-2">
-						<Label htmlFor="referenceNumber">{t.otkup.form.referenceNumber}</Label>
-						<Input
-							id="referenceNumber"
-							value={formData.referenceNumber}
-							onChange={(e) => handleInputChange('referenceNumber', e.target.value)}
-							placeholder={t.otkup.form.referenceNumberPlaceholder}
-							className="mt-1"
-						/>
+							<Label htmlFor="referenceNumber">{t.otkup.form.referenceNumber}</Label>
+							<Input
+								id="referenceNumber"
+								value={formData.referenceNumber}
+								onChange={(e) => handleInputChange('referenceNumber', e.target.value)}
+								placeholder={t.otkup.form.referenceNumberPlaceholder}
+								className="mt-1"
+							/>
 						</div>
 						<div>
 						<Label htmlFor="hasBox">{t.otkup.form.hasBox} *</Label>
@@ -475,6 +478,34 @@ const OtkupSatovaPage = observer(() => {
 						</Select>
 						</div>
 					</div>
+					</div>
+
+					<div className="mb-8">
+						<h3 className="text-xl font-medium text-gray-900 mb-4">{t.otkup.form.message.title}</h3>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div className="md:col-span-2">
+								<Label htmlFor="price">{t.otkup.form.price} *</Label>
+								<Input
+									id="price"
+									value={formData.price}
+									onChange={(e) => handleInputChange('price', e.target.value)}
+									placeholder="10.000 €"
+									className="mt-1"
+								/>
+							</div>
+
+							<div className="md:col-span-2">
+								<Label htmlFor="additional_info">{t.otkup.form.message.title}</Label>
+								<Textarea
+									id="additional_info"
+									value={formData.additional_info}
+									onChange={(e) => handleInputChange('additional_info', e.target.value)}
+									placeholder={t.otkup.form.message.desc}
+									className="mt-1"
+									rows="5"
+								/>
+							</div>
+						</div>
 					</div>
 
 					{/* Image Upload */}

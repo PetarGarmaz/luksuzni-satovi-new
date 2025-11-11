@@ -25,12 +25,34 @@ const [showLogin, setShowLogin] = useState(true);
 const [searchTerm, setSearchTerm] = useState('');
 const [selectedCategory, setSelectedCategory] = useState('All');
 const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 const [activeTab, setActiveTab] = useState('watches');
 const [isAddPostDialogOpen, setIsAddPostDialogOpen] = useState(false);
 const [isAddRecommendationDialogOpen, setIsAddRecommendationDialogOpen] = useState(false);
 const [selectedSubmission, setSelectedSubmission] = useState(null);
 const [isSubmissionDetailOpen, setIsSubmissionDetailOpen] = useState(false);
 const [password, setPassword] = useState('');
+const [editWatch, setEditWatch] = useState({
+	name: '',
+	brand: '',
+	model: '',
+	year: new Date().getFullYear(),
+	price: '',
+	condition: 'Novo',
+	category: 'Muški',
+	images: [],
+	description: '',
+	featured: false,
+	referenceNumber: '',
+	hasBox: false,
+	hasPapers: false,
+	mechanism: 'Automatski',
+	caseDiameter: '',
+	caseMaterial: '',
+	glassType: 'Safirno staklo',
+	hasWarranty: false,
+	isOnSale: false
+});
 const [newWatch, setNewWatch] = useState({
 	name: '',
 	brand: '',
@@ -39,7 +61,7 @@ const [newWatch, setNewWatch] = useState({
 	price: '',
 	condition: 'Novo',
 	category: 'Muški',
-	images: '',
+	images: [],
 	description: '',
 	featured: false,
 	referenceNumber: '',
@@ -132,11 +154,78 @@ const allCategories = watchStore.categories;
 const filteredWatches = watchStore.getFilteredWatches(searchTerm, selectedCategory);
 
 const formatPrice = (price) => {
-	return new Intl.NumberFormat('en-US', {
+	return new Intl.NumberFormat('de-DE', {
 	style: 'currency',
-	currency: 'USD',
+	currency: 'EUR',
 	minimumFractionDigits: 0
 	}).format(price);
+};
+
+const handleWatchEditing = (watch) => {
+	setEditWatch(watch);
+	setIsEditDialogOpen(true);
+
+	console.log(watch);
+};
+
+const handleEditWatch = async () => {
+	if (editWatch.model && editWatch.brand && editWatch.price) {
+	var processedImages = [];
+
+	//Send images to the database
+	for (let i = 0; i < editWatch.images.length; i++) {
+		const file = editWatch.images[i];
+
+		if(file instanceof File) {
+			const filePath = file.name;
+
+			const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
+
+			if (error) {
+				console.error("Upload failed:", error.message);
+			} else {
+				console.log(`Uploaded: ${filePath}`);
+
+				// Get public URL
+				const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
+				processedImages.push(data.publicUrl);
+				
+				console.log("File available at:", data.publicUrl);
+			}
+		} else {
+			processedImages.push(file);
+		}
+	}
+
+	watchStore.editWatch({
+		...editWatch,
+		name: editWatch.model, // Use model as name
+		price: parseFloat(editWatch.price),
+		year: parseInt(editWatch.year),
+		images: processedImages
+	});
+	setEditWatch({
+		brand: '',
+		model: '',
+		year: new Date().getFullYear(),
+		price: '',
+		condition: 'Novo',
+		category: 'Muški',
+		image: '',
+		description: '',
+		featured: false,
+		referenceNumber: '',
+		hasBox: false,
+		hasPapers: false,
+		mechanism: 'Automatski',
+		caseDiameter: '',
+		caseMaterial: '',
+		glassType: 'Safirno staklo',
+		hasWarranty: false,
+		isOnSale: false
+	});
+	setIsEditDialogOpen(false);
+	}
 };
 
 const handleAddWatch = async () => {
@@ -274,6 +363,25 @@ const handleImageUpload = (files) => {
 	...prev,
 	images: [...prev.images, ...newImages]
 	}));
+};
+
+const handleImageEdit = (files) => {
+	const newImages = Array.from(files).slice(0, 5 - editWatch.images.length);
+	setEditWatch(prev => ({
+	...prev,
+	images: [...prev.images, ...newImages]
+	}));
+};
+
+const handleImageEditRemoval = (image) => {
+	var array = editWatch.images;
+	var index = array.indexOf(image);
+	
+	if (index !== -1) {
+		array.splice(index, 1);
+	}
+
+	setEditWatch(prev => ({...prev,	images: array}));
 };
 
 if (!isAuthenticated) {
@@ -521,392 +629,607 @@ return (
 
 		{/* Add Button */}
 		<div className="flex justify-end mb-8">
-		{activeTab === 'watches' && (
-			<Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-			<DialogTrigger asChild>
-				<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
-				<Plus className="w-4 h-4 mr-2" />
-				Dodaj Sat
-				</Button>
-			</DialogTrigger>
-			<DialogContent className="max-w-2xl">
-				<DialogHeader>
-				<DialogTitle>Dodaj Novi Sat</DialogTitle>
-				</DialogHeader>
-				<div className="grid grid-cols-2 gap-4 py-4 max-h-[70vh] overflow-y-auto">
-				<div className="space-y-2">
-					<Label htmlFor="brand">Brend</Label>
-					<Input
-					id="brand"
-					value={newWatch.brand}
-					onChange={(e) => setNewWatch({...newWatch, brand: e.target.value})}
-					placeholder="npr., Rolex"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="referenceNumber">Referentni broj</Label>
-					<Input
-					id="referenceNumber"
-					value={newWatch.referenceNumber}
-					onChange={(e) => setNewWatch({...newWatch, referenceNumber: e.target.value})}
-					placeholder="npr., 116610LN"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="model">Model</Label>
-					<Input
-					id="model"
-					value={newWatch.model}
-					onChange={(e) => setNewWatch({...newWatch, model: e.target.value})}
-					placeholder="npr., Submariner Date"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="year">Godina</Label>
-					<Input
-					id="year"
-					type="number"
-					value={newWatch.year}
-					onChange={(e) => setNewWatch({...newWatch, year: e.target.value})}
-					min="1900"
-					max={new Date().getFullYear()}
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="price">Cijena (EUR)</Label>
-					<Input
-					id="price"
-					type="number"
-					value={newWatch.price}
-					onChange={(e) => setNewWatch({...newWatch, price: e.target.value})}
-					placeholder="npr., 12500"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="condition">Stanje</Label>
-					<Select value={newWatch.condition} onValueChange={(value) => setNewWatch({...newWatch, condition: value})}>
-					<SelectTrigger>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{conditions.map((condition) => (
-						<SelectItem key={condition} value={condition}>
-							{condition}
-						</SelectItem>
-						))}
-					</SelectContent>
-					</Select>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="mechanism">Mehanizam</Label>
-					<Select value={newWatch.mechanism} onValueChange={(value) => setNewWatch({...newWatch, mechanism: value})}>
-					<SelectTrigger>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{mechanisms.map((mechanism) => (
-						<SelectItem key={mechanism} value={mechanism}>
-							{mechanism}
-						</SelectItem>
-						))}
-					</SelectContent>
-					</Select>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="caseDiameter">Promjer kućišta</Label>
-					<Input
-					id="caseDiameter"
-					value={newWatch.caseDiameter}
-					onChange={(e) => setNewWatch({...newWatch, caseDiameter: e.target.value})}
-					placeholder="npr., 40mm"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="caseMaterial">Materijal kućišta</Label>
-					<Select value={newWatch.caseMaterial} onValueChange={(value) => setNewWatch({...newWatch, caseMaterial: value})}>
-					<SelectTrigger>
-						<SelectValue placeholder="Odaberite materijal" />
-					</SelectTrigger>
-					<SelectContent>
-						{caseMaterials.map((material) => (
-						<SelectItem key={material} value={material}>
-							{material}
-						</SelectItem>
-						))}
-					</SelectContent>
-					</Select>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="glassType">Tip stakla</Label>
-					<Select value={newWatch.glassType} onValueChange={(value) => setNewWatch({...newWatch, glassType: value})}>
-					<SelectTrigger>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{glassTypes.map((glass) => (
-						<SelectItem key={glass} value={glass}>
-							{glass}
-						</SelectItem>
-						))}
-					</SelectContent>
-					</Select>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="category">Kategorija</Label>
-					<Select value={newWatch.category} onValueChange={(value) => setNewWatch({...newWatch, category: value})}>
-					<SelectTrigger>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{categories.map((category) => (
-						<SelectItem key={category} value={category}>
-							{category}
-						</SelectItem>
-						))}
-					</SelectContent>
-					</Select>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="image">Slike</Label>
-					<input
-					type="file"
-					multiple
-					accept="image/*"
-					onChange={(e) => handleImageUpload(e.target.files)}
-					id="image"
-					/>
-				</div>
-				<div className="col-span-2 space-y-2">
-					<Label htmlFor="description">Opis</Label>
-					<Input
-					id="description"
-					value={newWatch.description}
-					onChange={(e) => setNewWatch({...newWatch, description: e.target.value})}
-					placeholder="Kratki opis sata"
-					/>
-				</div>
-				<div className="col-span-2 flex items-center space-x-2">
-					<input
-					type="checkbox"
-					id="hasBox"
-					checked={newWatch.hasBox}
-					onChange={(e) => setNewWatch({...newWatch, hasBox: e.target.checked})}
-					className="rounded border-gray-300"
-					/>
-					<Label htmlFor="hasBox">Ima kutiju</Label>
-				</div>
-				<div className="col-span-2 flex items-center space-x-2">
-					<input
-					type="checkbox"
-					id="hasPapers"
-					checked={newWatch.hasPapers}
-					onChange={(e) => setNewWatch({...newWatch, hasPapers: e.target.checked})}
-					className="rounded border-gray-300"
-					/>
-					<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
-				</div>
-				<div className="col-span-2 flex items-center space-x-2">
-					<input
-					type="checkbox"
-					id="hasWarranty"
-					checked={newWatch.hasWarranty}
-					onChange={(e) => setNewWatch({...newWatch, hasWarranty: e.target.checked})}
-					className="rounded border-gray-300"
-					/>
-					<Label htmlFor="hasWarranty">Ima garanciju</Label>
-				</div>
-				<div className="col-span-2 flex items-center space-x-2">
-					<input
-					type="checkbox"
-					id="featured"
-					checked={newWatch.featured}
-					onChange={(e) => setNewWatch({...newWatch, featured: e.target.checked})}
-					className="rounded border-gray-300"
-					/>
-					<Label htmlFor="featured">Istaknuti sat</Label>
-				</div>
-				<div className="col-span-2 flex items-center space-x-2">
-					<input
-					type="checkbox"
-					id="isOnSale"
-					checked={newWatch.isOnSale}
-					onChange={(e) => setNewWatch({...newWatch, isOnSale: e.target.checked})}
-					className="rounded border-gray-300"
-					/>
-					<Label htmlFor="isOnSale">Na rasprodaji</Label>
-				</div>
-				</div>
-				<div className="flex justify-end space-x-2">
-				<Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-					Odustani
-				</Button>
-				<Button onClick={handleAddWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+			{activeTab === 'watches' && (
+				<Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+				<DialogTrigger asChild>
+					<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+					<Plus className="w-4 h-4 mr-2" />
 					Dodaj Sat
-				</Button>
-				</div>
-			</DialogContent>
-			</Dialog>
-		)}
+					</Button>
+				</DialogTrigger>
+				<DialogContent className="max-w-2xl">
+					<DialogHeader>
+					<DialogTitle>Dodaj Novi Sat</DialogTitle>
+					</DialogHeader>
+					<div className="grid grid-cols-2 gap-4 py-4 max-h-[70vh] overflow-y-auto">
+					<div className="space-y-2">
+						<Label htmlFor="brand">Brend</Label>
+						<Input
+						id="brand"
+						value={newWatch.brand}
+						onChange={(e) => setNewWatch({...newWatch, brand: e.target.value})}
+						placeholder="npr., Rolex"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="referenceNumber">Referentni broj</Label>
+						<Input
+						id="referenceNumber"
+						value={newWatch.referenceNumber}
+						onChange={(e) => setNewWatch({...newWatch, referenceNumber: e.target.value})}
+						placeholder="npr., 116610LN"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="model">Model</Label>
+						<Input
+						id="model"
+						value={newWatch.model}
+						onChange={(e) => setNewWatch({...newWatch, model: e.target.value})}
+						placeholder="npr., Submariner Date"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="year">Godina</Label>
+						<Input
+						id="year"
+						type="number"
+						value={newWatch.year}
+						onChange={(e) => setNewWatch({...newWatch, year: e.target.value})}
+						min="1900"
+						max={new Date().getFullYear()}
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="price">Cijena (EUR)</Label>
+						<Input
+						id="price"
+						type="number"
+						value={newWatch.price}
+						onChange={(e) => setNewWatch({...newWatch, price: e.target.value})}
+						placeholder="npr., 12500"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="condition">Stanje</Label>
+						<Select value={newWatch.condition} onValueChange={(value) => setNewWatch({...newWatch, condition: value})}>
+						<SelectTrigger>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{conditions.map((condition) => (
+							<SelectItem key={condition} value={condition}>
+								{condition}
+							</SelectItem>
+							))}
+						</SelectContent>
+						</Select>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="mechanism">Mehanizam</Label>
+						<Select value={newWatch.mechanism} onValueChange={(value) => setNewWatch({...newWatch, mechanism: value})}>
+						<SelectTrigger>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{mechanisms.map((mechanism) => (
+							<SelectItem key={mechanism} value={mechanism}>
+								{mechanism}
+							</SelectItem>
+							))}
+						</SelectContent>
+						</Select>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="caseDiameter">Promjer kućišta</Label>
+						<Input
+						id="caseDiameter"
+						value={newWatch.caseDiameter}
+						onChange={(e) => setNewWatch({...newWatch, caseDiameter: e.target.value})}
+						placeholder="npr., 40mm"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="caseMaterial">Materijal kućišta</Label>
+						<Select value={newWatch.caseMaterial} onValueChange={(value) => setNewWatch({...newWatch, caseMaterial: value})}>
+						<SelectTrigger>
+							<SelectValue placeholder="Odaberite materijal" />
+						</SelectTrigger>
+						<SelectContent>
+							{caseMaterials.map((material) => (
+							<SelectItem key={material} value={material}>
+								{material}
+							</SelectItem>
+							))}
+						</SelectContent>
+						</Select>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="glassType">Tip stakla</Label>
+						<Select value={newWatch.glassType} onValueChange={(value) => setNewWatch({...newWatch, glassType: value})}>
+						<SelectTrigger>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{glassTypes.map((glass) => (
+							<SelectItem key={glass} value={glass}>
+								{glass}
+							</SelectItem>
+							))}
+						</SelectContent>
+						</Select>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="category">Kategorija</Label>
+						<Select value={newWatch.category} onValueChange={(value) => setNewWatch({...newWatch, category: value})}>
+						<SelectTrigger>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{categories.map((category) => (
+							<SelectItem key={category} value={category}>
+								{category}
+							</SelectItem>
+							))}
+						</SelectContent>
+						</Select>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="image">Slike</Label>
+						<input
+						type="file"
+						multiple
+						accept="image/*"
+						onChange={(e) => handleImageUpload(e.target.files)}
+						id="image"
+						/>
+					</div>
+					<div className="col-span-2 space-y-2">
+						<Label htmlFor="description">Opis</Label>
+						<Input
+						id="description"
+						value={newWatch.description}
+						onChange={(e) => setNewWatch({...newWatch, description: e.target.value})}
+						placeholder="Kratki opis sata"
+						/>
+					</div>
+					<div className="col-span-2 flex items-center space-x-2">
+						<input
+						type="checkbox"
+						id="hasBox"
+						checked={newWatch.hasBox}
+						onChange={(e) => setNewWatch({...newWatch, hasBox: e.target.checked})}
+						className="rounded border-gray-300"
+						/>
+						<Label htmlFor="hasBox">Ima kutiju</Label>
+					</div>
+					<div className="col-span-2 flex items-center space-x-2">
+						<input
+						type="checkbox"
+						id="hasPapers"
+						checked={newWatch.hasPapers}
+						onChange={(e) => setNewWatch({...newWatch, hasPapers: e.target.checked})}
+						className="rounded border-gray-300"
+						/>
+						<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
+					</div>
+					<div className="col-span-2 flex items-center space-x-2">
+						<input
+						type="checkbox"
+						id="hasWarranty"
+						checked={newWatch.hasWarranty}
+						onChange={(e) => setNewWatch({...newWatch, hasWarranty: e.target.checked})}
+						className="rounded border-gray-300"
+						/>
+						<Label htmlFor="hasWarranty">Ima garanciju</Label>
+					</div>
+					<div className="col-span-2 flex items-center space-x-2">
+						<input
+						type="checkbox"
+						id="featured"
+						checked={newWatch.featured}
+						onChange={(e) => setNewWatch({...newWatch, featured: e.target.checked})}
+						className="rounded border-gray-300"
+						/>
+						<Label htmlFor="featured">Istaknuti sat</Label>
+					</div>
+					</div>
+					<div className="flex justify-end space-x-2">
+					<Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+						Odustani
+					</Button>
+					<Button onClick={handleAddWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+						Dodaj Sat
+					</Button>
+					</div>
+				</DialogContent>
+				</Dialog>
+			)}
 
-		{activeTab === 'blog' && (
-			<Dialog open={isAddPostDialogOpen} onOpenChange={setIsAddPostDialogOpen}>
-			<DialogTrigger asChild>
-				<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
-				<Plus className="w-4 h-4 mr-2" />
-				Dodaj Članak
-				</Button>
-			</DialogTrigger>
-			<DialogContent className="max-w-2xl">
-				<DialogHeader>
-				<DialogTitle>Dodaj Novi Članak</DialogTitle>
-				</DialogHeader>
-				<div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto">
-				<div className="space-y-2">
-					<Label htmlFor="postTitle">Naslov</Label>
-					<Input
-					id="postTitle"
-					value={newPost.title}
-					onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-					placeholder="Naslov članka"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="postExcerpt">Kratki opis</Label>
-					<Input
-					id="postExcerpt"
-					value={newPost.excerpt}
-					onChange={(e) => setNewPost({...newPost, excerpt: e.target.value})}
-					placeholder="Kratki opis članka"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="postContent">Sadržaj</Label>
-					<textarea
-					id="postContent"
-					value={newPost.content}
-					onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-					placeholder="Sadržaj članka (HTML podržan)"
-					className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md resize-none"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="postImage">URL Slike</Label>
-					<Input
-					id="postImage"
-					value={newPost.image}
-					onChange={(e) => setNewPost({...newPost, image: e.target.value})}
-					placeholder="https://example.com/image.jpg"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="postAuthor">Autor</Label>
-					<Input
-					id="postAuthor"
-					value={newPost.author}
-					onChange={(e) => setNewPost({...newPost, author: e.target.value})}
-					placeholder="Ime autora"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="postTags">Tagovi (odvojeni zarezom)</Label>
-					<Input
-					id="postTags"
-					value={newPost.tags}
-					onChange={(e) => setNewPost({...newPost, tags: e.target.value})}
-					placeholder="Rolex, Savjeti, Investicije"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="postMeta">Meta opis</Label>
-					<Input
-					id="postMeta"
-					value={newPost.metaDescription}
-					onChange={(e) => setNewPost({...newPost, metaDescription: e.target.value})}
-					placeholder="SEO opis članka"
-					/>
-				</div>
-				</div>
-				<div className="flex justify-end space-x-2">
-				<Button variant="outline" onClick={() => setIsAddPostDialogOpen(false)}>
-					Odustani
-				</Button>
-				<Button onClick={handleAddPost} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+			{activeTab === 'blog' && (
+				<Dialog open={isAddPostDialogOpen} onOpenChange={setIsAddPostDialogOpen}>
+				<DialogTrigger asChild>
+					<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+					<Plus className="w-4 h-4 mr-2" />
 					Dodaj Članak
-				</Button>
-				</div>
-			</DialogContent>
-			</Dialog>
-		)}
+					</Button>
+				</DialogTrigger>
+				<DialogContent className="max-w-2xl">
+					<DialogHeader>
+					<DialogTitle>Dodaj Novi Članak</DialogTitle>
+					</DialogHeader>
+					<div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto">
+					<div className="space-y-2">
+						<Label htmlFor="postTitle">Naslov</Label>
+						<Input
+						id="postTitle"
+						value={newPost.title}
+						onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+						placeholder="Naslov članka"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="postExcerpt">Kratki opis</Label>
+						<Input
+						id="postExcerpt"
+						value={newPost.excerpt}
+						onChange={(e) => setNewPost({...newPost, excerpt: e.target.value})}
+						placeholder="Kratki opis članka"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="postContent">Sadržaj</Label>
+						<textarea
+						id="postContent"
+						value={newPost.content}
+						onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+						placeholder="Sadržaj članka (HTML podržan)"
+						className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md resize-none"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="postImage">URL Slike</Label>
+						<Input
+						id="postImage"
+						value={newPost.image}
+						onChange={(e) => setNewPost({...newPost, image: e.target.value})}
+						placeholder="https://example.com/image.jpg"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="postAuthor">Autor</Label>
+						<Input
+						id="postAuthor"
+						value={newPost.author}
+						onChange={(e) => setNewPost({...newPost, author: e.target.value})}
+						placeholder="Ime autora"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="postTags">Tagovi (odvojeni zarezom)</Label>
+						<Input
+						id="postTags"
+						value={newPost.tags}
+						onChange={(e) => setNewPost({...newPost, tags: e.target.value})}
+						placeholder="Rolex, Savjeti, Investicije"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="postMeta">Meta opis</Label>
+						<Input
+						id="postMeta"
+						value={newPost.metaDescription}
+						onChange={(e) => setNewPost({...newPost, metaDescription: e.target.value})}
+						placeholder="SEO opis članka"
+						/>
+					</div>
+					</div>
+					<div className="flex justify-end space-x-2">
+					<Button variant="outline" onClick={() => setIsAddPostDialogOpen(false)}>
+						Odustani
+					</Button>
+					<Button onClick={handleAddPost} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+						Dodaj Članak
+					</Button>
+					</div>
+				</DialogContent>
+				</Dialog>
+			)}
 
-		{activeTab === 'recommendations' && (
-			<Dialog open={isAddRecommendationDialogOpen} onOpenChange={setIsAddRecommendationDialogOpen}>
-			<DialogTrigger asChild>
-				<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
-				<Plus className="w-4 h-4 mr-2" />
-				Dodaj Preporuku
-				</Button>
-			</DialogTrigger>
-			<DialogContent className="max-w-md">
-				<DialogHeader>
-				<DialogTitle>Dodaj Novu Preporuku</DialogTitle>
-				</DialogHeader>
-				<div className="space-y-4 py-4">
-				<div className="space-y-2">
-					<Label htmlFor="recName">Ime i prezime</Label>
-					<Input
-					id="recName"
-					value={newRecommendation.name}
-					onChange={(e) => setNewRecommendation({...newRecommendation, name: e.target.value})}
-					placeholder="Ime i prezime"
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="recLocation">Lokacija</Label>
-					<Input
-					id="recLocation"
-					value={newRecommendation.location}
-					onChange={(e) => setNewRecommendation({...newRecommendation, location: e.target.value})}
-					placeholder="Zagreb, Split, Osijek..."
-					/>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="recRating">Ocjena</Label>
-					<Select value={newRecommendation.rating.toString()} onValueChange={(value) => setNewRecommendation({...newRecommendation, rating: parseInt(value)})}>
-					<SelectTrigger>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="5">5 zvjezdica</SelectItem>
-						<SelectItem value="4">4 zvjezdice</SelectItem>
-						<SelectItem value="3">3 zvjezdice</SelectItem>
-						<SelectItem value="2">2 zvjezdice</SelectItem>
-						<SelectItem value="1">1 zvjezdica</SelectItem>
-					</SelectContent>
-					</Select>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="recText">Preporuka</Label>
-					<textarea
-					id="recText"
-					value={newRecommendation.text}
-					onChange={(e) => setNewRecommendation({...newRecommendation, text: e.target.value})}
-					placeholder="Tekst preporuke..."
-					className="w-full h-24 px-3 py-2 border border-gray-300 rounded-md resize-none"
-					/>
-				</div>
-				</div>
-				<div className="flex justify-end space-x-2">
-				<Button variant="outline" onClick={() => setIsAddRecommendationDialogOpen(false)}>
-					Odustani
-				</Button>
-				<Button onClick={handleAddRecommendation} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+			{activeTab === 'recommendations' && (
+				<Dialog open={isAddRecommendationDialogOpen} onOpenChange={setIsAddRecommendationDialogOpen}>
+				<DialogTrigger asChild>
+					<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+					<Plus className="w-4 h-4 mr-2" />
 					Dodaj Preporuku
-				</Button>
-				</div>
-			</DialogContent>
+					</Button>
+				</DialogTrigger>
+				<DialogContent className="max-w-md">
+					<DialogHeader>
+					<DialogTitle>Dodaj Novu Preporuku</DialogTitle>
+					</DialogHeader>
+					<div className="space-y-4 py-4">
+					<div className="space-y-2">
+						<Label htmlFor="recName">Ime i prezime</Label>
+						<Input
+						id="recName"
+						value={newRecommendation.name}
+						onChange={(e) => setNewRecommendation({...newRecommendation, name: e.target.value})}
+						placeholder="Ime i prezime"
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="recLocation">Lokacija</Label>
+						<Input
+						id="recLocation"
+						value={newRecommendation.location}
+						onChange={(e) => setNewRecommendation({...newRecommendation, location: e.target.value})}
+						placeholder="Zagreb, Split, Osijek..."
+						/>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="recRating">Ocjena</Label>
+						<Select value={newRecommendation.rating.toString()} onValueChange={(value) => setNewRecommendation({...newRecommendation, rating: parseInt(value)})}>
+						<SelectTrigger>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="5">5 zvjezdica</SelectItem>
+							<SelectItem value="4">4 zvjezdice</SelectItem>
+							<SelectItem value="3">3 zvjezdice</SelectItem>
+							<SelectItem value="2">2 zvjezdice</SelectItem>
+							<SelectItem value="1">1 zvjezdica</SelectItem>
+						</SelectContent>
+						</Select>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="recText">Preporuka</Label>
+						<textarea
+						id="recText"
+						value={newRecommendation.text}
+						onChange={(e) => setNewRecommendation({...newRecommendation, text: e.target.value})}
+						placeholder="Tekst preporuke..."
+						className="w-full h-24 px-3 py-2 border border-gray-300 rounded-md resize-none"
+						/>
+					</div>
+					</div>
+					<div className="flex justify-end space-x-2">
+					<Button variant="outline" onClick={() => setIsAddRecommendationDialogOpen(false)}>
+						Odustani
+					</Button>
+					<Button onClick={handleAddRecommendation} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+						Dodaj Preporuku
+					</Button>
+					</div>
+				</DialogContent>
+				</Dialog>
+			)}
+		</div>
+
+		{/* Edit Button */}
+		{activeTab === 'watches' && (
+			<Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+				<DialogContent className="max-w-2xl">
+					<DialogHeader>
+						<DialogTitle>Uredi sat</DialogTitle>
+					</DialogHeader>
+
+					<div className="grid grid-cols-2 gap-4 py-4 max-h-[70vh] overflow-y-auto">
+						<div className="space-y-2">
+							<Label htmlFor="brand">Brend</Label>
+							<Input
+							id="brand"
+							value={editWatch.brand}
+							onChange={(e) => setEditWatch({...editWatch, brand: e.target.value})}
+							placeholder="npr., Rolex"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="referenceNumber">Referentni broj</Label>
+							<Input
+							id="referenceNumber"
+							value={editWatch.referenceNumber}
+							onChange={(e) => setEditWatch({...editWatch, referenceNumber: e.target.value})}
+							placeholder="npr., 116610LN"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="model">Model</Label>
+							<Input
+							id="model"
+							value={editWatch.model}
+							onChange={(e) => setEditWatch({...editWatch, model: e.target.value})}
+							placeholder="npr., Submariner Date"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="year">Godina</Label>
+							<Input
+							id="year"
+							type="number"
+							value={editWatch.year}
+							onChange={(e) => setEditWatch({...editWatch, year: e.target.value})}
+							min="1900"
+							max={new Date().getFullYear()}
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="price">Cijena (EUR)</Label>
+							<Input
+							id="price"
+							type="number"
+							value={editWatch.price}
+							onChange={(e) => setEditWatch({...editWatch, price: e.target.value})}
+							placeholder="npr., 12500"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="condition">Stanje</Label>
+							<Select value={editWatch.condition} onValueChange={(value) => setEditWatch({...editWatch, condition: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{conditions.map((condition) => (
+								<SelectItem key={condition} value={condition}>
+									{condition}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="mechanism">Mehanizam</Label>
+							<Select value={editWatch.mechanism} onValueChange={(value) => setEditWatch({...editWatch, mechanism: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{mechanisms.map((mechanism) => (
+								<SelectItem key={mechanism} value={mechanism}>
+									{mechanism}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="caseDiameter">Promjer kućišta</Label>
+							<Input
+							id="caseDiameter"
+							value={editWatch.caseDiameter}
+							onChange={(e) => setEditWatch({...editWatch, caseDiameter: e.target.value})}
+							placeholder="npr., 40mm"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="caseMaterial">Materijal kućišta</Label>
+							<Select value={editWatch.caseMaterial} onValueChange={(value) => setEditWatch({...editWatch, caseMaterial: value})}>
+							<SelectTrigger>
+								<SelectValue placeholder="Odaberite materijal" />
+							</SelectTrigger>
+							<SelectContent>
+								{caseMaterials.map((material) => (
+								<SelectItem key={material} value={material}>
+									{material}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="glassType">Tip stakla</Label>
+							<Select value={editWatch.glassType} onValueChange={(value) => setEditWatch({...editWatch, glassType: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{glassTypes.map((glass) => (
+								<SelectItem key={glass} value={glass}>
+									{glass}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="category">Kategorija</Label>
+							<Select value={editWatch.category} onValueChange={(value) => setEditWatch({...editWatch, category: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{categories.map((category) => (
+								<SelectItem key={category} value={category}>
+									{category}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="col-span-2 space-y-2">
+							<Label htmlFor="description">Opis</Label>
+							<Input
+							id="description"
+							value={editWatch.description}
+							onChange={(e) => setEditWatch({...editWatch, description: e.target.value})}
+							placeholder="Kratki opis sata"
+							/>
+						</div>
+
+						<div className="space-y-2">
+							<Label htmlFor="image">Slike</Label>
+							<input
+							type="file"
+							multiple
+							accept="image/*"
+							onChange={(e) => handleImageEdit(e.target.files)}
+							id="image"
+							/>
+						</div>
+
+						<div className='col-span-2 space-2 flex gap-5 flex-wrap'>
+							{editWatch.images?.map((image) => (
+								<div onClick={() => handleImageEditRemoval(image)} className='relative w-36 h-36 rounded-lg hover:bg-red-500/25 transition-all duration-300 cursor-pointer group flex items-center justify-center'>
+									<img src={image} alt="preview-unavailable" className='absolute rounded-lg object-contain -z-10'/>
+									<Trash2 className="hidden w-12 h-12 text-white group-hover:block m-auto" />
+								</div>
+							))}
+						</div>
+
+						<div className="col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="hasBox"
+							checked={editWatch.hasBox}
+							onChange={(e) => setEditWatch({...editWatch, hasBox: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="hasBox">Ima kutiju</Label>
+						</div>
+						<div className="col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="hasPapers"
+							checked={editWatch.hasPapers}
+							onChange={(e) => setEditWatch({...editWatch, hasPapers: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
+						</div>
+						<div className="col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="hasWarranty"
+							checked={editWatch.hasWarranty}
+							onChange={(e) => setEditWatch({...editWatch, hasWarranty: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="hasWarranty">Ima garanciju</Label>
+						</div>
+						<div className="col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="featured"
+							checked={editWatch.featured}
+							onChange={(e) => setEditWatch({...editWatch, featured: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="featured">Istaknuti sat</Label>
+						</div>
+					</div>
+
+					<div className="flex justify-end space-x-2">
+						<Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+							Odustani
+						</Button>
+						<Button onClick={handleEditWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
+							Uredi Sat
+						</Button>
+					</div>
+				</DialogContent>
 			</Dialog>
 		)}
-		</div>
 
 		{/* Controls for Watches */}
 		{activeTab === 'watches' && (
@@ -979,10 +1302,10 @@ return (
 						<div className="flex gap-1">
 						{/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
 							<Eye className="w-4 h-4" />
-						</Button>
-						<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit">
-							<Edit className="w-4 h-4" />
 						</Button>*/}
+						<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit" onClick={() => handleWatchEditing(watch)}>
+							<Edit className="w-4 h-4" />
+						</Button>
 						<Button 
 							variant="ghost" 
 							size="sm" 
@@ -1181,6 +1504,7 @@ return (
 							<a href={`mailto:${submission.email}?subject=${submission.message == "" ? ("Otkup - " + submission.brand + " " + submission.model) : ""}`}>📧 {submission.email}</a>
 							<span>📱 {submission.phone}</span>
 							<span>📷 {submission.images.length} slika</span>
+							<span>💶 {submission.price}</span>
 						</div>
 						</div>
 						
@@ -1267,16 +1591,20 @@ return (
 							<p>{selectedSubmission.referenceNumber || 'Nije naveden'}</p>
 							</div>
 							<div>
-							<span className="font-medium">Status:</span>
-							<Badge variant="secondary">{selectedSubmission.status}</Badge>
+							<span className="font-medium">Očekivana cijena:</span>
+							<Badge variant="secondary">{selectedSubmission.price}</Badge>
 							</div>
 							<div>
 							<span className="font-medium">Ima kutiju:</span>
 							<p>{selectedSubmission.hasBox}</p>
 							</div>
 							<div>
-							<span className="font-medium">Ima dokumentaciju:</span>
-							<p>{selectedSubmission.hasDocumentation}</p>
+								<span className="font-medium">Ima dokumentaciju:</span>
+								<p>{selectedSubmission.hasDocumentation}</p>
+							</div>
+							<div>
+								<span className="font-medium">Dodatne informacije:</span>
+								<p>{selectedSubmission.additonal_info}</p>
 							</div>
 						</div>
 					</div>

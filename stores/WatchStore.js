@@ -42,6 +42,16 @@ class WatchStore {
 		return data;
 	}
 
+	async editWatch(watchData) {
+		const { data, error } = await supabase.from("watch").update(watchData).eq("id", watchData.id);
+
+		if (error) {
+			console.error(error);
+		};
+
+		return data;
+	}
+
 	updateWatch(id, updates) {
 		const index = this.watches.findIndex(watch => watch.id === id);
 		if (index !== -1) {

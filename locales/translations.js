@@ -355,6 +355,18 @@ export const translations = {
         referenceNumberPlaceholder: 'npr. 116610LN (ako je poznat)',
         hasBox: 'Ima li kutiju?',
         hasDocumentation: 'Ima li dokumentaciju?',
+		message: {
+			title: "Dodatne informacije",
+			desc: "Ostale dodatne informacije upišite ovdje..."
+		},
+		price: "Očekivana cijena (EUR)",
+		condition: {
+			label: "Stanje",
+			novo: "Novo",
+			odlicno: "Odlično",
+			vrlodobro: "Vrlo dobro",
+			dobro: "Dobro"
+		},
         boxOptions: {
           yes: 'Da, imam originalnu kutiju',
           no: 'Ne, nemam kutiju',
@@ -783,6 +795,18 @@ export const translations = {
         referenceNumberPlaceholder: 'e.g. 116610LN (if known)',
         hasBox: 'Has box?',
         hasDocumentation: 'Has documentation?',
+		price: "Expected price (EUR)",
+		message: {
+			title: "Additional information",
+			desc: "Write down any other information you wish to share here..."
+		},
+		condition: {
+			label: "Condition",
+			novo: "Brand new",
+			odlicno: "Excelent",
+			vrlodobro: "Very good",
+			dobro: "Good"
+		},
         boxOptions: {
           yes: 'Yes, I have the original box',
           no: 'No, I don’t have the box',
