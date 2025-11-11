@@ -1171,7 +1171,7 @@ return (
 						<div className='col-span-2 space-2 flex gap-5 flex-wrap'>
 							{editWatch.images?.map((image) => (
 								<div onClick={() => handleImageEditRemoval(image)} className='relative w-36 h-36 rounded-lg hover:bg-red-500/25 transition-all duration-300 cursor-pointer group flex items-center justify-center'>
-									<img src={image} alt="preview-unavailable" className='absolute rounded-lg object-contain -z-10'/>
+									<img src={image} alt="preview-unavailable" className='absolute rounded-lg object-cover aspect-square -z-10'/>
 									<Trash2 className="hidden w-12 h-12 text-white group-hover:block m-auto" />
 								</div>
 							))}
