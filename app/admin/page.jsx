@@ -148,7 +148,7 @@ const handleLogout = () => {
 const categories = ['Muški', 'Ženski', 'Ostalo'];
 const conditions = ['Novo', 'Odlično', 'Vrlo dobro', 'Dobro'];
 const mechanisms = ['Automatski', 'Kvarc', 'Mehanički'];
-const caseMaterials = ['Nehrđajući čelik', 'Zlato', 'Bijelo zlato', 'Ružičasto zlato', 'Platina', 'Titanij', 'Keramika'];
+const caseMaterials = ['Čelik', 'Čelik / rozo zlato', 'Čelik / žuto zlato', 'Bijelo zlato', 'Žuto zlato', 'Roze zlato', 'Platina', 'Titanij', 'Keramika'];
 const glassTypes = ['Safirno staklo', 'Mineralno staklo', 'Hesalitno staklo'];
 const allCategories = watchStore.categories;
 const filteredWatches = watchStore.getFilteredWatches(searchTerm, selectedCategory);
