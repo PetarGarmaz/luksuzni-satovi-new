@@ -35,7 +35,7 @@ class WatchStore {
 		} else if (data) {
 			runInAction(() => {
 				console.log(data);
-				this.watches.unshift(data[0]);
+				this.watches.push(newWatch);
 			});
 		}
 

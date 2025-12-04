@@ -230,56 +230,58 @@ const handleEditWatch = async () => {
 
 const handleAddWatch = async () => {
 	if (newWatch.model && newWatch.brand && newWatch.price) {
-	var processedImages = [];
+		var processedImages = [];
 
-	//Send images to the database
-	for (let i = 0; i < newWatch.images.length; i++) {
-		const file = newWatch.images[i];
-		const filePath = file.name;
+		//Send images to the database
+		for (let i = 0; i < newWatch.images.length; i++) {
+			const file = newWatch.images[i];
+			const filePath = `${Date.now()}-${i}.jpg`;
 
-		const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
+			const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
 
-		if (error) {
-			console.error("Upload failed:", error.message);
-		} else {
-			console.log(`Uploaded: ${filePath}`);
+			if (error) {
+				console.error("Upload failed:", error.message);
+			} else {
+				console.log(`Uploaded: ${filePath}`);
 
-			// Get public URL
-			const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
-			processedImages.push(data.publicUrl);
-			
-			console.log("File available at:", data.publicUrl);
+				// Get public URL
+				const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
+				processedImages.push(data.publicUrl);
+				
+				console.log("File available at:", data.publicUrl);
+			}
 		}
-	}
 
-	watchStore.addWatch({
-		...newWatch,
-		name: newWatch.model, // Use model as name
-		price: parseFloat(newWatch.price),
-		year: parseInt(newWatch.year),
-		images: processedImages
-	});
-	setNewWatch({
-		brand: '',
-		model: '',
-		year: new Date().getFullYear(),
-		price: '',
-		condition: 'Novo',
-		category: 'Muški',
-		image: '',
-		description: '',
-		featured: false,
-		referenceNumber: '',
-		hasBox: false,
-		hasPapers: false,
-		mechanism: 'Automatski',
-		caseDiameter: '',
-		caseMaterial: '',
-		glassType: 'Safirno staklo',
-		hasWarranty: false,
-		isOnSale: false
-	});
-	setIsAddDialogOpen(false);
+		watchStore.addWatch({
+			...newWatch,
+			name: newWatch.model, // Use model as name
+			price: parseFloat(newWatch.price),
+			year: parseInt(newWatch.year),
+			images: processedImages
+		});
+		setNewWatch({
+			brand: '',
+			model: '',
+			year: new Date().getFullYear(),
+			price: '',
+			condition: 'Novo',
+			category: 'Muški',
+			image: '',
+			description: '',
+			featured: false,
+			referenceNumber: '',
+			hasBox: false,
+			hasPapers: false,
+			mechanism: 'Automatski',
+			caseDiameter: '',
+			caseMaterial: '',
+			glassType: 'Safirno staklo',
+			hasWarranty: false,
+			isOnSale: false
+		});
+		setIsAddDialogOpen(false);
+	} else {
+		alert("Jedno od sljedećeg nije unešeno: MODEL, BREND, CIJENA.");
 	}
 };
 
@@ -641,198 +643,200 @@ return (
 					<DialogHeader>
 					<DialogTitle>Dodaj Novi Sat</DialogTitle>
 					</DialogHeader>
-					<div className="grid grid-cols-2 gap-4 py-4 max-h-[70vh] overflow-y-auto">
-					<div className="space-y-2">
-						<Label htmlFor="brand">Brend</Label>
-						<Input
-						id="brand"
-						value={newWatch.brand}
-						onChange={(e) => setNewWatch({...newWatch, brand: e.target.value})}
-						placeholder="npr., Rolex"
-						/>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="referenceNumber">Referentni broj</Label>
-						<Input
-						id="referenceNumber"
-						value={newWatch.referenceNumber}
-						onChange={(e) => setNewWatch({...newWatch, referenceNumber: e.target.value})}
-						placeholder="npr., 116610LN"
-						/>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="model">Model</Label>
-						<Input
-						id="model"
-						value={newWatch.model}
-						onChange={(e) => setNewWatch({...newWatch, model: e.target.value})}
-						placeholder="npr., Submariner Date"
-						/>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="year">Godina</Label>
-						<Input
-						id="year"
-						type="number"
-						value={newWatch.year}
-						onChange={(e) => setNewWatch({...newWatch, year: e.target.value})}
-						min="1900"
-						max={new Date().getFullYear()}
-						/>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="price">Cijena (EUR)</Label>
-						<Input
-						id="price"
-						type="number"
-						value={newWatch.price}
-						onChange={(e) => setNewWatch({...newWatch, price: e.target.value})}
-						placeholder="npr., 12500"
-						/>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="condition">Stanje</Label>
-						<Select value={newWatch.condition} onValueChange={(value) => setNewWatch({...newWatch, condition: value})}>
-						<SelectTrigger>
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{conditions.map((condition) => (
-							<SelectItem key={condition} value={condition}>
-								{condition}
-							</SelectItem>
-							))}
-						</SelectContent>
-						</Select>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="mechanism">Mehanizam</Label>
-						<Select value={newWatch.mechanism} onValueChange={(value) => setNewWatch({...newWatch, mechanism: value})}>
-						<SelectTrigger>
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{mechanisms.map((mechanism) => (
-							<SelectItem key={mechanism} value={mechanism}>
-								{mechanism}
-							</SelectItem>
-							))}
-						</SelectContent>
-						</Select>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="caseDiameter">Promjer kućišta</Label>
-						<Input
-						id="caseDiameter"
-						value={newWatch.caseDiameter}
-						onChange={(e) => setNewWatch({...newWatch, caseDiameter: e.target.value})}
-						placeholder="npr., 40mm"
-						/>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="caseMaterial">Materijal kućišta</Label>
-						<Select value={newWatch.caseMaterial} onValueChange={(value) => setNewWatch({...newWatch, caseMaterial: value})}>
-						<SelectTrigger>
-							<SelectValue placeholder="Odaberite materijal" />
-						</SelectTrigger>
-						<SelectContent>
-							{caseMaterials.map((material) => (
-							<SelectItem key={material} value={material}>
-								{material}
-							</SelectItem>
-							))}
-						</SelectContent>
-						</Select>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="glassType">Tip stakla</Label>
-						<Select value={newWatch.glassType} onValueChange={(value) => setNewWatch({...newWatch, glassType: value})}>
-						<SelectTrigger>
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{glassTypes.map((glass) => (
-							<SelectItem key={glass} value={glass}>
-								{glass}
-							</SelectItem>
-							))}
-						</SelectContent>
-						</Select>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="category">Kategorija</Label>
-						<Select value={newWatch.category} onValueChange={(value) => setNewWatch({...newWatch, category: value})}>
-						<SelectTrigger>
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{categories.map((category) => (
-							<SelectItem key={category} value={category}>
-								{category}
-							</SelectItem>
-							))}
-						</SelectContent>
-						</Select>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor="image">Slike</Label>
-						<input
-						type="file"
-						multiple
-						accept="image/*"
-						onChange={(e) => handleImageUpload(e.target.files)}
-						id="image"
-						/>
-					</div>
-					<div className="col-span-2 space-y-2">
-						<Label htmlFor="description">Opis</Label>
-						<Input
-						id="description"
-						value={newWatch.description}
-						onChange={(e) => setNewWatch({...newWatch, description: e.target.value})}
-						placeholder="Kratki opis sata"
-						/>
-					</div>
-					<div className="col-span-2 flex items-center space-x-2">
-						<input
-						type="checkbox"
-						id="hasBox"
-						checked={newWatch.hasBox}
-						onChange={(e) => setNewWatch({...newWatch, hasBox: e.target.checked})}
-						className="rounded border-gray-300"
-						/>
-						<Label htmlFor="hasBox">Ima kutiju</Label>
-					</div>
-					<div className="col-span-2 flex items-center space-x-2">
-						<input
-						type="checkbox"
-						id="hasPapers"
-						checked={newWatch.hasPapers}
-						onChange={(e) => setNewWatch({...newWatch, hasPapers: e.target.checked})}
-						className="rounded border-gray-300"
-						/>
-						<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
-					</div>
-					<div className="col-span-2 flex items-center space-x-2">
-						<input
-						type="checkbox"
-						id="hasWarranty"
-						checked={newWatch.hasWarranty}
-						onChange={(e) => setNewWatch({...newWatch, hasWarranty: e.target.checked})}
-						className="rounded border-gray-300"
-						/>
-						<Label htmlFor="hasWarranty">Ima garanciju</Label>
-					</div>
-					<div className="col-span-2 flex items-center space-x-2">
-						<input
-						type="checkbox"
-						id="featured"
-						checked={newWatch.featured}
-						onChange={(e) => setNewWatch({...newWatch, featured: e.target.checked})}
-						className="rounded border-gray-300"
-						/>
-						<Label htmlFor="featured">Istaknuti sat</Label>
-					</div>
+					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 max-h-[70vh] overflow-y-auto">
+						<div className="space-y-2">
+							<Label htmlFor="brand">Brend</Label>
+							<Input
+							id="brand"
+							value={newWatch.brand}
+							onChange={(e) => setNewWatch({...newWatch, brand: e.target.value})}
+							placeholder="npr., Rolex"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="referenceNumber">Referentni broj</Label>
+							<Input
+							id="referenceNumber"
+							value={newWatch.referenceNumber}
+							onChange={(e) => setNewWatch({...newWatch, referenceNumber: e.target.value})}
+							placeholder="npr., 116610LN"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="model">Model</Label>
+							<Input
+							id="model"
+							value={newWatch.model}
+							onChange={(e) => setNewWatch({...newWatch, model: e.target.value})}
+							placeholder="npr., Submariner Date"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="year">Godina</Label>
+							<Input
+							id="year"
+							type="number"
+							value={newWatch.year}
+							onChange={(e) => setNewWatch({...newWatch, year: e.target.value})}
+							min="1900"
+							max={new Date().getFullYear()}
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="price">Cijena (EUR)</Label>
+							<Input
+							id="price"
+							type="number"
+							value={newWatch.price}
+							onChange={(e) => setNewWatch({...newWatch, price: e.target.value})}
+							placeholder="npr., 12500"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="condition">Stanje</Label>
+							<Select value={newWatch.condition} onValueChange={(value) => setNewWatch({...newWatch, condition: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{conditions.map((condition) => (
+								<SelectItem key={condition} value={condition}>
+									{condition}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="mechanism">Mehanizam</Label>
+							<Select value={newWatch.mechanism} onValueChange={(value) => setNewWatch({...newWatch, mechanism: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{mechanisms.map((mechanism) => (
+								<SelectItem key={mechanism} value={mechanism}>
+									{mechanism}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="caseDiameter">Promjer kućišta</Label>
+							<Input
+							id="caseDiameter"
+							value={newWatch.caseDiameter}
+							onChange={(e) => setNewWatch({...newWatch, caseDiameter: e.target.value})}
+							placeholder="npr., 40mm"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="caseMaterial">Materijal kućišta</Label>
+							<Select value={newWatch.caseMaterial} onValueChange={(value) => setNewWatch({...newWatch, caseMaterial: value})}>
+							<SelectTrigger>
+								<SelectValue placeholder="Odaberite materijal" />
+							</SelectTrigger>
+							<SelectContent>
+								{caseMaterials.map((material) => (
+								<SelectItem key={material} value={material}>
+									{material}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="glassType">Tip stakla</Label>
+							<Select value={newWatch.glassType} onValueChange={(value) => setNewWatch({...newWatch, glassType: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{glassTypes.map((glass) => (
+								<SelectItem key={glass} value={glass}>
+									{glass}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="category">Kategorija</Label>
+							<Select value={newWatch.category} onValueChange={(value) => setNewWatch({...newWatch, category: value})}>
+							<SelectTrigger>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{categories.map((category) => (
+								<SelectItem key={category} value={category}>
+									{category}
+								</SelectItem>
+								))}
+							</SelectContent>
+							</Select>
+						</div>
+						<div className="space-y-2">
+							<Label htmlFor="image">Slike</Label>
+							<input
+							type="file"
+							multiple
+							accept="image/*"
+							onChange={(e) => handleImageUpload(e.target.files)}
+							id="image"
+							/>
+						</div>
+						<div className="lg:col-span-2 space-y-2">
+							<Label htmlFor="description">Opis</Label>
+							<Input
+							id="description"
+							value={newWatch.description}
+							onChange={(e) => setNewWatch({...newWatch, description: e.target.value})}
+							placeholder="Kratki opis sata"
+							/>
+						</div>
+						<div className="lg:col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="hasBox"
+							checked={newWatch.hasBox}
+							onChange={(e) => setNewWatch({...newWatch, hasBox: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="hasBox">Ima kutiju</Label>
+						</div>
+						<div className="lg:col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="hasPapers"
+							checked={newWatch.hasPapers}
+							onChange={(e) => setNewWatch({...newWatch, hasPapers: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
+						</div>
+
+						<div className="lg:col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="hasWarranty"
+							checked={newWatch.hasWarranty}
+							onChange={(e) => setNewWatch({...newWatch, hasWarranty: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="hasWarranty">Ima garanciju</Label>
+						</div>
+
+						<div className="lg:col-span-2 flex items-center space-x-2">
+							<input
+							type="checkbox"
+							id="featured"
+							checked={newWatch.featured}
+							onChange={(e) => setNewWatch({...newWatch, featured: e.target.checked})}
+							className="rounded border-gray-300"
+							/>
+							<Label htmlFor="featured">Istaknuti sat</Label>
+						</div>
 					</div>
 					<div className="flex justify-end space-x-2">
 					<Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
@@ -1014,7 +1018,7 @@ return (
 						<DialogTitle>Uredi sat</DialogTitle>
 					</DialogHeader>
 
-					<div className="grid grid-cols-2 gap-4 py-4 max-h-[70vh] overflow-y-auto">
+					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 max-h-[70vh] overflow-y-auto">
 						<div className="space-y-2">
 							<Label htmlFor="brand">Brend</Label>
 							<Input
@@ -1147,7 +1151,7 @@ return (
 							</SelectContent>
 							</Select>
 						</div>
-						<div className="col-span-2 space-y-2">
+						<div className="lg:col-span-2 space-y-2">
 							<Label htmlFor="description">Opis</Label>
 							<Input
 							id="description"
@@ -1168,7 +1172,7 @@ return (
 							/>
 						</div>
 
-						<div className='col-span-2 space-2 flex gap-5 flex-wrap'>
+						<div className='lg:col-span-2 space-2 flex gap-5 flex-wrap'>
 							{editWatch.images?.map((image) => (
 								<div onClick={() => handleImageEditRemoval(image)} className='relative w-36 h-36 rounded-lg hover:bg-red-500/25 transition-all duration-300 cursor-pointer group flex items-center justify-center'>
 									<img src={image} alt="preview-unavailable" className='absolute rounded-lg object-cover aspect-square -z-10'/>
@@ -1177,7 +1181,7 @@ return (
 							))}
 						</div>
 
-						<div className="col-span-2 flex items-center space-x-2">
+						<div className="lg:col-span-2 flex items-center space-x-2">
 							<input
 							type="checkbox"
 							id="hasBox"
@@ -1187,7 +1191,7 @@ return (
 							/>
 							<Label htmlFor="hasBox">Ima kutiju</Label>
 						</div>
-						<div className="col-span-2 flex items-center space-x-2">
+						<div className="lg:col-span-2 flex items-center space-x-2">
 							<input
 							type="checkbox"
 							id="hasPapers"
@@ -1197,7 +1201,7 @@ return (
 							/>
 							<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
 						</div>
-						<div className="col-span-2 flex items-center space-x-2">
+						<div className="lg:col-span-2 flex items-center space-x-2">
 							<input
 							type="checkbox"
 							id="hasWarranty"
@@ -1207,7 +1211,7 @@ return (
 							/>
 							<Label htmlFor="hasWarranty">Ima garanciju</Label>
 						</div>
-						<div className="col-span-2 flex items-center space-x-2">
+						<div className="lg:col-span-2 flex items-center space-x-2">
 							<input
 							type="checkbox"
 							id="featured"
