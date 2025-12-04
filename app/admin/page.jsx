@@ -804,7 +804,7 @@ return (
 					Dodaj Sat
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+				<DialogContent className="max-w-2xl">
 					<DialogHeader>
 					<DialogTitle>Dodaj Novi Sat</DialogTitle>
 					</DialogHeader>
@@ -819,7 +819,7 @@ return (
 						</div>
 					)}
 
-					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 overflow-y-auto flex-1">
+					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 max-h-[70vh] overflow-y-auto">
 						<div className="space-y-2">
 							<Label htmlFor="brand">Brend *</Label>
 							<Input
@@ -1056,7 +1056,7 @@ return (
 							<Label htmlFor="featured">Istaknuti sat</Label>
 						</div>
 					</div>
-					<div className="flex justify-end space-x-2 border-t pt-4">
+					<div className="flex justify-end space-x-2">
 					<Button variant="outline" onClick={() => setIsAddDialogOpen(false)} disabled={isUploading}>
 						Odustani
 					</Button>
@@ -1083,11 +1083,11 @@ return (
 					Dodaj Članak
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+				<DialogContent className="max-w-2xl">
 					<DialogHeader>
 					<DialogTitle>Dodaj Novi Članak</DialogTitle>
 					</DialogHeader>
-					<div className="space-y-4 py-4 overflow-y-auto flex-1">
+					<div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto">
 					<div className="space-y-2">
 						<Label htmlFor="postTitle">Naslov</Label>
 						<Input
@@ -1153,7 +1153,7 @@ return (
 						/>
 					</div>
 					</div>
-					<div className="flex justify-end space-x-2 border-t pt-4">
+					<div className="flex justify-end space-x-2">
 					<Button variant="outline" onClick={() => setIsAddPostDialogOpen(false)}>
 						Odustani
 					</Button>
@@ -1241,7 +1241,7 @@ return (
 					setIsEditDialogOpen(open);
 				}
 			}}>
-				<DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+				<DialogContent className="max-w-2xl">
 					<DialogHeader>
 						<DialogTitle>Uredi sat</DialogTitle>
 					</DialogHeader>
@@ -1256,7 +1256,7 @@ return (
 						</div>
 					)}
 
-					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 overflow-y-auto flex-1">
+					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 max-h-[70vh] overflow-y-auto">
 						<div className="space-y-2">
 							<Label htmlFor="brand">Brend</Label>
 							<Input
@@ -1484,7 +1484,7 @@ return (
 						</div>
 					</div>
 
-					<div className="flex justify-end space-x-2 border-t pt-4">
+					<div className="flex justify-end space-x-2">
 						<Button variant="outline" onClick={() => setIsEditDialogOpen(false)} disabled={isUploading}>
 							Odustani
 						</Button>
