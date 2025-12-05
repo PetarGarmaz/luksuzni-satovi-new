@@ -458,7 +458,8 @@ const handleTogglePostFeatured = (id) => {
 	blogStore.toggleFeatured(id);
 };
 
-const handleImageUpload = (files) => {
+const handleImageUpload = (e) => {
+	const files = e.target.files;
 	if (!files || files.length === 0) return;
 
 	const remainingSlots = 5 - newWatch.images.length;
@@ -468,6 +469,7 @@ const handleImageUpload = (files) => {
 			description: "Maksimalno 5 slika je dozvoljeno.",
 			variant: "destructive",
 		});
+		e.target.value = '';
 		return;
 	}
 
@@ -481,9 +483,13 @@ const handleImageUpload = (files) => {
 		title: "Uspjeh",
 		description: `Dodano ${newImages.length} slika.`,
 	});
+
+	// Reset input so same file can be selected again
+	e.target.value = '';
 };
 
-const handleImageEdit = (files) => {
+const handleImageEdit = (e) => {
+	const files = e.target.files;
 	if (!files || files.length === 0) return;
 
 	const remainingSlots = 5 - editWatch.images.length;
@@ -493,6 +499,7 @@ const handleImageEdit = (files) => {
 			description: "Maksimalno 5 slika je dozvoljeno.",
 			variant: "destructive",
 		});
+		e.target.value = '';
 		return;
 	}
 
@@ -506,6 +513,9 @@ const handleImageEdit = (files) => {
 		title: "Uspjeh",
 		description: `Dodano ${newImages.length} slika.`,
 	});
+
+	// Reset input so same file can be selected again
+	e.target.value = '';
 };
 
 const handleImageEditRemoval = (image) => {
@@ -959,18 +969,18 @@ return (
 							</Select>
 						</div>
 						<div className="lg:col-span-2 space-y-2">
-							<Label htmlFor="image">Slike * (max 5)</Label>
+							<Label htmlFor="image-add">Slike * (max 5)</Label>
 							<div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
 								<input
 								type="file"
 								multiple
 								accept="image/*"
-								onChange={(e) => handleImageUpload(e.target.files)}
-								id="image"
+								onChange={handleImageUpload}
+								id="image-add"
 								className="hidden"
 								disabled={isUploading}
 								/>
-								<label htmlFor="image" className="cursor-pointer">
+								<label htmlFor="image-add" className="cursor-pointer block">
 									<Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
 									<p className="text-sm text-gray-600">Klikni za odabir slika</p>
 									<p className="text-xs text-gray-500 mt-1">Odaberi iz galerije ili fotografiraj</p>
@@ -1406,18 +1416,18 @@ return (
 						</div>
 
 						<div className="lg:col-span-2 space-y-2">
-							<Label htmlFor="image">Dodaj nove slike (max 5 ukupno)</Label>
+							<Label htmlFor="image-edit">Dodaj nove slike (max 5 ukupno)</Label>
 							<div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
 								<input
 								type="file"
 								multiple
 								accept="image/*"
-								onChange={(e) => handleImageEdit(e.target.files)}
-								id="image"
+								onChange={handleImageEdit}
+								id="image-edit"
 								className="hidden"
 								disabled={isUploading}
 								/>
-								<label htmlFor="image" className="cursor-pointer">
+								<label htmlFor="image-edit" className="cursor-pointer block">
 									<Upload className="w-6 h-6 mx-auto mb-2 text-gray-400" />
 									<p className="text-sm text-gray-600">Odaberi iz galerije ili fotografiraj</p>
 								</label>
