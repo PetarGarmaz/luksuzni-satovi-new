@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { observer } from 'mobx-react-lite';
-import { Plus, Search, Eye, Edit, Trash2, Star, ArrowLeft, Mail, Lock, EyeOff } from 'lucide-react';
+import { Plus, Search, Eye, Edit, Trash2, Star, ArrowLeft, Mail, Lock, EyeOff, Loader2, X, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,8 +18,11 @@ import { referralStore } from '@/stores/ReferralStore';
 import { otkupStore } from '@/stores/OtkupStore';
 import { authStore } from '@/stores/AuthStore';
 import { supabase } from "@/lib/supabaseClient";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 const AdminPage = observer(() => {
+const { toast } = useToast();
 const searchParams = useSearchParams();
 const [showLogin, setShowLogin] = useState(true);
 const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +35,8 @@ const [isAddRecommendationDialogOpen, setIsAddRecommendationDialogOpen] = useSta
 const [selectedSubmission, setSelectedSubmission] = useState(null);
 const [isSubmissionDetailOpen, setIsSubmissionDetailOpen] = useState(false);
 const [password, setPassword] = useState('');
+const [isUploading, setIsUploading] = useState(false);
+const [uploadProgress, setUploadProgress] = useState('');
 const [editWatch, setEditWatch] = useState({
 	name: '',
 	brand: '',
@@ -133,7 +138,6 @@ const handleInputChange = (field, value) => {
 	...prev,
 	[field]: value
 	}));
-	// Clear error when user starts typing
 	if (loginError) {
 	setLoginError('');
 	}
@@ -169,7 +173,6 @@ const handleWatchEditing = (watch) => {
 };
 
 const handleEditWatch = async () => {
-<<<<<<< HEAD
 	if (!editWatch.model || !editWatch.brand || !editWatch.price) {
 		toast({
 			title: "Greška",
@@ -178,98 +181,146 @@ const handleEditWatch = async () => {
 		});
 		
 		return;
-=======
-	if (editWatch.model && editWatch.brand && editWatch.price) {
-	var processedImages = [];
-
-	//Send images to the database
-	for (let i = 0; i < editWatch.images.length; i++) {
-		const file = editWatch.images[i];
-
-		if(file instanceof File) {
-			const filePath = file.name;
-
-			const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
-
-			if (error) {
-				console.error("Upload failed:", error.message);
-			} else {
-				console.log(`Uploaded: ${filePath}`);
-
-				// Get public URL
-				const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
-				processedImages.push(data.publicUrl);
-				
-				console.log("File available at:", data.publicUrl);
-			}
-		} else {
-			processedImages.push(file);
-		}
->>>>>>> 72219bd75d4c358bd14ffb148cbb3b38c305be58
 	}
 
-	watchStore.editWatch({
-		...editWatch,
-		name: editWatch.model, // Use model as name
-		price: parseFloat(editWatch.price),
-		year: parseInt(editWatch.year),
-		images: processedImages
-	});
-	setEditWatch({
-		brand: '',
-		model: '',
-		year: new Date().getFullYear(),
-		price: '',
-		condition: 'Novo',
-		category: 'Muški',
-		image: '',
-		description: '',
-		featured: false,
-		referenceNumber: '',
-		hasBox: false,
-		hasPapers: false,
-		mechanism: 'Automatski',
-		caseDiameter: '',
-		caseMaterial: '',
-		glassType: 'Safirno staklo',
-		hasWarranty: false,
-		isOnSale: false
-	});
-	setIsEditDialogOpen(false);
+	setIsUploading(true);
+	setUploadProgress('Priprema slika...');
+
+	try {
+		var processedImages = [];
+
+		for (let i = 0; i < editWatch.images.length; i++) {
+			const file = editWatch.images[i];
+
+			if(file instanceof File) {
+				setUploadProgress(`Učitavanje slike ${i + 1} od ${editWatch.images.length}...`);
+
+				const filePath = file.name;
+
+				const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
+
+				if (error) {
+					console.error("Upload failed:", error.message);
+					throw new Error(`Greška pri učitavanju slike: ${error.message}`);
+				} else {
+					console.log(`Uploaded: ${filePath}`);
+
+					const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
+					processedImages.push(data.publicUrl);
+
+					console.log("File available at:", data.publicUrl);
+				}
+			} else {
+				processedImages.push(file);
+			}
+		}
+
+		setUploadProgress('Spremanje podataka...');
+
+		watchStore.editWatch({
+			...editWatch,
+			name: editWatch.model,
+			price: parseFloat(editWatch.price),
+			year: parseInt(editWatch.year),
+			images: processedImages
+		});
+
+		setEditWatch({
+			brand: '',
+			model: '',
+			year: new Date().getFullYear(),
+			price: '',
+			condition: 'Novo',
+			category: 'Muški',
+			image: '',
+			description: '',
+			featured: false,
+			referenceNumber: '',
+			hasBox: false,
+			hasPapers: false,
+			mechanism: 'Automatski',
+			caseDiameter: '',
+			caseMaterial: '',
+			glassType: 'Safirno staklo',
+			hasWarranty: false,
+			isOnSale: false
+		});
+
+		setIsEditDialogOpen(false);
+
+		toast({
+			title: "Uspjeh",
+			description: "Sat je uspješno ažuriran.",
+		});
+	} catch (error) {
+		console.error('Error editing watch:', error);
+		toast({
+			title: "Greška",
+			description: error.message || "Došlo je do greške pri ažuriranju sata.",
+			variant: "destructive",
+		});
+	} finally {
+		setIsUploading(false);
+		setUploadProgress('');
 	}
 };
 
 const handleAddWatch = async () => {
-	if (newWatch.model && newWatch.brand && newWatch.price) {
+	if (!newWatch.model || !newWatch.brand || !newWatch.price) {
+		toast({
+			title: "Greška",
+			description: "Model, brend i cijena su obavezni.",
+			variant: "destructive",
+		});
+		return;
+	}
+
+	if (newWatch.images.length === 0) {
+		toast({
+			title: "Greška",
+			description: "Morate dodati barem jednu sliku.",
+			variant: "destructive",
+		});
+		return;
+	}
+
+	setIsUploading(true);
+	setUploadProgress('Priprema slika...');
+
+	try {
 		var processedImages = [];
 
-		//Send images to the database
 		for (let i = 0; i < newWatch.images.length; i++) {
 			const file = newWatch.images[i];
+			setUploadProgress(`Učitavanje slike ${i + 1} od ${newWatch.images.length}...`);
+
 			const filePath = `${Date.now()}-${i}.jpg`;
 
 			const { error } = await supabase.storage.from("Images").upload(filePath, file, {cacheControl: '3600',upsert: true});
 
 			if (error) {
 				console.error("Upload failed:", error.message);
+				throw new Error(`Greška pri učitavanju slike: ${error.message}`);
 			} else {
 				console.log(`Uploaded: ${filePath}`);
 
-				// Get public URL
 				const { data } = supabase.storage.from("Images").getPublicUrl(filePath);
 				processedImages.push(data.publicUrl);
-				
+
 				console.log("File available at:", data.publicUrl);
 			}
 		}
 
+		setUploadProgress('Spremanje podataka...');
+
 		watchStore.addWatch({
 			...newWatch,
-			name: newWatch.model, // Use model as name
+			name: newWatch.model,
 			price: parseFloat(newWatch.price),
 			year: parseInt(newWatch.year),
 			images: processedImages
 		});
+
 		setNewWatch({
 			brand: '',
 			model: '',
@@ -290,9 +341,23 @@ const handleAddWatch = async () => {
 			hasWarranty: false,
 			isOnSale: false
 		});
+
 		setIsAddDialogOpen(false);
-	} else {
-		alert("Jedno od sljedećeg nije unešeno: MODEL, BREND, CIJENA.");
+
+		toast({
+			title: "Uspjeh",
+			description: "Sat je uspješno dodan.",
+		});
+	} catch (error) {
+		console.error('Error adding watch:', error);
+		toast({
+			title: "Greška",
+			description: error.message || "Došlo je do greške pri dodavanju sata.",
+			variant: "destructive",
+		});
+	} finally {
+		setIsUploading(false);
+		setUploadProgress('');
 	}
 };
 
@@ -313,6 +378,10 @@ const handleAddPost = () => {
 		metaDescription: ''
 	});
 	setIsAddPostDialogOpen(false);
+	toast({
+		title: "Uspjeh",
+		description: "Članak je uspješno dodan.",
+	});
 	}
 };
 
@@ -326,30 +395,50 @@ const handleAddRecommendation = () => {
 		location: ''
 	});
 	setIsAddRecommendationDialogOpen(false);
+	toast({
+		title: "Uspjeh",
+		description: "Preporuka je uspješno dodana.",
+	});
 	}
 };
 
 const handleDeleteWatch = (id) => {
-	if (confirm('Are you sure you want to delete this watch?')) {
+	if (confirm('Jeste li sigurni da želite obrisati ovaj sat?')) {
 	watchStore.deleteWatch(id);
+	toast({
+		title: "Uspjeh",
+		description: "Sat je uspješno obrisan.",
+	});
 	}
 };
 
 const handleDeletePost = (id) => {
 	if (confirm('Jeste li sigurni da želite obrisati ovaj članak?')) {
 	blogStore.deletePost(id);
+	toast({
+		title: "Uspjeh",
+		description: "Članak je uspješno obrisan.",
+	});
 	}
 };
 
 const handleDeleteReferral = (id) => {
 	if (confirm('Jeste li sigurni da želite obrisati ovaj referral?')) {
 	referralStore.deleteRecommendation(id);
+	toast({
+		title: "Uspjeh",
+		description: "Preporuka je uspješno obrisana.",
+	});
 	}
 };
 
 const handleDeleteSubmission = (id) => {
 	if (confirm('Jeste li sigurni da želite obrisati ovaj upit?')) {
 	otkupStore.deleteSubmission(id);
+	toast({
+		title: "Uspjeh",
+		description: "Upit je uspješno obrisan.",
+	});
 	}
 };
 
@@ -371,30 +460,71 @@ const handleTogglePostFeatured = (id) => {
 };
 
 const handleImageUpload = (files) => {
-	const newImages = Array.from(files).slice(0, 5 - newWatch.images.length);
+	if (!files || files.length === 0) return;
+
+	const remainingSlots = 5 - newWatch.images.length;
+	if (remainingSlots <= 0) {
+		toast({
+			title: "Upozorenje",
+			description: "Maksimalno 5 slika je dozvoljeno.",
+			variant: "destructive",
+		});
+		return;
+	}
+
+	const newImages = Array.from(files).slice(0, remainingSlots);
 	setNewWatch(prev => ({
 	...prev,
 	images: [...prev.images, ...newImages]
 	}));
+
+	toast({
+		title: "Uspjeh",
+		description: `Dodano ${newImages.length} slika.`,
+	});
 };
 
 const handleImageEdit = (files) => {
-	const newImages = Array.from(files).slice(0, 5 - editWatch.images.length);
+	if (!files || files.length === 0) return;
+
+	const remainingSlots = 5 - editWatch.images.length;
+	if (remainingSlots <= 0) {
+		toast({
+			title: "Upozorenje",
+			description: "Maksimalno 5 slika je dozvoljeno.",
+			variant: "destructive",
+		});
+		return;
+	}
+
+	const newImages = Array.from(files).slice(0, remainingSlots);
 	setEditWatch(prev => ({
 	...prev,
 	images: [...prev.images, ...newImages]
 	}));
+
+	toast({
+		title: "Uspjeh",
+		description: `Dodano ${newImages.length} slika.`,
+	});
 };
 
 const handleImageEditRemoval = (image) => {
 	var array = editWatch.images;
 	var index = array.indexOf(image);
-	
+
 	if (index !== -1) {
 		array.splice(index, 1);
 	}
 
 	setEditWatch(prev => ({...prev,	images: array}));
+};
+
+const handleImageRemoval = (index) => {
+	setNewWatch(prev => ({
+		...prev,
+		images: prev.images.filter((_, i) => i !== index)
+	}));
 };
 
 if (!isAuthenticated) {
@@ -411,7 +541,6 @@ if (!isAuthenticated) {
 		</CardHeader>
 		<CardContent>
 			<form onSubmit={handleLogin} className="space-y-4">
-			{/* Email Field */}
 			<div className="space-y-2">
 				<Label htmlFor="email">Email adresa</Label>
 				<div className="relative">
@@ -428,7 +557,6 @@ if (!isAuthenticated) {
 				</div>
 			</div>
 
-			{/* Password Field */}
 			<div className="space-y-2">
 				<Label htmlFor="password">Lozinka</Label>
 				<div className="relative">
@@ -456,14 +584,12 @@ if (!isAuthenticated) {
 				</div>
 			</div>
 
-			{/* Error Message */}
 			{loginError && (
 				<div className="bg-red-50 border border-red-200 rounded-lg p-3">
 				<p className="text-red-700 text-sm">{loginError}</p>
 				</div>
 			)}
 
-			{/* Login Button */}
 			<Button
 				type="submit"
 				disabled={isLoading || !loginData.email || !loginData.password}
@@ -471,7 +597,14 @@ if (!isAuthenticated) {
 				style={{backgroundColor: '#bd890f'}}
 
 			>
-				{isLoading ? 'Prijavljivanje...' : 'Prijavite se'}
+				{isLoading ? (
+					<>
+						<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+						Prijavljivanje...
+					</>
+				) : (
+					'Prijavite se'
+				)}
 			</Button>
 			</form>
 		</CardContent>
@@ -482,7 +615,7 @@ if (!isAuthenticated) {
 
 return (
 	<div className="min-h-screen bg-gray-50">
-	{/* Header */}
+	<Toaster />
 	<header className="bg-white border-b border-gray-200">
 		<div className="max-w-7xl mx-auto px-6 py-4">
 		<div className="flex items-center justify-between">
@@ -496,8 +629,8 @@ return (
 			</div>
 			<div className="flex items-center space-x-4">
 			<span className="text-sm text-gray-600">Dobrodošli u admin panel</span>
-			<Button 
-				variant="outline" 
+			<Button
+				variant="outline"
 				size="sm"
 				onClick={handleLogout}
 				className="text-sm"
@@ -509,15 +642,13 @@ return (
 		</div>
 	</header>
 
-	{/* Main Content */}
 	<main className="max-w-7xl mx-auto px-6 py-8">
-		{/* Tabs */}
-		<div className="flex space-x-1 mb-8 bg-gray-100 p-1 rounded-lg">
+		<div className="flex space-x-1 mb-8 bg-gray-100 p-1 rounded-lg overflow-x-auto">
 		<button
 			onClick={() => setActiveTab('watches')}
-			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-			activeTab === 'watches' 
-				? 'bg-white text-gray-900 shadow-sm' 
+			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+			activeTab === 'watches'
+				? 'bg-white text-gray-900 shadow-sm'
 				: 'text-gray-600 hover:text-gray-900'
 			}`}
 		>
@@ -525,9 +656,9 @@ return (
 		</button>
 		<button
 			onClick={() => setActiveTab('blog')}
-			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-			activeTab === 'blog' 
-				? 'bg-white text-gray-900 shadow-sm' 
+			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+			activeTab === 'blog'
+				? 'bg-white text-gray-900 shadow-sm'
 				: 'text-gray-600 hover:text-gray-900'
 			}`}
 		>
@@ -535,9 +666,9 @@ return (
 		</button>
 		<button
 			onClick={() => setActiveTab('recommendations')}
-			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-			activeTab === 'recommendations' 
-				? 'bg-white text-gray-900 shadow-sm' 
+			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+			activeTab === 'recommendations'
+				? 'bg-white text-gray-900 shadow-sm'
 				: 'text-gray-600 hover:text-gray-900'
 			}`}
 		>
@@ -545,9 +676,9 @@ return (
 		</button>
 		<button
 			onClick={() => setActiveTab('otkup')}
-			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-			activeTab === 'otkup' 
-				? 'bg-white text-gray-900 shadow-sm' 
+			className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+			activeTab === 'otkup'
+				? 'bg-white text-gray-900 shadow-sm'
 				: 'text-gray-600 hover:text-gray-900'
 			}`}
 		>
@@ -555,7 +686,6 @@ return (
 		</button>
 		</div>
 
-		{/* Stats */}
 		{activeTab === 'watches' && (
 		<div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
 			<Card>
@@ -581,7 +711,7 @@ return (
 				<p className="text-sm text-gray-600">Ukupno Članaka</p>
 			</CardContent>
 			</Card>
-		
+
 			<Card>
 			<CardContent className="p-6">
 				<div className="text-2xl font-light text-gray-900">
@@ -636,14 +766,39 @@ return (
 				<p className="text-sm text-gray-600">Ukupno Upita</p>
 			</CardContent>
 			</Card>
-		
+
 		</div>
 		)}
 
-		{/* Add Button */}
 		<div className="flex justify-end mb-8">
 			{activeTab === 'watches' && (
-				<Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+				<Dialog open={isAddDialogOpen} onOpenChange={(open) => {
+					if (!isUploading) {
+						setIsAddDialogOpen(open);
+						if (!open) {
+							setNewWatch({
+								brand: '',
+								model: '',
+								year: new Date().getFullYear(),
+								price: '',
+								condition: 'Novo',
+								category: 'Muški',
+								images: [],
+								description: '',
+								featured: false,
+								referenceNumber: '',
+								hasBox: false,
+								hasPapers: false,
+								mechanism: 'Automatski',
+								caseDiameter: '',
+								caseMaterial: '',
+								glassType: 'Safirno staklo',
+								hasWarranty: false,
+								isOnSale: false
+							});
+						}
+					}
+				}}>
 				<DialogTrigger asChild>
 					<Button className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
 					<Plus className="w-4 h-4 mr-2" />
@@ -654,14 +809,26 @@ return (
 					<DialogHeader>
 					<DialogTitle>Dodaj Novi Sat</DialogTitle>
 					</DialogHeader>
+
+					{isUploading && (
+						<div className="absolute inset-0 bg-white/90 flex items-center justify-center z-50 rounded-lg">
+							<div className="text-center">
+								<Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" style={{color: '#bd890f'}} />
+								<p className="text-lg font-medium text-gray-900">{uploadProgress}</p>
+								<p className="text-sm text-gray-600 mt-2">Molimo pričekajte...</p>
+							</div>
+						</div>
+					)}
+
 					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 max-h-[70vh] overflow-y-auto">
 						<div className="space-y-2">
-							<Label htmlFor="brand">Brend</Label>
+							<Label htmlFor="brand">Brend *</Label>
 							<Input
 							id="brand"
 							value={newWatch.brand}
 							onChange={(e) => setNewWatch({...newWatch, brand: e.target.value})}
 							placeholder="npr., Rolex"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
@@ -671,15 +838,17 @@ return (
 							value={newWatch.referenceNumber}
 							onChange={(e) => setNewWatch({...newWatch, referenceNumber: e.target.value})}
 							placeholder="npr., 116610LN"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
-							<Label htmlFor="model">Model</Label>
+							<Label htmlFor="model">Model *</Label>
 							<Input
 							id="model"
 							value={newWatch.model}
 							onChange={(e) => setNewWatch({...newWatch, model: e.target.value})}
 							placeholder="npr., Submariner Date"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
@@ -691,21 +860,23 @@ return (
 							onChange={(e) => setNewWatch({...newWatch, year: e.target.value})}
 							min="1900"
 							max={new Date().getFullYear()}
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
-							<Label htmlFor="price">Cijena (EUR)</Label>
+							<Label htmlFor="price">Cijena (EUR) *</Label>
 							<Input
 							id="price"
 							type="number"
 							value={newWatch.price}
 							onChange={(e) => setNewWatch({...newWatch, price: e.target.value})}
 							placeholder="npr., 12500"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="condition">Stanje</Label>
-							<Select value={newWatch.condition} onValueChange={(value) => setNewWatch({...newWatch, condition: value})}>
+							<Select value={newWatch.condition} onValueChange={(value) => setNewWatch({...newWatch, condition: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -720,7 +891,7 @@ return (
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="mechanism">Mehanizam</Label>
-							<Select value={newWatch.mechanism} onValueChange={(value) => setNewWatch({...newWatch, mechanism: value})}>
+							<Select value={newWatch.mechanism} onValueChange={(value) => setNewWatch({...newWatch, mechanism: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -740,11 +911,12 @@ return (
 							value={newWatch.caseDiameter}
 							onChange={(e) => setNewWatch({...newWatch, caseDiameter: e.target.value})}
 							placeholder="npr., 40mm"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="caseMaterial">Materijal kućišta</Label>
-							<Select value={newWatch.caseMaterial} onValueChange={(value) => setNewWatch({...newWatch, caseMaterial: value})}>
+							<Select value={newWatch.caseMaterial} onValueChange={(value) => setNewWatch({...newWatch, caseMaterial: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue placeholder="Odaberite materijal" />
 							</SelectTrigger>
@@ -759,7 +931,7 @@ return (
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="glassType">Tip stakla</Label>
-							<Select value={newWatch.glassType} onValueChange={(value) => setNewWatch({...newWatch, glassType: value})}>
+							<Select value={newWatch.glassType} onValueChange={(value) => setNewWatch({...newWatch, glassType: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -774,7 +946,7 @@ return (
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="category">Kategorija</Label>
-							<Select value={newWatch.category} onValueChange={(value) => setNewWatch({...newWatch, category: value})}>
+							<Select value={newWatch.category} onValueChange={(value) => setNewWatch({...newWatch, category: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -787,15 +959,45 @@ return (
 							</SelectContent>
 							</Select>
 						</div>
-						<div className="space-y-2">
-							<Label htmlFor="image">Slike</Label>
-							<input
-							type="file"
-							multiple
-							accept="image/*"
-							onChange={(e) => handleImageUpload(e.target.files)}
-							id="image"
-							/>
+						<div className="lg:col-span-2 space-y-2">
+							<Label htmlFor="image">Slike * (max 5)</Label>
+							<div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+								<input
+								type="file"
+								multiple
+								accept="image/*"
+								onChange={(e) => handleImageUpload(e.target.files)}
+								id="image"
+								className="hidden"
+								disabled={isUploading}
+								/>
+								<label htmlFor="image" className="cursor-pointer">
+									<Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+									<p className="text-sm text-gray-600">Klikni za odabir slika</p>
+									<p className="text-xs text-gray-500 mt-1">Odaberi iz galerije ili fotografiraj</p>
+								</label>
+							</div>
+							{newWatch.images.length > 0 && (
+								<div className="flex gap-2 flex-wrap mt-2">
+									{newWatch.images.map((img, index) => (
+										<div key={index} className="relative w-20 h-20 border rounded-lg overflow-hidden group">
+											<img
+												src={URL.createObjectURL(img)}
+												alt={`Preview ${index + 1}`}
+												className="w-full h-full object-cover"
+											/>
+											<button
+												type="button"
+												onClick={() => handleImageRemoval(index)}
+												className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+												disabled={isUploading}
+											>
+												<X className="w-3 h-3" />
+											</button>
+										</div>
+									))}
+								</div>
+							)}
 						</div>
 						<div className="lg:col-span-2 space-y-2">
 							<Label htmlFor="description">Opis</Label>
@@ -804,6 +1006,7 @@ return (
 							value={newWatch.description}
 							onChange={(e) => setNewWatch({...newWatch, description: e.target.value})}
 							placeholder="Kratki opis sata"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="lg:col-span-2 flex items-center space-x-2">
@@ -813,6 +1016,7 @@ return (
 							checked={newWatch.hasBox}
 							onChange={(e) => setNewWatch({...newWatch, hasBox: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="hasBox">Ima kutiju</Label>
 						</div>
@@ -823,6 +1027,7 @@ return (
 							checked={newWatch.hasPapers}
 							onChange={(e) => setNewWatch({...newWatch, hasPapers: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
 						</div>
@@ -834,6 +1039,7 @@ return (
 							checked={newWatch.hasWarranty}
 							onChange={(e) => setNewWatch({...newWatch, hasWarranty: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="hasWarranty">Ima garanciju</Label>
 						</div>
@@ -845,16 +1051,24 @@ return (
 							checked={newWatch.featured}
 							onChange={(e) => setNewWatch({...newWatch, featured: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="featured">Istaknuti sat</Label>
 						</div>
 					</div>
 					<div className="flex justify-end space-x-2">
-					<Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+					<Button variant="outline" onClick={() => setIsAddDialogOpen(false)} disabled={isUploading}>
 						Odustani
 					</Button>
-					<Button onClick={handleAddWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
-						Dodaj Sat
+					<Button onClick={handleAddWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}} disabled={isUploading}>
+						{isUploading ? (
+							<>
+								<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+								Učitavanje...
+							</>
+						) : (
+							'Dodaj Sat'
+						)}
 					</Button>
 					</div>
 				</DialogContent>
@@ -1021,13 +1235,26 @@ return (
 			)}
 		</div>
 
-		{/* Edit Button */}
 		{activeTab === 'watches' && (
-			<Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+			<Dialog open={isEditDialogOpen} onOpenChange={(open) => {
+				if (!isUploading) {
+					setIsEditDialogOpen(open);
+				}
+			}}>
 				<DialogContent className="max-w-2xl">
 					<DialogHeader>
 						<DialogTitle>Uredi sat</DialogTitle>
 					</DialogHeader>
+
+					{isUploading && (
+						<div className="absolute inset-0 bg-white/90 flex items-center justify-center z-50 rounded-lg">
+							<div className="text-center">
+								<Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" style={{color: '#bd890f'}} />
+								<p className="text-lg font-medium text-gray-900">{uploadProgress}</p>
+								<p className="text-sm text-gray-600 mt-2">Molimo pričekajte...</p>
+							</div>
+						</div>
+					)}
 
 					<div className="grid lg:grid-cols-2 grid-cols-1 gap-4 py-4 max-h-[70vh] overflow-y-auto">
 						<div className="space-y-2">
@@ -1037,6 +1264,7 @@ return (
 							value={editWatch.brand}
 							onChange={(e) => setEditWatch({...editWatch, brand: e.target.value})}
 							placeholder="npr., Rolex"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
@@ -1046,6 +1274,7 @@ return (
 							value={editWatch.referenceNumber}
 							onChange={(e) => setEditWatch({...editWatch, referenceNumber: e.target.value})}
 							placeholder="npr., 116610LN"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
@@ -1055,6 +1284,7 @@ return (
 							value={editWatch.model}
 							onChange={(e) => setEditWatch({...editWatch, model: e.target.value})}
 							placeholder="npr., Submariner Date"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
@@ -1066,6 +1296,7 @@ return (
 							onChange={(e) => setEditWatch({...editWatch, year: e.target.value})}
 							min="1900"
 							max={new Date().getFullYear()}
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
@@ -1076,11 +1307,12 @@ return (
 							value={editWatch.price}
 							onChange={(e) => setEditWatch({...editWatch, price: e.target.value})}
 							placeholder="npr., 12500"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="condition">Stanje</Label>
-							<Select value={editWatch.condition} onValueChange={(value) => setEditWatch({...editWatch, condition: value})}>
+							<Select value={editWatch.condition} onValueChange={(value) => setEditWatch({...editWatch, condition: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -1095,7 +1327,7 @@ return (
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="mechanism">Mehanizam</Label>
-							<Select value={editWatch.mechanism} onValueChange={(value) => setEditWatch({...editWatch, mechanism: value})}>
+							<Select value={editWatch.mechanism} onValueChange={(value) => setEditWatch({...editWatch, mechanism: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -1115,11 +1347,12 @@ return (
 							value={editWatch.caseDiameter}
 							onChange={(e) => setEditWatch({...editWatch, caseDiameter: e.target.value})}
 							placeholder="npr., 40mm"
+							disabled={isUploading}
 							/>
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="caseMaterial">Materijal kućišta</Label>
-							<Select value={editWatch.caseMaterial} onValueChange={(value) => setEditWatch({...editWatch, caseMaterial: value})}>
+							<Select value={editWatch.caseMaterial} onValueChange={(value) => setEditWatch({...editWatch, caseMaterial: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue placeholder="Odaberite materijal" />
 							</SelectTrigger>
@@ -1134,7 +1367,7 @@ return (
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="glassType">Tip stakla</Label>
-							<Select value={editWatch.glassType} onValueChange={(value) => setEditWatch({...editWatch, glassType: value})}>
+							<Select value={editWatch.glassType} onValueChange={(value) => setEditWatch({...editWatch, glassType: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -1149,7 +1382,7 @@ return (
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="category">Kategorija</Label>
-							<Select value={editWatch.category} onValueChange={(value) => setEditWatch({...editWatch, category: value})}>
+							<Select value={editWatch.category} onValueChange={(value) => setEditWatch({...editWatch, category: value})} disabled={isUploading}>
 							<SelectTrigger>
 								<SelectValue />
 							</SelectTrigger>
@@ -1169,27 +1402,39 @@ return (
 							value={editWatch.description}
 							onChange={(e) => setEditWatch({...editWatch, description: e.target.value})}
 							placeholder="Kratki opis sata"
+							disabled={isUploading}
 							/>
 						</div>
 
-						<div className="space-y-2">
-							<Label htmlFor="image">Slike</Label>
-							<input
-							type="file"
-							multiple
-							accept="image/*"
-							onChange={(e) => handleImageEdit(e.target.files)}
-							id="image"
-							/>
+						<div className="lg:col-span-2 space-y-2">
+							<Label htmlFor="image">Dodaj nove slike (max 5 ukupno)</Label>
+							<div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
+								<input
+								type="file"
+								multiple
+								accept="image/*"
+								onChange={(e) => handleImageEdit(e.target.files)}
+								id="image"
+								className="hidden"
+								disabled={isUploading}
+								/>
+								<label htmlFor="image" className="cursor-pointer">
+									<Upload className="w-6 h-6 mx-auto mb-2 text-gray-400" />
+									<p className="text-sm text-gray-600">Odaberi iz galerije ili fotografiraj</p>
+								</label>
+							</div>
 						</div>
 
-						<div className='lg:col-span-2 space-2 flex gap-5 flex-wrap'>
-							{editWatch.images?.map((image) => (
-								<div onClick={() => handleImageEditRemoval(image)} className='relative w-36 h-36 rounded-lg hover:bg-red-500/25 transition-all duration-300 cursor-pointer group flex items-center justify-center'>
-									<img src={image} alt="preview-unavailable" className='absolute rounded-lg object-cover aspect-square -z-10'/>
-									<Trash2 className="hidden w-12 h-12 text-white group-hover:block m-auto" />
-								</div>
-							))}
+						<div className='lg:col-span-2 space-y-2'>
+							<Label>Trenutne slike (klikni za brisanje)</Label>
+							<div className='flex gap-3 flex-wrap'>
+								{editWatch.images?.map((image, index) => (
+									<div key={index} onClick={() => !isUploading && handleImageEditRemoval(image)} className='relative w-24 h-24 rounded-lg hover:bg-red-500/25 transition-all duration-300 cursor-pointer group flex items-center justify-center border-2 border-gray-200'>
+										<img src={typeof image === 'string' ? image : URL.createObjectURL(image)} alt="preview" className='absolute rounded-lg object-cover w-full h-full -z-10'/>
+										<Trash2 className="hidden w-8 h-8 text-white group-hover:block m-auto" />
+									</div>
+								))}
+							</div>
 						</div>
 
 						<div className="lg:col-span-2 flex items-center space-x-2">
@@ -1199,6 +1444,7 @@ return (
 							checked={editWatch.hasBox}
 							onChange={(e) => setEditWatch({...editWatch, hasBox: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="hasBox">Ima kutiju</Label>
 						</div>
@@ -1209,6 +1455,7 @@ return (
 							checked={editWatch.hasPapers}
 							onChange={(e) => setEditWatch({...editWatch, hasPapers: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="hasPapers">Ima dokumentaciju</Label>
 						</div>
@@ -1219,6 +1466,7 @@ return (
 							checked={editWatch.hasWarranty}
 							onChange={(e) => setEditWatch({...editWatch, hasWarranty: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="hasWarranty">Ima garanciju</Label>
 						</div>
@@ -1229,24 +1477,31 @@ return (
 							checked={editWatch.featured}
 							onChange={(e) => setEditWatch({...editWatch, featured: e.target.checked})}
 							className="rounded border-gray-300"
+							disabled={isUploading}
 							/>
 							<Label htmlFor="featured">Istaknuti sat</Label>
 						</div>
 					</div>
 
 					<div className="flex justify-end space-x-2">
-						<Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+						<Button variant="outline" onClick={() => setIsEditDialogOpen(false)} disabled={isUploading}>
 							Odustani
 						</Button>
-						<Button onClick={handleEditWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}}>
-							Uredi Sat
+						<Button onClick={handleEditWatch} className="text-white hover:opacity-90 transition-opacity" style={{backgroundColor: '#bd890f'}} disabled={isUploading}>
+							{isUploading ? (
+								<>
+									<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+									Učitavanje...
+								</>
+							) : (
+								'Uredi Sat'
+							)}
 						</Button>
 					</div>
 				</DialogContent>
 			</Dialog>
 		)}
 
-		{/* Controls for Watches */}
 		{activeTab === 'watches' && (
 		<div className="flex flex-col md:flex-row gap-4 mb-8">
 			<div className="relative flex-1">
@@ -1258,14 +1513,14 @@ return (
 				className="pl-10"
 			/>
 			</div>
-			<div className="flex gap-2">
+			<div className="flex gap-2 overflow-x-auto">
 			{allCategories.map((category) => (
 				<Button
 				key={category}
 				variant={selectedCategory === category ? "default" : "outline"}
 				size="sm"
 				onClick={() => setSelectedCategory(category)}
-				className="text-xs"
+				className="text-xs whitespace-nowrap"
 				>
 				{category}
 				</Button>
@@ -1274,10 +1529,8 @@ return (
 		</div>
 		)}
 
-		{/* Content based on active tab */}
 		{activeTab === 'watches' && (
 		<>
-			{/* Watch Grid */}
 			{filteredWatches.length > 0 ? (
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 				{filteredWatches.map((watch) => (
@@ -1315,25 +1568,22 @@ return (
 						</div>
 						<p className="text-sm font-medium text-gray-900 mb-3">{formatPrice(watch.price)}</p>
 						<div className="flex gap-1">
-						{/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
-							<Eye className="w-4 h-4" />
-						</Button>*/}
 						<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit" onClick={() => handleWatchEditing(watch)}>
 							<Edit className="w-4 h-4" />
 						</Button>
-						<Button 
-							variant="ghost" 
-							size="sm" 
+						<Button
+							variant="ghost"
+							size="sm"
 							className={`h-8 w-8 p-0 ${watch.featured ? 'text-yellow-600 hover:text-yellow-700' : 'text-gray-400 hover:text-yellow-600'}`}
 							onClick={() => handleToggleFeatured(watch.id)}
 							title={watch.featured ? "Remove from featured" : "Add to featured"}
 						>
 							<Star className={`w-4 h-4 ${watch.featured ? 'fill-current' : ''}`} />
 						</Button>
-						<Button 
-							variant="ghost" 
-							size="sm" 
-							className="h-8 w-8 p-0 text-red-600 hover:text-red-700" 
+						<Button
+							variant="ghost"
+							size="sm"
+							className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
 							onClick={() => handleDeleteWatch(watch.id)}
 							title="Delete"
 						>
@@ -1355,7 +1605,6 @@ return (
 
 		{activeTab === 'blog' && (
 		<>
-			{/* Blog Posts Grid */}
 			{blogStore.posts.length > 0 ? (
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{blogStore.posts.map((post) => (
@@ -1388,25 +1637,19 @@ return (
 						))}
 						</div>
 						<div className="flex gap-1">
-						{/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
-							<Eye className="w-4 h-4" />
-						</Button>
-						<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit">
-							<Edit className="w-4 h-4" />
-						</Button>*/}
-						<Button 
-							variant="ghost" 
-							size="sm" 
+						<Button
+							variant="ghost"
+							size="sm"
 							className={`h-8 w-8 p-0 ${post.featured ? 'text-yellow-600 hover:text-yellow-700' : 'text-gray-400 hover:text-yellow-600'}`}
 							onClick={() => handleTogglePostFeatured(post.id)}
 							title={post.featured ? "Remove from featured" : "Add to featured"}
 						>
 							<Star className={`w-4 h-4 ${post.featured ? 'fill-current' : ''}`} />
 						</Button>
-						<Button 
-							variant="ghost" 
-							size="sm" 
-							className="h-8 w-8 p-0 text-red-600 hover:text-red-700" 
+						<Button
+							variant="ghost"
+							size="sm"
+							className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
 							onClick={() => handleDeletePost(post.id)}
 							title="Delete"
 						>
@@ -1428,7 +1671,6 @@ return (
 
 		{activeTab === 'recommendations' && (
 		<>
-			{/* Recommendations Grid */}
 			{referralStore.recommendations.length > 0 ? (
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{referralStore.recommendations.map((recommendation) => (
@@ -1458,17 +1700,11 @@ return (
 						{recommendation.createdAt}
 						</p>
 						<div className="flex gap-1">
-						{/*<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="View">
-							<Eye className="w-4 h-4" />
-						</Button>
-						<Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Edit">
-							<Edit className="w-4 h-4" />
-						</Button>*/}
-						<Button 
-							variant="ghost" 
-							size="sm" 
-							className="h-8 w-8 p-0 text-red-600 hover:text-red-700" 
-							onClick={() => handleDeleteRecommendation(recommendation.id)}
+						<Button
+							variant="ghost"
+							size="sm"
+							className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+							onClick={() => handleDeleteReferral(recommendation.id)}
 							title="Delete"
 						>
 							<Trash2 className="w-4 h-4" />
@@ -1487,7 +1723,6 @@ return (
 		</>
 		)}
 
-		{/* Otkup Submissions */}
 		{activeTab === 'otkup' && (
 		<>
 			{otkupStore.submissions.length > 0 ? (
@@ -1505,7 +1740,7 @@ return (
 							{submission.referenceNumber && ` (${submission.referenceNumber})`}
 						</p>
 						<div className="flex items-center gap-2 mb-2">
-							<Badge 
+							<Badge
 							variant={submission.status === 'Nova' ? 'default' : 'secondary'}
 							className="text-xs"
 							>
@@ -1515,29 +1750,29 @@ return (
 							{submission.submittedAt}
 							</span>
 						</div>
-						<div className="flex items-center gap-4 text-xs text-gray-500">
+						<div className="flex items-center gap-4 text-xs text-gray-500 flex-wrap">
 							<a href={`mailto:${submission.email}?subject=${submission.message == "" ? ("Otkup - " + submission.brand + " " + submission.model) : ""}`}>📧 {submission.email}</a>
 							<span>📱 {submission.phone}</span>
 							<span>📷 {submission.images.length} slika</span>
 							<span>💶 {submission.price}</span>
 						</div>
 						</div>
-						
+
 					</div>
 					<div className="flex gap-2">
-						<Button 
-						variant="ghost" 
-						size="sm" 
-						className="h-8 px-3 text-xs" 
+						<Button
+						variant="ghost"
+						size="sm"
+						className="h-8 px-3 text-xs"
 						onClick={() => handleViewSubmission(submission)}
 						>
 						<Eye className="w-4 h-4 mr-1" />
 						Detalji
 						</Button>
-						<Button 
-						variant="ghost" 
-						size="sm" 
-						className="h-8 px-3 text-xs text-red-600 hover:text-red-700" 
+						<Button
+						variant="ghost"
+						size="sm"
+						className="h-8 px-3 text-xs text-red-600 hover:text-red-700"
 						onClick={() => handleDeleteSubmission(submission.id)}
 						>
 						<Trash2 className="w-4 h-4 mr-1" />
@@ -1556,7 +1791,6 @@ return (
 		</>
 		)}
 
-		{/* Submission Detail Dialog */}
 		<Dialog open={isSubmissionDetailOpen} onOpenChange={setIsSubmissionDetailOpen}>
 		<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
 			<DialogHeader>
@@ -1564,10 +1798,9 @@ return (
 			</DialogHeader>
 			{selectedSubmission && (
 			<div className="space-y-6">
-				{/* Personal Info */}
 				<div>
 				<h3 className="text-lg font-medium mb-3">Osobni Podaci</h3>
-				<div className="grid grid-cols-2 gap-4 text-sm">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
 					<div>
 					<span className="font-medium">Ime i prezime:</span>
 					<p>{selectedSubmission.firstName} {selectedSubmission.lastName}</p>
@@ -1588,11 +1821,10 @@ return (
 				</div>
 				</div>
 
-				{/* Watch Info */}
 				{selectedSubmission.message == "" ? (
 					<div>
 						<h3 className="text-lg font-medium mb-3">Podaci o Satu</h3>
-						<div className="grid grid-cols-2 gap-4 text-sm">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
 							<div>
 							<span className="font-medium">Brend:</span>
 							<p>{selectedSubmission.brand}</p>
@@ -1626,13 +1858,12 @@ return (
 				) : (
 					<div>
 						<h3 className="text-lg font-medium mb-3">Poruka:</h3>
-						<div className="grid grid-cols-2 gap-4 text-sm">
+						<div className="text-sm">
 							<p>{selectedSubmission.message}</p>
 						</div>
 					</div>
 				)}
 
-				{/* Images */}
 				{selectedSubmission.images.length > 0 && (
 					<div>
 						<h3 className="text-lg font-medium mb-3">Fotografije ({selectedSubmission.images.length})</h3>
@@ -1651,7 +1882,6 @@ return (
 					</div>
 				)}
 
-				{/* Notes */}
 				{selectedSubmission.notes && (
 				<div>
 					<h3 className="text-lg font-medium mb-3">Napomene</h3>
