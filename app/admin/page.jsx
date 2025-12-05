@@ -965,7 +965,6 @@ return (
 								type="file"
 								multiple
 								accept="image/*"
-								capture="environment"
 								onChange={(e) => handleImageUpload(e.target.files)}
 								id="image"
 								className="hidden"
@@ -974,7 +973,7 @@ return (
 								<label htmlFor="image" className="cursor-pointer">
 									<Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
 									<p className="text-sm text-gray-600">Klikni za odabir slika</p>
-									<p className="text-xs text-gray-500 mt-1">ili koristi kameru na mobitelu</p>
+									<p className="text-xs text-gray-500 mt-1">Odaberi iz galerije ili fotografiraj</p>
 								</label>
 							</div>
 							{newWatch.images.length > 0 && (
@@ -1413,7 +1412,6 @@ return (
 								type="file"
 								multiple
 								accept="image/*"
-								capture="environment"
 								onChange={(e) => handleImageEdit(e.target.files)}
 								id="image"
 								className="hidden"
@@ -1421,7 +1419,7 @@ return (
 								/>
 								<label htmlFor="image" className="cursor-pointer">
 									<Upload className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-									<p className="text-sm text-gray-600">Dodaj slike</p>
+									<p className="text-sm text-gray-600">Odaberi iz galerije ili fotografiraj</p>
 								</label>
 							</div>
 						</div>
