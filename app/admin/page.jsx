@@ -179,6 +179,7 @@ const handleEditWatch = async () => {
 			description: "Model, brend i cijena su obavezni.",
 			variant: "destructive",
 		});
+		
 		return;
 	}
 
