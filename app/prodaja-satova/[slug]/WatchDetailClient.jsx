@@ -261,7 +261,16 @@ const WatchDetailClient = ({ watch }) => {
                       <div className="flex items-center gap-3">
                         <Phone className="w-5 h-5 text-gray-600" />
                         <div>
-                          <p className="font-medium text-gray-900">{t.contact.phone}</p>
+                          <p className="font-medium text-gray-900">{t.contact.phone} (Zagreb)</p>
+                          <a href="tel:+385998889999" className="text-blue-600 hover:text-blue-800">
+                            +385 99 888 9999
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Phone className="w-5 h-5 text-gray-600" />
+                        <div>
+                          <p className="font-medium text-gray-900">{t.contact.phone} (Osijek)</p>
                           <a href="tel:+385989060212" className="text-blue-600 hover:text-blue-800">
                             +385 98 906 0212
                           </a>
