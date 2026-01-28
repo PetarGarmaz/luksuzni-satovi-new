@@ -742,14 +742,6 @@ return (
 			<Card>
 			<CardContent className="p-6">
 				<div className="text-2xl font-light text-gray-900">
-				{(referralStore.recommendations.reduce((sum, r) => sum + r.rating, 0) / referralStore.recommendations.length || 0).toFixed(1)}
-				</div>
-				<p className="text-sm text-gray-600">Prosječna Ocjena</p>
-			</CardContent>
-			</Card>
-			<Card>
-			<CardContent className="p-6">
-				<div className="text-2xl font-light text-gray-900">
 				{referralStore.latestRecommendations.length}
 				</div>
 				<p className="text-sm text-gray-600">Najnovije</p>
