@@ -1,14 +1,34 @@
-'use client';
+import { getWatchForMeta } from '@/lib/watchUtils';
+import WatchDetailPageClient from './WatchDetailPageClient';
 
-import { observer } from 'mobx-react-lite';
-import { watchStore } from '@/stores/WatchStore';
-import WatchDetailClient from './WatchDetailClient';
+export async function generateMetadata({ params }) {
+	const { brand: brandSlug, watchSlug } = params;
+	const watch = await getWatchForMeta(brandSlug, watchSlug);
 
-const WatchDetailPage = observer(({ params }) => {
-  const { brand: brandSlug, watchSlug } = params || {};
-  const watch = watchStore.getWatchByBrandAndSlug(brandSlug, watchSlug);
+	if (!watch) {
+		return {
+			title: 'Sat nije pronađen | Luksuzni-Satovi',
+			description: 'Traženi sat nije dostupan u našoj ponudi.',
+		};
+	}
 
-  return <WatchDetailClient watch={watch} brandSlug={brandSlug} />;
-});
+	const title = `${watch.brand} ${watch.name} | Luksuzni-Satovi`;
+	const description = watch.description
+		? watch.description.slice(0, 155).trimEnd() + (watch.description.length > 155 ? '…' : '')
+		: `Kupite ${watch.brand} ${watch.name} (${watch.year}) – ${watch.condition} sat. Autentičnost zajamčena. Pogledajte cijenu i specifikacije na Luksuzni-Satovi.`;
 
-export default WatchDetailPage;
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			images: watch.images?.[0] ? [{ url: watch.images[0] }] : [],
+		},
+	};
+}
+
+export default function WatchDetailPage({ params }) {
+	const { brand: brandSlug, watchSlug } = params;
+	return <WatchDetailPageClient brandSlug={brandSlug} watchSlug={watchSlug} />;
+}
