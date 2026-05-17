@@ -148,8 +148,11 @@ const CatalogClient = observer(() => {
         <div className="max-w-7xl mx-auto">
           {filteredWatches.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
-              {filteredWatches.map((watch) => (
-                <Link key={watch.id} href={`/prodaja-satova/${watch.slug}`} className="block group cursor-pointer bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+              {filteredWatches.map((watch) => {
+                const brandSlug = watchStore.getBrandSlug(watch.brand);
+                const watchSlug = watchStore.getWatchUrlSlug(watch);
+                return (
+                <Link key={watch.id} href={`/prodaja-satova/${brandSlug}/${watchSlug}`} className="block group cursor-pointer bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
                   <div className="aspect-square bg-gray-50 overflow-hidden relative">
                     <img
                       src={watch.images[0] || getWatchImage(watch.brand).url}
@@ -188,7 +191,8 @@ const CatalogClient = observer(() => {
                     </Button>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-12 sm:py-16">

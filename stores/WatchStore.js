@@ -35,7 +35,7 @@ class WatchStore {
 		} else if (data) {
 			runInAction(() => {
 				console.log(data);
-				this.watches.unshift(data[0]);
+				this.watches.push(newWatch);
 			});
 		}
 
@@ -88,6 +88,41 @@ class WatchStore {
 		.replace(/\s+/g, '-')
 		.replace(/-+/g, '-')
 		.trim();
+	}
+
+	getBrandSlug(brand) {
+		return this.generateSlug(brand);
+	}
+
+	getWatchUrlSlug(watch) {
+		const modelSlug = this.generateSlug(watch.name);
+		const sameBrandAndModel = this.watches.filter(
+			w => this.generateSlug(w.brand) === this.generateSlug(watch.brand) &&
+				 this.generateSlug(w.name) === modelSlug
+		);
+		if (sameBrandAndModel.length <= 1) return modelSlug;
+		const index = sameBrandAndModel.findIndex(w => w.id === watch.id);
+		return `${modelSlug}-${index + 1}`;
+	}
+
+	getWatchByBrandAndSlug(brandSlug, watchSlug) {
+		const brandWatches = this.watches.filter(
+			w => this.generateSlug(w.brand) === brandSlug
+		);
+		return brandWatches.find(w => this.getWatchUrlSlug(w) === watchSlug) || null;
+	}
+
+	getWatchesByBrand(brandSlug) {
+		return this.watches.filter(w => this.generateSlug(w.brand) === brandSlug);
+	}
+
+	get brands() {
+		const brandMap = new Map();
+		this.watches.forEach(watch => {
+			const slug = this.generateSlug(watch.brand);
+			if (!brandMap.has(slug)) brandMap.set(slug, watch.brand);
+		});
+		return Array.from(brandMap.entries()).map(([slug, name]) => ({ slug, name }));
 	}
 
 	get featuredWatches() {
