@@ -5,7 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { translations } from '@/locales/translations';
 import { otkupStore } from '@/stores/OtkupStore';
 
-const Contact = () => {
+const Contact = ({isHeaderVisible}) => {
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
@@ -110,14 +110,16 @@ const Contact = () => {
 	return (
 		<section id="contact" className="py-12 sm:py-20 px-4 sm:px-6 bg-white">
 		<div className="max-w-7xl mx-auto">
-			<div className="text-center mb-8 sm:mb-16">
-			<h2 className="text-2xl sm:text-4xl font-light text-gray-900 mb-4 uppercase">
-				{t.contact.title}
-			</h2>
-			<p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-				{t.contact.subtitle}
-			</p>
-			</div>
+			{!isHeaderVisible && (
+				<div className="text-center mb-8 sm:mb-16">
+					<h2 className="text-2xl sm:text-4xl font-light text-gray-900 mb-4 uppercase">
+						{t.contact.title}
+					</h2>
+					<p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
+						{t.contact.subtitle}
+					</p>
+				</div>
+			)}
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start">
 			{/* Contact Information */}
