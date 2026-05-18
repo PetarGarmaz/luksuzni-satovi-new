@@ -10,7 +10,7 @@ const inter = Inter({
 
 export const metadata = {
   title: 'Luksuzni-Satovi | Rabljeni luksuzni satovi',
-  description: 'Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost.',
+  description: 'Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz provjerenu autentičnost i sigurnost.',
 };
 
 export default function RootLayout({ children }) {
@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
 		<head>
 			<meta property="og:type" content="website" />
 			<meta property="og:title" content="Luksuzni-Satovi | Rabljeni luksuzni satovi" />
-			<meta property="og:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
+			<meta property="og:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz provjerenu autentičnost i sigurnost." />
 			<meta property="og:site_name" content="Luksuzni-satovi" />
 			<meta name="keywords" content="luksuzni satovi, prodaja luksuznih satova, otkup luksuznih satova, otkup rolex, rolex, otkup satova, Rolex, Breitling, Omega, Iwc, Patek Philippe, Audemars Piguet" />
 			<meta property="og:locale" content="hr_HR" />
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
 
 			<meta name="twitter:card" content="summary" />
 			<meta name="twitter:title" content="Luksuzni-Satovi | Rabljeni luksuzni satovi" />
-			<meta name="twitter:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz proverenu autentičnost i sigurnost." />
+			<meta name="twitter:description" content="Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz provjerenu autentičnost i sigurnost." />
 			<meta name="twitter:image" content="https://luksuzni-satovi-new.vercel.app/og_logo.jpg" />
 			<meta name="twitter:image:alt" content="Luksuzni-Satovi" />
 			

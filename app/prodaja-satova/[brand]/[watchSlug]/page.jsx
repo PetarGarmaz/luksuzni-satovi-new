@@ -7,15 +7,13 @@ export async function generateMetadata({ params }) {
 
 	if (!watch) {
 		return {
-			title: 'Sat nije pronađen | Luksuzni-Satovi',
+			title: 'Sat nije pronađen - Prodaja i Otkup - Time',
 			description: 'Traženi sat nije dostupan u našoj ponudi.',
 		};
 	}
 
-	const title = `${watch.brand} ${watch.name} | Luksuzni-Satovi`;
-	const description = watch.description
-		? watch.description.slice(0, 155).trimEnd() + (watch.description.length > 155 ? '…' : '')
-		: `Kupite ${watch.brand} ${watch.name} (${watch.year}) – ${watch.condition} sat. Autentičnost zajamčena. Pogledajte cijenu i specifikacije na Luksuzni-Satovi.`;
+	const title = `${watch.brand} ${watch.name} - Prodaja i Otkup - Time`;
+	const description = 'Luksuzni satovi – rabljeni luksuzni satovi sa garancijom. Otkup luksuznih satova, prodaja i kupovina ekskluzivnih brendova uz provjerenu autentičnost i sigurnost.';
 
 	return {
 		title,

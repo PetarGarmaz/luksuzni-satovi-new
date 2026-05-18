@@ -34,7 +34,7 @@ export async function GET() {
 	if (errorWatches) console.error("Supabase watch fetch error:", errorWatches);
 
 	const baseUrl = 'https://www.luksuzni-satovi.com';
-	const staticPages = ['/', '/prodaja-satova', '/otkup-satova'];
+	const staticPages = ['/', '/prodaja-satova', '/otkup-satova', '/kontakt'];
 
 	// Unique brand slugs
 	const brandSlugs = [...new Map(watches.map(w => [generateSlug(w.brand), w.brand])).keys()];
